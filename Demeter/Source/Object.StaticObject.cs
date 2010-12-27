@@ -9,7 +9,24 @@ namespace Demeter
 {
     public abstract class StaticObject : Object
     {
-        public override Rectangle collisionRect
+        protected Texture2D texture;
+        public Texture2D Texture
+        {
+            get { return this.texture; }
+            set { this.texture = value; }
+        }
+
+        public int HalfWidth
+        {
+            get { return texture.Width / 2; }
+        }
+
+        public int HalfHeight
+        {
+            get { return texture.Height / 2; }
+        }
+
+        public override Rectangle CollisionRect
         {
             get
             {
@@ -27,7 +44,7 @@ namespace Demeter
 
         public override void Draw(GameTime gameTime)
         {
-            game.spriteBatch.Draw(this.texture, position, Color.White);
+            game.spriteBatch.Draw(this.texture, ScreenPosition, Color.White);
         }
     }
 }

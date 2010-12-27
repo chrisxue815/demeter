@@ -10,8 +10,6 @@ namespace Demeter
 {
     class Switch : StaticObject
     {
-        bool isON;
-
         List<IControlledObject> controlled;
         
         Texture2D switchOn;
@@ -34,36 +32,12 @@ namespace Demeter
                 switchOff = value;
             }
         }
-        Vector2 position;
-
-        public Vector2 Position
-        {
-            get { return position; }
-            set
-            {
-                position = value;
-            }
-        }
-        Point frameSize;
-
-        public Rectangle collisionRect
-        {
-            get
-            {
-                return new Rectangle((int)(position.X + 30), (int)(position.Y + 30), 30, 30);
-            }
-        }
 
         public Switch(Game1 game, Vector2 pos)
             : base(game, pos)
         {
             position = pos;
-            isON = false;
             this.controlled = new List<IControlledObject>();
-        }
-
-        public void Update(Rectangle clientBounds)
-        {
         }
 
         public Vector2 GetPosition()
@@ -80,25 +54,21 @@ namespace Demeter
 
         public override void Update(GameTime gameTime)
         {
-            //throw new NotImplementedException();
         }
 
         public override void CollisionResponse(Object obj)
         {
+            KeyboardState keyboardState = Keyboard.GetState();
             foreach (IControlledObject controlledObj in controlled)
             {
-                if (Keyboard.GetState().IsKeyDown(Keys.Up))
+                if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.Down))
                 {
-                    if (isON)
-                    {
-                        this.texture = switchOn;
-                    }
-                    else
-                    {
-                        this.texture = switchOff;
-                    }
-                    isON = !isON;
+                    this.texture = switchOn;
                     controlledObj.Control();
+                }
+                else
+                {
+                    this.texture = switchOff;
                 }
             }
         }

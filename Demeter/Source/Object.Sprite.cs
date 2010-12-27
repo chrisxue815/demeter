@@ -9,51 +9,54 @@ namespace Demeter
 {
     public abstract class Sprite : Object
     {
-        protected Point frameSize;
-        Point sheetSize;
-        Point currentFrame;
-
-        static readonly Point DEFAULT_FRAME = Point.Zero;
-
-        Rectangle CurrentSourceRectangle
+        /// <summary>
+        /// Gets the animation which is currently playing.
+        /// </summary>
+        protected Animation currentAnimation;
+        public Animation CurrentAnimation
         {
-            get
-            {
-                return new Rectangle(currentFrame.X * frameSize.X,
-                    currentFrame.Y * frameSize.Y,
-                    frameSize.X, frameSize.Y);
-            }
+            get { return this.currentAnimation; }
         }
 
-        public override Rectangle collisionRect
+        /// <summary>
+        /// The amount of time in milliseconds that the current frame has been shown for.
+        /// </summary>
+        protected float time;
+
+        /// <summary>
+        /// Gets the collision rectangle.
+        /// </summary>
+        public override Rectangle CollisionRect
         {
             get
             {
                 return new Rectangle((int)(position.X) + collisionOffset,
                     (int)(position.Y) + collisionOffset,
-                    frameSize.X - 2 * collisionOffset,
-                    frameSize.Y - 2 * collisionOffset);
+                    currentAnimation.FrameSize.X - 2 * collisionOffset,
+                    currentAnimation.FrameSize.Y - 2 * collisionOffset);
             }
         }
 
-        public Sprite(Game1 game, Vector2 position,
-            Point frameSize, Point sheetSize)
+        public Sprite(Game1 game, Vector2 position)
             : base(game, position)
         {
-            this.frameSize = frameSize;
-            this.sheetSize = sheetSize;
-            this.currentFrame = DEFAULT_FRAME;
+        }
+
+        public Sprite(Game1 game, Vector2 position,
+            int collisionOffset, float scale)
+            : base(game, position, collisionOffset, scale)
+        {
         }
 
         public override void Update(GameTime gameTime)
         {
-
-        }
-
-        public override void Draw(GameTime gameTime)
-        {
-            if (texture != null)
-                game.spriteBatch.Draw(texture, position, CurrentSourceRectangle, Color.White);
+            // Process passing time.
+            time += (float)gameTime.ElapsedGameTime.Milliseconds;
+            while (time > currentAnimation.FrameTime)
+            {
+                time -= currentAnimation.FrameTime;
+                currentAnimation.Update();
+            }
         }
     }
 }

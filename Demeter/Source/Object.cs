@@ -15,24 +15,25 @@ namespace Demeter
             get { return this.game; }
         }
 
-        protected Texture2D texture;
-        public Texture2D Texture
-        {
-            get { return this.texture; }
-            set { this.texture = value; }
-        }
         protected Vector2 position;
         public Vector2 Position
         {
             get { return this.position; }
         }
+
+        public Vector2 ScreenPosition
+        {
+            get { return new Vector2(position.X - game.level.OffsetFromOrigin.X,
+                position.Y - game.level.OffsetFromOrigin.Y); }
+        }
+
         protected int collisionOffset;
+        protected const int DEFAULT_COLLISION_OFFSET = 10;
+
         protected float scale;
+        protected static readonly float DEFAULT_SCALE = 1.0f;
 
-        public abstract Rectangle collisionRect { get; }
-
-        static readonly float DEFAULT_SCALE = 1.0f;
-        const int DEFAULT_COLLISION_OFFSET = 0;
+        public abstract Rectangle CollisionRect { get; }
 
         public Object(Game1 game, Vector2 position,
             int collisionOffset, float scale)

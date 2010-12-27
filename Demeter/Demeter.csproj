@@ -87,7 +87,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Source\Object.Sprite.Animation.cs" />
-    <Compile Include="Source\Object.Sprite.AnimationPlayer.cs" />
     <Compile Include="Source\Object.StaticObject.IControlledObject.cs" />
     <Compile Include="Source\Object.StaticObject.Door.cs" />
     <Compile Include="Source\Level.cs" />
@@ -97,6 +96,7 @@
     <Compile Include="Source\Object.StaticObject.Hint.cs" />
     <Compile Include="Source\Object.StaticObject.Mirror.cs" />
     <Compile Include="Source\Object.StaticObject.Switch.cs" />
+    <Compile Include="Source\Object.StaticObject.Tile.cs" />
     <Compile Include="Source\Program.cs" />
     <Compile Include="Source\Game1.cs" />
     <Compile Include="Source\Object.Sprite.cs" />

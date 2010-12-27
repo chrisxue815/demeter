@@ -21,15 +21,42 @@ namespace Demeter
         internal GraphicsDeviceManager graphics;
         internal SpriteBatch spriteBatch;
 
-        Level level;
-        public Level Level
+        internal Level level;
+
+        int width;
+        public int Width
         {
-            get { return this.level; }
+            get { return this.width; }
+        }
+
+        int height;
+        public int Height
+        {
+            get { return this.height; }
+        }
+
+        public int HalfWidth
+        {
+            get { return this.width / 2; }
+        }
+
+        public int HalfHeight
+        {
+            get { return this.height / 2; }
         }
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+
+            width = 800;
+            height = 600;
+            graphics.PreferredBackBufferWidth = width;
+            graphics.PreferredBackBufferHeight = height;
+
+            /*if (!graphics.IsFullScreen)
+                graphics.ToggleFullScreen();*/
+
             Content.RootDirectory = "Content";
 
             level = new Level(this);

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Demeter
 {
@@ -32,21 +33,29 @@ namespace Demeter
 
         public override void Update(GameTime gameTime)
         {
-            //throw new NotImplementedException();
         }
 
         public void Control()
         {
-            this.rotation += 0.05f;
+            KeyboardState keyboardState = Keyboard.GetState();
+
+            if (keyboardState.IsKeyDown(Keys.Up))
+            {
+                this.rotation += 0.05f;
+            }
+            else if (keyboardState.IsKeyDown(Keys.Down))
+            {
+                this.rotation -= 0.05f;
+            }
         }
 
         public override void Draw(GameTime gameTime)
         {
             Game.spriteBatch.Draw(texture,
-                new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height),
+                new Vector2((int)ScreenPosition.X + HalfWidth, (int)ScreenPosition.Y + HalfHeight),
                 null, Color.White, rotation,
-                new Vector2(texture.Width / 2, texture.Height / 2),
-                SpriteEffects.None, 0);// position, Color.White);
+                new Vector2(HalfWidth, HalfHeight),
+                scale, SpriteEffects.None, 0);
         }
 
         public override void CollisionResponse(Object obj)

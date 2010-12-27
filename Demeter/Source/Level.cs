@@ -10,13 +10,13 @@ namespace Demeter
 {
     public class Level
     {
+        string levelFileName;
+
         Game1 game;
         public Game1 Game
         {
             get { return this.game; }
         }
-
-        string levelFileName;
 
         Player player;
         public Player Player
@@ -28,32 +28,41 @@ namespace Demeter
 
         Texture2D backgroundTexture;
 
-        bool backgroundMove;
-        public bool BackgroundMove
-        {
-            get { return this.backgroundMove; }
-            set { this.backgroundMove = value; }
-        }
-
         int levelWidth;
+        int levelHeight;
+
+        Vector2 offsetFromOrigin;
+        public Vector2 OffsetFromOrigin
+        {
+            get { return this.offsetFromOrigin; }
+        }
 
         public Level(Game1 game)
         {
             this.game = game;
-            staticObjects = new List<StaticObject>();
         }
 
         public void Initialize()
         {
-            backgroundTexture = Game.Content.Load<Texture2D>("Background.Background1");
-            player = new Player(game, new Vector2(250, 200));
-            Switch switch1 = new Switch(Game, new Vector2(300, 200));
-            Mirror mirror1 = new Mirror(Game, new Vector2(400, 200));
+            player = new Player(game, new Vector2(100, 400));
+
+            Switch switch1 = new Switch(Game, new Vector2(300, 500));
+            Mirror mirror1 = new Mirror(Game, new Vector2(400, 500));
             switch1.Add(mirror1);
+
+            Tile tile1 = new Tile(game, new Vector2(100, 550));
+
+            staticObjects = new List<StaticObject>();
             staticObjects.Add(switch1);
             staticObjects.Add(mirror1);
+            staticObjects.Add(tile1);
 
-            backgroundMove = false;
+            backgroundTexture = Game.Content.Load<Texture2D>("Background.Background6");
+
+            levelWidth = 1500;
+            levelHeight = 600;
+
+            offsetFromOrigin = Vector2.Zero;
         }
 
         public void LoadContent()
@@ -69,13 +78,15 @@ namespace Demeter
         {
             player.Update(gameTime);
 
-            if (player.Position.X > 400 && player.Position.X < levelWidth - 400)
+            if (player.Position.X > Game.HalfWidth
+                && player.Position.X < levelWidth - Game.HalfWidth)
             {
-                backgroundMove = true;
+                offsetFromOrigin.X = player.Position.X - Game.HalfWidth;
             }
-            else
+            if (player.Position.Y < Game.HalfHeight
+                && player.Position.Y > Game.HalfHeight + Game.Height - levelHeight)
             {
-                backgroundMove = false;
+                offsetFromOrigin.Y = player.Position.Y - Game.HalfHeight;
             }
 
             foreach (StaticObject obj in staticObjects)
@@ -90,9 +101,10 @@ namespace Demeter
         {
             foreach (StaticObject obj in staticObjects)
             {
-                if (player.collisionRect.Intersects(obj.collisionRect))
+                if (player.CollisionRect.Intersects(obj.CollisionRect))
                 {
                     obj.CollisionResponse(player);
+                    player.CollisionResponse(obj);
                 }
             }
         }

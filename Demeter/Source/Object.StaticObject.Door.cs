@@ -26,9 +26,10 @@ namespace Demeter
         string levelFileName;
         bool leave;
 
-        public Door(Game1 game, Vector2 position)
+        public Door(Game1 game, Vector2 position, string levelFileName)
             : base(game, position)
         {
+            this.levelFileName = levelFileName;
         }
 
         public override void LoadContent()

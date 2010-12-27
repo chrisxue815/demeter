@@ -7,23 +7,16 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Demeter
 {
-    class Hint : StaticObject
+    public class Tile : StaticObject
     {
-        public Hint(Game1 game, Texture2D img, Vector2 pos)
-            : base(game, pos)
+        public Tile(Game1 game, Vector2 position)
+            : base(game, position)
         {
-            texture = img;
-            position = pos;
-        }
-
-        public Vector2 GetPosition()
-        {
-            return position;
         }
 
         public override void LoadContent()
         {
-            throw new NotImplementedException();
+            this.texture = game.Content.Load<Texture2D>("Object.StaticObject.Tile.Tile1");
         }
 
         public override void Update(GameTime gameTime)
@@ -32,7 +25,6 @@ namespace Demeter
 
         public override void CollisionResponse(Object obj)
         {
-            throw new NotImplementedException();
         }
     }
 }
