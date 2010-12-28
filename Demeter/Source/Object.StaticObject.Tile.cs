@@ -27,4 +27,25 @@ namespace Demeter
         {
         }
     }
+
+    struct TileSize
+    {
+        public int Height
+        {
+            get { return height; }
+        }
+        int height;
+
+        public int Width
+        {
+            get { return width; }
+        }
+        int width;
+
+        public TileSize(int width, int height)
+        {
+            this.height = height;
+            this.width = width;
+        }
+    }
 }

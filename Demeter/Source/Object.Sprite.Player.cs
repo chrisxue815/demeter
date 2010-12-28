@@ -20,19 +20,15 @@ namespace Demeter
 
         // Constants for controling horizontal movement
         private const float MoveAcceleration = 150.0f;
-        private const float MaxMoveSpeed = 8.0f;
+        private const float MaxMoveSpeed = 5.0f;
         private const float GroundDragFactor = 0.58f;
         private const float AirDragFactor = 0.65f;
 
         // Constants for controlling vertical movement
-        private const int MaxJumpTime = 350;
-        private const float JumpLaunchVelocity = -4.0f;
-        private const float GravityAcceleration = 80.0f;
-        private const float MaxFallSpeed = 16.0f;
-        private const float JumpControlPower = 0.14f;
+        private const float GravityAcceleration = 20.0f;
+        private const float MaxFallSpeed = 8.0f;
+        private const float jumpStartSpeed = -8f;
 
-        // time since player is in the air
-        float elapsed;
 
         /// <summary>
         /// Gets whether or not the player is alive
@@ -50,6 +46,7 @@ namespace Demeter
         public bool IsOnGround
         {
             get { return isOnGround; }
+            set { isOnGround = value; }
         }
 
         /// <summary>
@@ -59,8 +56,6 @@ namespace Demeter
 
         // Jumping state
         private bool isJumping;
-        private bool wasJumping;
-        private int jumpTime;
 
         public Vector2 Speed
         {
@@ -102,7 +97,7 @@ namespace Demeter
             celebrateAnimation = new Animation(Game.Content.Load<Texture2D>("Object.Sprite.Player.Celebrate"),
                 DEFAULT_FRAME_SIZE, 100, false);
 
-            isOnGround = true;
+            this.currentAnimation = idleAnimation;
             isAlive = true;
         }
 
@@ -117,7 +112,7 @@ namespace Demeter
             ApplyPhysics(gameTime);
             //DoJump()
 
-            if (IsAlive && IsOnGround)
+            if (IsAlive && IsOnGround && !isJumping)
             {
                 if (speed.X == 0)
                 {
@@ -128,9 +123,6 @@ namespace Demeter
                     this.currentAnimation = runAnimation;
                 }
             }
-
-            if (Math.Abs(position.Y - 200) < 0.02)
-                isOnGround = true;
 
             // Clear input.
             movement = 0;
@@ -157,8 +149,7 @@ namespace Demeter
             {   // player moves right
                 movement = 1;
             }
-            if (keyboardState.IsKeyDown(Keys.Space) ||
-                keyboardState.IsKeyDown(Keys.Up))
+            if (keyboardState.IsKeyDown(Keys.Space))
             {   // player jump
                 isJumping = true;
             }
@@ -169,15 +160,21 @@ namespace Demeter
         /// </summary>
         public void ApplyPhysics(GameTime gameTime)
         {
-            elapsed = (float)gameTime.ElapsedGameTime.Milliseconds;
+            int elapsed = gameTime.ElapsedGameTime.Milliseconds;
 
             Vector2 previousPosition = this.position;
 
             // Base speed is a combination of horizontal movement control and
             // acceleration downward due to gravity.
             speed.X = movement * MoveAcceleration * elapsed / 1000f;
-            speed.Y = MathHelper.Clamp((speed.Y + GravityAcceleration * elapsed) / 1000f, -MaxFallSpeed, MaxFallSpeed);
-
+            if (!IsOnGround)
+            {
+                speed.Y = MathHelper.Clamp(speed.Y + (GravityAcceleration * elapsed) / 1000f, -MaxFallSpeed, MaxFallSpeed);
+            }
+            else
+            {
+                speed.Y = 0;
+            }
             speed.Y = DoJump(speed.Y, gameTime);
 
             // Apply pseudo-drag horizontally.
@@ -205,38 +202,15 @@ namespace Demeter
         private float DoJump(float velocityY, GameTime gameTime)
         {
             // If the player wants to jump
-            if (isJumping)
+            if (isJumping && IsOnGround)
             {
-                isOnGround = false;
                 // Begin or continue a jump
-                if (!wasJumping || jumpTime > 0)
-                {
-                    //if (jumpTime == 0)
-                        //jumpSound.Play();
 
-                    jumpTime += gameTime.ElapsedGameTime.Milliseconds;
-                    this.currentAnimation = jumpAnimation;
-                }
-
-                // If we are in the ascent of the jump
-                if (0 < jumpTime && jumpTime <= MaxJumpTime)
-                {
-                    // Fully override the vertical speed with a power curve that gives players more control over the top of the jump
-                    velocityY = JumpLaunchVelocity * (1.0f - (float)Math.Pow(jumpTime / MaxJumpTime, JumpControlPower));
-                }
-                else
-                {
-                    // Reached the apex of the jump
-                    jumpTime = 0;
-                    isJumping = false;
-                }
+                //if (jumpTime == 0)
+                    //jumpSound.Play();
+                this.currentAnimation = jumpAnimation;
+                velocityY = jumpStartSpeed;
             }
-            else
-            {
-                // Continues not jumping or cancels a jump in progress
-                jumpTime = 0;
-            }
-            wasJumping = isJumping;
 
             return velocityY;
         }

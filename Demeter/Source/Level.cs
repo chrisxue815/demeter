@@ -31,6 +31,8 @@ namespace Demeter
         int levelWidth;
         int levelHeight;
 
+        TileSize tileSize;
+
         Vector2 offsetFromOrigin;
         public Vector2 OffsetFromOrigin
         {
@@ -44,23 +46,30 @@ namespace Demeter
 
         public void Initialize()
         {
+            levelWidth = 1500;
+            levelHeight = 600;
+
             player = new Player(game, new Vector2(100, 400));
 
             Switch switch1 = new Switch(Game, new Vector2(300, 500));
             Mirror mirror1 = new Mirror(Game, new Vector2(400, 500));
             switch1.Add(mirror1);
 
-            Tile tile1 = new Tile(game, new Vector2(100, 550));
-
             staticObjects = new List<StaticObject>();
             staticObjects.Add(switch1);
             staticObjects.Add(mirror1);
-            staticObjects.Add(tile1);
+
+            tileSize = new TileSize(48,24);
+            Tile[] tiles;
+            tiles = new Tile[levelWidth / tileSize.Width + 1];
+            for (int i = 0; i < levelWidth / tileSize.Width + 1; i++)
+            {
+                tiles[i] = new Tile(game, new Vector2(i * tileSize.Width,
+                    Game.Window.ClientBounds.Height - tileSize.Height));
+                staticObjects.Add(tiles[i]);
+            }
 
             backgroundTexture = Game.Content.Load<Texture2D>("Background.Background6");
-
-            levelWidth = 1500;
-            levelHeight = 600;
 
             offsetFromOrigin = Vector2.Zero;
         }
@@ -99,6 +108,7 @@ namespace Demeter
 
         public void CollisionDetection()
         {
+            player.IsOnGround = false;
             foreach (StaticObject obj in staticObjects)
             {
                 if (player.CollisionRect.Intersects(obj.CollisionRect))
