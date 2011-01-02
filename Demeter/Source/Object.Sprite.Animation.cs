@@ -103,6 +103,8 @@ namespace Demeter
             get { return this.isLooping; }
         }
 
+        bool loopFlag;
+
         /// <summary>
         /// Constructors a new animation.
         /// </summary>        
@@ -113,16 +115,21 @@ namespace Demeter
             this.frameTime = frameTime;
             this.isLooping = isLooping;
             this.frameCount = new Point(FrameWidth / frameSize.X, FrameHeight / frameSize.Y);
+            loopFlag = true;
         }
 
         public void Update()
         {
             // Advance the frame index; looping or clamping as appropriate.
-            if (isLooping)
+            if (isLooping || loopFlag)
             {
                 ++currentFrame.X;
                 if (currentFrame.X >= frameCount.X)
                 {
+                    if (currentFrame.X == frameCount.X && currentFrame.Y == frameCount.Y)
+                    {
+                        loopFlag = false;
+                    }
                     currentFrame.X = 0;
                     ++currentFrame.Y;
                     if (currentFrame.Y >= frameCount.Y)
