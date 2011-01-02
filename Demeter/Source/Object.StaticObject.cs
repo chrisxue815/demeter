@@ -30,10 +30,10 @@ namespace Demeter
         {
             get
             {
-                return new Rectangle((int)(position.X) + collisionOffset,
-                    (int)(position.Y) + collisionOffset,
-                    texture.Width - 2 * collisionOffset,
-                    texture.Height - 2 * collisionOffset);
+                return new Rectangle((int)(position.X) + topCollisionOffset,
+                    (int)(position.Y) + leftCollisionOffset,
+                    texture.Width - leftCollisionOffset - rightCollisionOffset,
+                    texture.Height - topCollisionOffset - bottomCollisionOffset);
             }
         }
 

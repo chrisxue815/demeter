@@ -27,25 +27,25 @@ namespace Demeter
                 position.Y - game.level.OffsetFromOrigin.Y); }
         }
 
-        protected int collisionOffset;
-        protected const int DEFAULT_COLLISION_OFFSET = 10;
+        protected int topCollisionOffset;
+        protected int bottomCollisionOffset;
+        protected int leftCollisionOffset;
+        protected int rightCollisionOffset;
 
         protected float scale;
         protected static readonly float DEFAULT_SCALE = 1.0f;
 
         public abstract Rectangle CollisionRect { get; }
 
-        public Object(Game1 game, Vector2 position,
-            int collisionOffset, float scale)
+        public Object(Game1 game, Vector2 position, float scale)
         {
             this.game = game;
             this.position = position;
-            this.collisionOffset = collisionOffset;
             this.scale = scale;
         }
 
         public Object(Game1 game, Vector2 position)
-            : this(game, position, DEFAULT_COLLISION_OFFSET, DEFAULT_SCALE)
+            : this(game, position, DEFAULT_SCALE)
         {
         }
 

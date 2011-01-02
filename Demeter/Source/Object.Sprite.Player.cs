@@ -79,6 +79,11 @@ namespace Demeter
             : base(game, position)
         {
             this.speed = Vector2.Zero;
+            // initialize collision offset
+            this.topCollisionOffset = 5;
+            this.bottomCollisionOffset = -4;
+            this.leftCollisionOffset = 14;
+            this.rightCollisionOffset = 14;
         }
 
         /// <summary>
@@ -205,9 +210,6 @@ namespace Demeter
             if (isJumping && IsOnGround)
             {
                 // Begin or continue a jump
-
-                //if (jumpTime == 0)
-                    //jumpSound.Play();
                 this.currentAnimation = jumpAnimation;
                 velocityY = jumpStartSpeed;
             }

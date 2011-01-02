@@ -64,6 +64,8 @@ namespace Demeter
             tiles = new Tile[levelWidth / tileSize.Width + 1];
             for (int i = 0; i < levelWidth / tileSize.Width + 1; i++)
             {
+                if (i == 5)
+                    continue;
                 tiles[i] = new Tile(game, new Vector2(i * tileSize.Width,
                     Game.Window.ClientBounds.Height - tileSize.Height));
                 staticObjects.Add(tiles[i]);

@@ -30,10 +30,10 @@ namespace Demeter
         {
             get
             {
-                return new Rectangle((int)(position.X) + collisionOffset,
-                    (int)(position.Y) + collisionOffset,
-                    currentAnimation.FrameSize.X - 2 * collisionOffset,
-                    currentAnimation.FrameSize.Y - 2 * collisionOffset);
+                return new Rectangle((int)(position.X) + leftCollisionOffset,
+                    (int)(position.Y) + topCollisionOffset,
+                    currentAnimation.FrameSize.X - leftCollisionOffset - rightCollisionOffset,
+                    currentAnimation.FrameSize.Y - topCollisionOffset - bottomCollisionOffset);
             }
         }
 
@@ -44,7 +44,7 @@ namespace Demeter
 
         public Sprite(Game1 game, Vector2 position,
             int collisionOffset, float scale)
-            : base(game, position, collisionOffset, scale)
+            : base(game, position, scale)
         {
         }
 
