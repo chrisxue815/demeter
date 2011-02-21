@@ -37,6 +37,7 @@ namespace Demeter
         public bool IsAlive
         {
             get { return isAlive; }
+            set { isAlive = value; }
         }
 
         /// <summary>
@@ -91,15 +92,15 @@ namespace Demeter
         /// </summary>
         public override void LoadContent()
         {
-            idleAnimation = new Animation(Game.Content.Load<Texture2D>("Object.Sprite.Player.Idle"),
+            idleAnimation = new Animation(Game.Content.Load<Texture2D>("texture/Object.Sprite.Player.Idle"),
                 DEFAULT_FRAME_SIZE, 100, true);
-            runAnimation = new Animation(Game.Content.Load<Texture2D>("Object.Sprite.Player.Run"),
+            runAnimation = new Animation(Game.Content.Load<Texture2D>("texture/Object.Sprite.Player.Run"),
                 DEFAULT_FRAME_SIZE, 100, true);
-            jumpAnimation = new Animation(Game.Content.Load<Texture2D>("Object.Sprite.Player.Jump"),
+            jumpAnimation = new Animation(Game.Content.Load<Texture2D>("texture/Object.Sprite.Player.Jump"),
                 DEFAULT_FRAME_SIZE, 100, false);
-            dieAnimation = new Animation(Game.Content.Load<Texture2D>("Object.Sprite.Player.Die"),
+            dieAnimation = new Animation(Game.Content.Load<Texture2D>("texture/Object.Sprite.Player.Die"),
                 DEFAULT_FRAME_SIZE, 100, false);
-            celebrateAnimation = new Animation(Game.Content.Load<Texture2D>("Object.Sprite.Player.Celebrate"),
+            celebrateAnimation = new Animation(Game.Content.Load<Texture2D>("texture/Object.Sprite.Player.Celebrate"),
                 DEFAULT_FRAME_SIZE, 100, false);
 
             this.currentAnimation = idleAnimation;
@@ -167,8 +168,6 @@ namespace Demeter
         {
             int elapsed = gameTime.ElapsedGameTime.Milliseconds;
 
-            Vector2 previousPosition = this.position;
-
             // Base speed is a combination of horizontal movement control and
             // acceleration downward due to gravity.
             speed.X = movement * MoveAcceleration * elapsed / 1000f;
@@ -191,17 +190,18 @@ namespace Demeter
             // Prevent the player from running faster than his top speed.            
             speed.X = MathHelper.Clamp(speed.X, -MaxMoveSpeed, MaxMoveSpeed);
 
-            // Apply speed.
-            position += speed;
-
             // If the player is now colliding with the level, separate them.
             //HandleCollisions();
 
-            // If the collision stopped us from moving, reset the speed to zero.
-            if (position.X == previousPosition.X)
+            if ((speed.X < 0 && position.X < 3) || 
+                (speed.X > 0 && position.X > game.level.Width - 50))
                 speed.X = 0;
-            if (position.Y == previousPosition.Y)
+            if ((speed.Y < 0 && position.Y < 3) ||
+                (speed.Y > 0 && position.Y > game.level.Height - 50))
                 speed.Y = 0;
+
+            // Apply speed.
+            position += speed;
         }
 
         private float DoJump(float velocityY, GameTime gameTime)

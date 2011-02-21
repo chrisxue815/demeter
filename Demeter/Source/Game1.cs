@@ -59,7 +59,7 @@ namespace Demeter
 
             Content.RootDirectory = "Content";
 
-            level = new Level(this);
+            level = Level.Load(this, "level1-1.xml");
         }
 
         /// <summary>
@@ -113,9 +113,15 @@ namespace Demeter
 
             // TODO: Add your update logic here
             level.Update(gameTime);
+            if (one == false)
+            {
+                level.Save("123");
+                one = true;
+            }
 
             base.Update(gameTime);
         }
+        bool one;
 
         /// <summary>
         /// This is called when the game should draw itself.

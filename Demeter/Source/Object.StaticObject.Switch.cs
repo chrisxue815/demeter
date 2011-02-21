@@ -47,8 +47,8 @@ namespace Demeter
 
         public override void LoadContent()
         {
-            this.switchOn = Game.Content.Load<Texture2D>("Object.StaticObject.Switch.SwitchOn");
-            this.switchOff = Game.Content.Load<Texture2D>("Object.StaticObject.Switch.SwitchOff");
+            this.switchOn = Game.Content.Load<Texture2D>("texture/Object.StaticObject.Switch.SwitchOn");
+            this.switchOff = Game.Content.Load<Texture2D>("texture/Object.StaticObject.Switch.SwitchOff");
             this.texture = this.switchOff;
         }
 

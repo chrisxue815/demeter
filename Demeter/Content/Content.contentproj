@@ -38,110 +38,118 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Object.Sprite.Player.Run.png">
+    <Compile Include="texture\Object.Sprite.Player.Run.png">
       <Name>Object.Sprite.Player.Run</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Object.Sprite.Player.Celebrate.png">
+    <Compile Include="texture\Object.Sprite.Player.Celebrate.png">
       <Name>Object.Sprite.Player.Celebrate</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Object.Sprite.Player.Die.png">
+    <Compile Include="texture\Object.Sprite.Player.Die.png">
       <Name>Object.Sprite.Player.Die</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Object.Sprite.Player.Idle.png">
+    <Compile Include="texture\Object.Sprite.Player.Idle.png">
       <Name>Object.Sprite.Player.Idle</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Object.Sprite.Player.Jump.png">
+    <Compile Include="texture\Object.Sprite.Player.Jump.png">
       <Name>Object.Sprite.Player.Jump</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Object.StaticObject.Door.Door1.png">
+    <Compile Include="texture\Object.StaticObject.Door.Door1.png">
       <Name>Object.StaticObject.Door.Door1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Object.StaticObject.Ladder.Ladder1.png">
+    <Compile Include="texture\Object.StaticObject.Ladder.Ladder1.png">
       <Name>Object.StaticObject.Ladder.Ladder1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Object.StaticObject.Switch.SwitchOff.png">
+    <Compile Include="texture\Object.StaticObject.Switch.SwitchOff.png">
       <Name>Object.StaticObject.Switch.SwitchOff</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Object.StaticObject.Switch.SwitchOn.png">
+    <Compile Include="texture\Object.StaticObject.Switch.SwitchOn.png">
       <Name>Object.StaticObject.Switch.SwitchOn</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Object.StaticObject.Tip.Tip1.jpg">
+    <Compile Include="texture\Object.StaticObject.Tip.Tip1.jpg">
       <Name>Object.StaticObject.Tip.Tip1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Object.StaticObject.Mirror.Mirror1.png">
+    <Compile Include="texture\Object.StaticObject.Mirror.Mirror1.png">
       <Name>Object.StaticObject.Mirror.Mirror1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Background.Background1.png">
+    <Compile Include="texture\Background.Background1.png">
       <Name>Background.Background1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Background.Background2.png">
+    <Compile Include="texture\Background.Background2.png">
       <Name>Background.Background2</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Background.Background3.png">
+    <Compile Include="texture\Background.Background3.png">
       <Name>Background.Background3</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Background.Background4.png">
+    <Compile Include="texture\Background.Background4.png">
       <Name>Background.Background4</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Background.Background5.png">
+    <Compile Include="texture\Background.Background5.png">
       <Name>Background.Background5</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Background.Background6.png">
+    <Compile Include="texture\Background.Background6.png">
       <Name>Background.Background6</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Object.StaticObject.Tile.Tile1.png">
-      <Name>Object.StaticObject.Tile.Tile1</Name>
+    <Compile Include="texture\Object.Tile.Tile1.png">
+      <Name>Object.Tile.Tile1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="level\level1-1.xml">
+      <Name>level1-1</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
