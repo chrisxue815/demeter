@@ -16,6 +16,16 @@ namespace Demeter
             set { this.texture = value; }
         }
 
+        public override int CollisionWidth
+        {
+            get { return texture.Width - LeftCollisionOffset - RightCollisionOffset; }
+        }
+
+        public override int CollisionHeight
+        {
+            get { return texture.Height - TopCollisionOffset - BottomCollisionOffset; }
+        }
+        
         public int HalfWidth
         {
             get { return texture.Width / 2; }
@@ -30,10 +40,9 @@ namespace Demeter
         {
             get
             {
-                return new Rectangle((int)(position.X) + topCollisionOffset,
-                    (int)(position.Y) + leftCollisionOffset,
-                    texture.Width - leftCollisionOffset - rightCollisionOffset,
-                    texture.Height - topCollisionOffset - bottomCollisionOffset);
+                return new Rectangle((int)(position.X) + TopCollisionOffset,
+                    (int)(position.Y) + LeftCollisionOffset,
+                    CollisionWidth, CollisionHeight);
             }
         }
 
@@ -44,7 +53,7 @@ namespace Demeter
 
         public override void Draw(GameTime gameTime)
         {
-            game.spriteBatch.Draw(this.texture, ScreenPosition, Color.White);
+            Game.SpriteBatch.Draw(this.texture, ScreenPosition, Color.White);
         }
     }
 }

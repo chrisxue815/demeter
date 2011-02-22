@@ -26,14 +26,22 @@ namespace Demeter
         /// <summary>
         /// Gets the collision rectangle.
         /// </summary>
+
+        public override int CollisionWidth
+        {
+            get { return currentAnimation.FrameSize.X - LeftCollisionOffset - RightCollisionOffset; }
+        }
+
+        public override int CollisionHeight
+        {
+            get { return currentAnimation.FrameSize.Y - TopCollisionOffset - BottomCollisionOffset; }
+        }
         public override Rectangle CollisionRect
         {
             get
             {
-                return new Rectangle((int)(position.X) + leftCollisionOffset,
-                    (int)(position.Y) + topCollisionOffset,
-                    currentAnimation.FrameSize.X - leftCollisionOffset - rightCollisionOffset,
-                    currentAnimation.FrameSize.Y - topCollisionOffset - bottomCollisionOffset);
+                return new Rectangle((int)(position.X) + LeftCollisionOffset,
+                    (int)(position.Y) + TopCollisionOffset, CollisionWidth, CollisionHeight);
             }
         }
 

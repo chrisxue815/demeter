@@ -34,7 +34,7 @@ namespace Demeter
 
         public override void LoadContent()
         {
-            this.texture = game.Content.Load<Texture2D>("Object.StaticObject.Door.Door1");
+            this.texture = Game.Content.Load<Texture2D>("Object.StaticObject.Door.Door1");
         }
 
         public override void Update(GameTime gameTime)

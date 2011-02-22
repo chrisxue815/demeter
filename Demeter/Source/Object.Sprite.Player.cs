@@ -28,12 +28,32 @@ namespace Demeter
         private const float GravityAcceleration = 20.0f;
         private const float MaxFallSpeed = 8.0f;
         private const float jumpStartSpeed = -8f;
+        private const float speedOnLadder = 2f;
 
-        // variables for ladder movements
-        private bool ladderUsed;
-        private bool onLadderTop;
-        private bool onLadderBottom;
-        private Vector2 verticalMoveSpeed;
+        public override int TopCollisionOffset
+        {
+            get { return 5; }
+        }
+        public override int BottomCollisionOffset
+        {
+            get { return -5; }
+        }
+        public override int LeftCollisionOffset
+        {
+            get { return 14; }
+        }
+        public override int RightCollisionOffset
+        {
+            get { return 14; }
+        }
+
+        public Vector2 Speed
+        {
+            get { return speed; }
+            set { speed = value; }
+        }
+        Vector2 speed;
+
         /// <summary>
         /// Gets whether or not the player is alive
         /// </summary>
@@ -44,30 +64,58 @@ namespace Demeter
             set { isAlive = value; }
         }
 
-        /// <summary>
-        /// Gets whether or not the player's feet are on the ground.
-        /// </summary>
-        bool isOnGround;
-        public bool IsOnGround
+        private bool isJumping;
+
+        #region movement
+        bool canGoUp;
+        public bool CanGoUp
         {
-            get { return isOnGround; }
-            set { isOnGround = value; }
+            get { return canGoUp; }
+            set { canGoUp = value; }
         }
+        bool canGoDown;
+        public bool CanGoDown
+        {
+            get { return canGoDown; }
+            set { canGoDown = value; }
+        }
+        bool canGoLeft;
+        public bool CanGoLeft
+        {
+            get { return canGoLeft; }
+            set { canGoLeft = value; }
+        }
+        bool canGoRight;
+        public bool CanGoRight
+        {
+            get { return canGoRight; }
+            set { canGoRight = value; }
+        }
+        bool isInTile;
+        public bool IsInTile
+        {
+            get { return isInTile; }
+            set { isInTile = value; }
+        }
+        private bool isOnLadder;
+        public bool IsOnLadder
+        {
+            get { return isOnLadder; }
+            set { isOnLadder = value; }
+        }
+        #endregion
 
         /// <summary>
         /// Current user movement input.
         /// </summary>
-        private int movement;
-
-        // Jumping state
-        private bool isJumping;
-
-        public Vector2 Speed
+        private int horizontalMovement;
+        private int verticalMovement;
+        private bool isLadderUsed;
+        private Ladder ladderUsed;
+        internal Ladder LadderUsed
         {
-            get { return speed; }
-            set { speed = value; }
+            set { ladderUsed = value; }
         }
-        Vector2 speed;
 
         /// <summary>
         /// Gets the sprite effects.
@@ -85,12 +133,11 @@ namespace Demeter
         {
             this.speed = Vector2.Zero;
             // initialize collision offset
-            this.topCollisionOffset = 5;
-            this.bottomCollisionOffset = -4;
-            this.leftCollisionOffset = 14;
-            this.rightCollisionOffset = 14;
 
-            verticalMoveSpeed = new Vector2(0f, 1.5f);
+            this.canGoUp = true;
+            this.canGoDown = true;
+            this.canGoLeft = true;
+            this.canGoRight = true;
         }
 
         /// <summary>
@@ -122,22 +169,33 @@ namespace Demeter
             GetInput();
 
             ApplyPhysics(gameTime);
-            //DoJump()
 
-            if (IsAlive && IsOnGround && !isJumping)
+            if (!isAlive)
             {
-                if (speed.X == 0)
-                {
-                    this.currentAnimation = idleAnimation;
-                }
-                else
-                {
-                    this.currentAnimation = runAnimation;
-                }
+                this.currentAnimation = dieAnimation;
+            }
+            else if (speed.Y != 0 && !isLadderUsed)
+            {
+                this.currentAnimation = jumpAnimation;
+            }
+            else if (horizontalMovement != 0)
+            {
+                this.currentAnimation = runAnimation;
+            }
+            else
+            {
+                this.currentAnimation = idleAnimation;
             }
 
             // Clear input.
-            movement = 0;
+            horizontalMovement = 0;
+            verticalMovement = 0;
+            canGoUp = true;
+            canGoDown = true;
+            canGoLeft = true;
+            canGoRight = true;
+            isOnLadder = false;
+            isInTile = false;
             isJumping = false;
 
             base.Update(gameTime);
@@ -150,20 +208,47 @@ namespace Demeter
         /// </summary>
         public void GetInput()
         {
+            bool tryJumping = false;
+
             // Get input state.
             KeyboardState keyboardState = Keyboard.GetState();
 
             if (keyboardState.IsKeyDown(Keys.Left))
             {   // player moves left
-                movement = -1;
+                horizontalMovement = -1;
             }
             if (keyboardState.IsKeyDown(Keys.Right))
             {   // player moves right
-                movement = 1;
+                horizontalMovement = 1;
+            }
+            if (keyboardState.IsKeyDown(Keys.Up))
+            {   //player moves up
+                verticalMovement = -1;
+            }
+            if (keyboardState.IsKeyDown(Keys.Down))
+            {   //player moves down
+                verticalMovement = 1;
             }
             if (keyboardState.IsKeyDown(Keys.Space))
             {   // player jump
+                tryJumping = true;
+            }
+
+            if (!canGoLeft || !canGoRight)
+            {
+                horizontalMovement = 0;
+            }
+            if (verticalMovement == -1 && isOnLadder)
+            {
+                isLadderUsed = true;
+            }
+            if (tryJumping && !canGoDown && canGoUp)
+            {
                 isJumping = true;
+            }
+            if (!isOnLadder || tryJumping || horizontalMovement != 0)
+            {
+                isLadderUsed = false;
             }
         }
 
@@ -176,51 +261,60 @@ namespace Demeter
 
             // Base speed is a combination of horizontal movement control and
             // acceleration downward due to gravity.
-            speed.X = movement * MoveAcceleration * elapsed / 1000f;
-            if (!IsOnGround)
-            {
-                speed.Y = MathHelper.Clamp(speed.Y + (GravityAcceleration * elapsed) / 1000f, -MaxFallSpeed, MaxFallSpeed);
-            }
-            else
-            {
-                speed.Y = 0;
-            }
-            speed.Y = DoJump(speed.Y, gameTime);
+
+            speed.X = horizontalMovement * MoveAcceleration * elapsed / 1000f;
 
             // Apply pseudo-drag horizontally.
-            if (IsOnGround)
+            if (!CanGoDown)
                 speed.X *= GroundDragFactor;
             else
                 speed.X *= AirDragFactor;
 
-            // Prevent the player from running faster than his top speed.            
+            // Prevent the player from running faster than his top speed.
             speed.X = MathHelper.Clamp(speed.X, -MaxMoveSpeed, MaxMoveSpeed);
 
-            // If the player is now colliding with the level, separate them.
-            //HandleCollisions();
+            if (isLadderUsed)
+            {
+                if (!(IsInTile && verticalMovement == 1))
+                {
+                    speed.Y = verticalMovement * speedOnLadder;
+                }
+                else
+                {
+                    speed.Y = 0;
+                }
+                if (verticalMovement == -1 && position.Y + CollisionHeight < ladderUsed.Y)
+                {
+                    speed.Y = 0;
+                }
+            }
+            else
+            {
+                if (CanGoDown)
+                {
+                    speed.Y = MathHelper.Clamp(speed.Y + (GravityAcceleration * elapsed) / 1000f, -MaxFallSpeed, MaxFallSpeed);
+                }
+                else
+                {
+                    speed.Y = 0;
+                }
+            }
 
+            if (isJumping)
+            {
+                speed.Y = jumpStartSpeed;
+            }
+
+            // Out of Border
             if ((speed.X < 0 && position.X < 3) || 
-                (speed.X > 0 && position.X > game.level.Width - 50))
+                (speed.X > 0 && position.X > Level.Width - 50))
                 speed.X = 0;
             if ((speed.Y < 0 && position.Y < 3) ||
-                (speed.Y > 0 && position.Y > game.level.Height - 50))
+                (speed.Y > 0 && position.Y > Level.Height - 50))
                 speed.Y = 0;
 
             // Apply speed.
             position += speed;
-        }
-
-        private float DoJump(float velocityY, GameTime gameTime)
-        {
-            // If the player wants to jump
-            if (isJumping && IsOnGround)
-            {
-                // Begin or continue a jump
-                this.currentAnimation = jumpAnimation;
-                velocityY = jumpStartSpeed;
-            }
-
-            return velocityY;
         }
 
         public override void Draw(GameTime gameTime)
@@ -235,69 +329,13 @@ namespace Demeter
                 spriteEffects = SpriteEffects.None;
 
             // Draw the current frame.
-            Game.spriteBatch.Draw(currentAnimation.Texture, ScreenPosition,
+            Game.SpriteBatch.Draw(currentAnimation.Texture, ScreenPosition,
                 currentAnimation.CurrentSourceRectangle, Color.White,
                 0.0f, currentAnimation.Origin, 1.0f, spriteEffects, 0.0f);
         }
 
         public override void CollisionResponse(Object obj)
         {
-            if (obj is Tile)
-            {
-                if (position.Y < obj.Position.Y)
-                {
-                    isOnGround = true;
-                    onLadderBottom = true;
-                }
-            }
-
-            if (obj is Ladder)
-            {
-                 if (Math.Abs(position.Y - idleAnimation.Texture.Height + topCollisionOffset - obj.Position.Y) 
-                     < verticalMoveSpeed.Y)
-                {
-                    onLadderTop = true;
-                }
-                KeyboardState keyboardState = Keyboard.GetState();
-
-                if (keyboardState.IsKeyDown(Keys.Up))
-                {
-                    ladderUsed = true;
-                    if (!onLadderTop)
-                    {
-                        GoUpstair();
-                    }
-                }
-                else if (keyboardState.IsKeyDown(Keys.Down))
-                {
-                    ladderUsed = true;
-                    if (!onLadderBottom)
-                    {
-                        GoDownstair();
-                    }
-                }
-
-                if (ladderUsed)
-                {
-                    isOnGround = true;
-                }
-            }
-            else
-            {
-                ladderUsed = false;
-                onLadderBottom = false;
-                onLadderTop = false;
-            }
-        }
-
-        private void GoUpstair()
-        {
-            position -= verticalMoveSpeed;
-        }
-
-        private void GoDownstair()
-        {
-            position += verticalMoveSpeed;
         }
     }
 }

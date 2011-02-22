@@ -74,11 +74,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="texture\Object.StaticObject.Ladder.Ladder1.png">
-      <Name>Object.StaticObject.Ladder.Ladder1</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
     <Compile Include="texture\Object.StaticObject.Switch.SwitchOff.png">
       <Name>Object.StaticObject.Switch.SwitchOff</Name>
       <Importer>TextureImporter</Importer>
@@ -144,8 +139,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Object.StaticObject.Ladder.png">
-      <Name>Object.StaticObject.Ladder</Name>
+    <Compile Include="texture\Object.StaticObject.Ladder.Ladder1.png">
+      <Name>Object.StaticObject.Ladder.Ladder1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="level\level1-1.xml">

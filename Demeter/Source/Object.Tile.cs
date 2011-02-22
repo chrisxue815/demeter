@@ -7,20 +7,27 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Demeter
 {
-    public class Tile : Object
+    public abstract class Tile : Object
     {
         Texture2D texture;
         TileFrame tileFrame;
         int width;
 
+        public override int CollisionWidth
+        {
+            get { return tileFrame.Width * texture.Width; }
+        }
+
+        public override int CollisionHeight
+        {
+            get { return tileFrame.Height * texture.Height; }
+        }
         public override Rectangle CollisionRect
         {
             get
             {
                 return new Rectangle((int)(position.X),
-                    (int)(position.Y),
-                    tileFrame.Width * texture.Width,
-                    tileFrame.Height * texture.Height);
+                    (int)(position.Y), CollisionWidth, CollisionHeight);
             }
         }
 
@@ -38,7 +45,7 @@ namespace Demeter
 
         public override void LoadContent()
         {
-            this.texture = game.Content.Load<Texture2D>("texture/Object.Tile.Tile1");
+            this.texture = Game.Content.Load<Texture2D>("texture/Object.Tile.Tile1");
             if (tileFrame == null)
             {
                 tileFrame = new TileFrame((int)width / texture.Width + 1, 1);
@@ -56,13 +63,9 @@ namespace Demeter
                 for (int j = 0; j < tileFrame.Height; j++)
                 {
                     Vector2 pos = new Vector2(position.X + texture.Width * i, position.Y + texture.Height * j);
-                    game.spriteBatch.Draw(this.texture, game.level.ScreenPosition(pos), Color.White);
+                    Game.SpriteBatch.Draw(this.texture, Level.ScreenPosition(pos), Color.White);
                 }
             }
-        }
-
-        public override void CollisionResponse(Object obj)
-        {
         }
     }
 
