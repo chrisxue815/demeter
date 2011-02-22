@@ -28,7 +28,7 @@ namespace Demeter
 
         public override void LoadContent()
         {
-            this.texture = Game.Content.Load<Texture2D>("Object.StaticObject.Mirror.Mirror1");
+            this.texture = Game.Content.Load<Texture2D>("texture/Object.StaticObject.Mirror.Mirror1");
         }
 
         public override void Update(GameTime gameTime)
