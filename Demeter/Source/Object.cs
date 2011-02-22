@@ -23,8 +23,8 @@ namespace Demeter
 
         public Vector2 ScreenPosition
         {
-            get { return new Vector2(position.X - game.level.OffsetFromOrigin.X,
-                position.Y - game.level.OffsetFromOrigin.Y); }
+            get { return new Vector2(position.X - game.level.CameraOffset.X,
+                position.Y - game.level.CameraOffset.Y); }
         }
 
         protected int topCollisionOffset;
@@ -37,16 +37,25 @@ namespace Demeter
 
         public abstract Rectangle CollisionRect { get; }
 
+        public Object(Game1 game)
+        {
+            this.game = game;
+            this.position = new Vector2();
+            this.scale = DEFAULT_SCALE;
+        }
+
+        public Object(Game1 game, Vector2 position)
+        {
+            this.game = game;
+            this.position = position;
+            this.scale = DEFAULT_SCALE;
+        }
+
         public Object(Game1 game, Vector2 position, float scale)
         {
             this.game = game;
             this.position = position;
             this.scale = scale;
-        }
-
-        public Object(Game1 game, Vector2 position)
-            : this(game, position, DEFAULT_SCALE)
-        {
         }
 
         public abstract void LoadContent();
