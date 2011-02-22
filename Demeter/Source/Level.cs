@@ -75,7 +75,7 @@ namespace Demeter
 
         public void LoadContent()
         {
-            backgroundTexture = game.Content.Load<Texture2D>(backgroundTextureAssetName);
+            backgroundTexture = Game.Content.Load<Texture2D>(backgroundTextureAssetName);
             player.LoadContent();
             foreach (Object obj in Objects)
             {
@@ -109,14 +109,14 @@ namespace Demeter
 
         public void Draw(GameTime gameTime)
         {
-            game.spriteBatch.Begin();
-            Game.spriteBatch.Draw(backgroundTexture, Vector2.Zero, Color.White);
+            Game.SpriteBatch.Begin();
+            Game.SpriteBatch.Draw(backgroundTexture, Vector2.Zero, Color.White);
             foreach (Object obj in Objects)
             {
                 obj.Draw(gameTime);
             }
             player.Draw(gameTime);
-            game.spriteBatch.End();
+            Game.SpriteBatch.End();
         }
 
         #region xml
@@ -145,7 +145,7 @@ namespace Demeter
                             string groundPositionY = reader.GetAttribute("py");
                             level.groundPositionY = int.Parse(groundPositionY);
                             level.Objects.Add(
-                                new Tile(game, new Vector2(0, level.groundPositionY), level.width));
+                                new Block(game, new Vector2(0, level.groundPositionY), level.width));
                         }
                         else if (reader.Name == "background")
                         {
@@ -189,6 +189,15 @@ namespace Demeter
                                 }
                             }
                             level.Objects.Add(switch1);
+                        }
+                        else if (reader.Name == "ladder")
+                        {
+                            string pxStr = reader.GetAttribute("px");
+                            string pyStr = reader.GetAttribute("py");
+                            float px = float.Parse(pxStr);
+                            float py = float.Parse(pyStr);
+                            Ladder ladder = new Ladder(game, new Vector2(px, py));
+                            level.Objects.Add(ladder);
                         }
                         else if (reader.Name == "tile")
                         {
@@ -240,8 +249,6 @@ namespace Demeter
 
         public void CollisionDetection()
         {
-            player.IsOnGround = false;
-
             Rectangle rect = player.CollisionRect;
             Point topLeft = new Point(rect.Left, rect.Top);
             Point bottomRight = new Point(rect.Right, rect.Bottom);

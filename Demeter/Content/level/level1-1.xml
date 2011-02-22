@@ -8,4 +8,5 @@
   <switch name="switch1" px="300" py="500">
     <mirror name="mirror1" px="400" py="500"></mirror>
   </switch>
+  <ladder name="ladder1" px="500" py="450"></ladder>
 </level>

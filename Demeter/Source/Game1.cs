@@ -18,10 +18,23 @@ namespace Demeter
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
-        internal GraphicsDeviceManager graphics;
-        internal SpriteBatch spriteBatch;
+        private GraphicsDeviceManager graphics;
+        public GraphicsDeviceManager Graphics
+        {
+            get { return graphics; }
+        }
 
-        internal Level level;
+        private SpriteBatch spriteBatch;
+        public SpriteBatch SpriteBatch
+        {
+            get { return spriteBatch; }
+        }
+
+        private Level level;
+        public Level Level
+        {
+            get { return level; }
+        }
 
         int width;
         public int Width
