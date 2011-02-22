@@ -94,6 +94,7 @@
     <Compile Include="Source\Object.Sprite.Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Source\Object.StaticObject.Hint.cs" />
+    <Compile Include="Source\Object.StaticObject.Ladder.cs" />
     <Compile Include="Source\Object.StaticObject.Mirror.cs" />
     <Compile Include="Source\Object.StaticObject.Switch.cs" />
     <Compile Include="Source\Object.StaticObject.Tile.cs" />

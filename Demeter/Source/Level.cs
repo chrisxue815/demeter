@@ -55,11 +55,16 @@ namespace Demeter
             Mirror mirror1 = new Mirror(Game, new Vector2(400, 500));
             switch1.Add(mirror1);
 
+            tileSize = new TileSize(48,24);
+
+            Ladder ladder = new Ladder(Game, new Vector2(600,Game.Window.ClientBounds.Height - tileSize.Height
+                - 89));
+
             staticObjects = new List<StaticObject>();
             staticObjects.Add(switch1);
             staticObjects.Add(mirror1);
-
-            tileSize = new TileSize(48,24);
+            staticObjects .Add(ladder);
+ 
             Tile[] tiles;
             tiles = new Tile[levelWidth / tileSize.Width + 1];
             for (int i = 0; i < levelWidth / tileSize.Width + 1; i++)

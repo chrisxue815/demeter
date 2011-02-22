@@ -29,7 +29,11 @@ namespace Demeter
         private const float MaxFallSpeed = 8.0f;
         private const float jumpStartSpeed = -8f;
 
-
+        // variables for ladder movements
+        private bool ladderUsed;
+        private bool onLadderTop;
+        private bool onLadderBottom;
+        private Vector2 verticalMoveSpeed;
         /// <summary>
         /// Gets whether or not the player is alive
         /// </summary>
@@ -84,6 +88,8 @@ namespace Demeter
             this.bottomCollisionOffset = -4;
             this.leftCollisionOffset = 14;
             this.rightCollisionOffset = 14;
+
+            verticalMoveSpeed = new Vector2(0f, 1.5f);
         }
 
         /// <summary>
@@ -241,8 +247,57 @@ namespace Demeter
                 if (position.Y < obj.Position.Y)
                 {
                     isOnGround = true;
+                    onLadderBottom = true;
                 }
             }
+
+            if (obj is Ladder)
+            {
+                 if (Math.Abs(position.Y - idleAnimation.Texture.Height + topCollisionOffset - obj.Position.Y) 
+                     < verticalMoveSpeed.Y)
+                {
+                    onLadderTop = true;
+                }
+                KeyboardState keyboardState = Keyboard.GetState();
+
+                if (keyboardState.IsKeyDown(Keys.Up))
+                {
+                    ladderUsed = true;
+                    if (!onLadderTop)
+                    {
+                        GoUpstair();
+                    }
+                }
+                else if (keyboardState.IsKeyDown(Keys.Down))
+                {
+                    ladderUsed = true;
+                    if (!onLadderBottom)
+                    {
+                        GoDownstair();
+                    }
+                }
+
+                if (ladderUsed)
+                {
+                    isOnGround = true;
+                }
+            }
+            else
+            {
+                ladderUsed = false;
+                onLadderBottom = false;
+                onLadderTop = false;
+            }
+        }
+
+        private void GoUpstair()
+        {
+            position -= verticalMoveSpeed;
+        }
+
+        private void GoDownstair()
+        {
+            position += verticalMoveSpeed;
         }
     }
 }

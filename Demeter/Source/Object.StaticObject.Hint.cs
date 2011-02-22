@@ -13,7 +13,6 @@ namespace Demeter
             : base(game, pos)
         {
             texture = img;
-            position = pos;
         }
 
         public Vector2 GetPosition()
@@ -23,7 +22,7 @@ namespace Demeter
 
         public override void LoadContent()
         {
-            throw new NotImplementedException();
+            
         }
 
         public override void Update(GameTime gameTime)
@@ -32,7 +31,6 @@ namespace Demeter
 
         public override void CollisionResponse(Object obj)
         {
-            throw new NotImplementedException();
         }
     }
 }
