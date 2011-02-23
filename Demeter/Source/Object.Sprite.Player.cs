@@ -66,6 +66,20 @@ namespace Demeter
 
         private bool isJumping;
 
+        private bool isLeaving;
+        public bool IsLeaving
+        {
+            get { return isLeaving; }
+            set { isLeaving = value; }
+        }
+
+        string comingLevel;
+        public string ComingLevel
+        {
+            get { return comingLevel; }
+            set { comingLevel = value; }
+        }
+
         #region movement
         bool canGoUp = true;
         public bool CanGoUp
@@ -96,6 +110,13 @@ namespace Demeter
         {
             get { return collidedWithLadder; }
             set { collidedWithLadder = value; }
+        }
+
+        private bool collidedWithDoor;
+        public bool CollidedWithDoor
+        {
+            get { return collidedWithDoor; }
+            set { collidedWithDoor = value; }
         }
         #endregion
 
@@ -195,7 +216,7 @@ namespace Demeter
         public void GetInput()
         {
             bool tryJumping = false;
-
+            bool tryLeaving = false;
             // Get input state.
             KeyboardState keyboardState = Keyboard.GetState();
 
@@ -210,6 +231,7 @@ namespace Demeter
             if (keyboardState.IsKeyDown(Keys.Up))
             {   //player moves up
                 verticalMovement = -1;
+                tryLeaving = true;
             }
             if (keyboardState.IsKeyDown(Keys.Down))
             {   //player moves down
@@ -235,6 +257,10 @@ namespace Demeter
             if (!collidedWithLadder || tryJumping || horizontalMovement != 0)
             {
                 isLadderUsed = false;
+            }
+            if (collidedWithDoor && tryLeaving)
+            {
+                isLeaving = true;
             }
         }
 

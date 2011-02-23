@@ -10,4 +10,5 @@
     <mirror name="mirror1" px="400" py="500"></mirror>
   </switch>
   <ladder name="ladder1" px="500" py="450"></ladder>
+  <door name="door1" px="700" py="550" levelFileName="level1-2.xml"></door>
 </level>

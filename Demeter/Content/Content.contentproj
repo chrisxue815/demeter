@@ -154,11 +154,21 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="level\level1-2.xml">
+      <Name>level1-2</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="texture\Object.StaticObject.Light.Light1.png">
       <Name>Object.StaticObject.Light.Light1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="texture\Object.StaticObject.Mirror.Mirror2.png">
       <Name>Object.StaticObject.Mirror.Mirror2</Name>
       <Importer>TextureImporter</Importer>
