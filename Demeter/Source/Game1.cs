@@ -71,8 +71,6 @@ namespace Demeter
                 graphics.ToggleFullScreen();*/
 
             Content.RootDirectory = "Content";
-
-            level = Level.Load(this, "level1-1.xml");
         }
 
         /// <summary>
@@ -84,9 +82,10 @@ namespace Demeter
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            level.Initialize();
 
             base.Initialize();
+
+            level = Level.Load(this, "level1-1.xml");
         }
 
         /// <summary>
@@ -97,9 +96,6 @@ namespace Demeter
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            // TODO: use this.Content to load your game content here
-            level.LoadContent();
         }
 
         /// <summary>
@@ -126,15 +122,14 @@ namespace Demeter
 
             // TODO: Add your update logic here
             level.Update(gameTime);
-            if (one == false)
+
+            if (level.Player.IsLeaving)
             {
-                level.Save("123");
-                one = true;
+                level = Level.Load(this, Level.Player.ComingLevel);
             }
 
             base.Update(gameTime);
         }
-        bool one;
 
         /// <summary>
         /// This is called when the game should draw itself.

@@ -208,8 +208,23 @@ namespace Demeter
                             //Tile tile = new Tile(game, new Vector2(px, py));
                             //level.staticObjects.Add(tile);
                         }
+                        else if (reader.Name == "door")
+                        {
+                            string pxStr = reader.GetAttribute("px");
+                            string pyStr = reader.GetAttribute("py");
+                            string levelFileNameStr = reader.GetAttribute("levelFileName");
+                            float px = float.Parse(pxStr);
+                            float py = float.Parse(pyStr);
+                            Door door = new Door(game, new Vector2(px, py), levelFileNameStr);
+                            level.Objects.Add(door);
+                        }
                     }
                 }
+
+                level.Initialize();
+
+                level.LoadContent();
+
                 return level;
             }
             catch (Exception ex)
