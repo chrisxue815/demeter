@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Content;
 
 namespace Demeter
 {
@@ -20,6 +21,13 @@ namespace Demeter
         }
         float rotation = 0;
 
+        public bool Lighted
+        {
+            get { return lighted; }
+            set { lighted = value; }
+        }
+        bool lighted = false;
+
         private const float RotationSpeed = 0.03f;
 
         public Mirror(Game1 game, Vector2 pos)
@@ -30,7 +38,7 @@ namespace Demeter
 
         public override void LoadContent()
         {
-            this.texture = Game.Content.Load<Texture2D>("texture/Object.StaticObject.Mirror.Mirror2");
+            texture = Game.Content.Load<Texture2D>("texture/Object.StaticObject.Mirror.Mirror2");
         }
 
         public override void Update(GameTime gameTime)
@@ -43,7 +51,7 @@ namespace Demeter
                 new Vector2((int)ScreenPosition.X + HalfWidth, (int)ScreenPosition.Y + HalfHeight),
                 null, Color.White, rotation,
                 new Vector2(HalfWidth, HalfHeight),
-                scale, SpriteEffects.None, 0);
+                scale, SpriteEffects.None, layerDepth);
         }
 
         public override void CollisionResponse(Object obj)

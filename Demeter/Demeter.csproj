@@ -86,6 +86,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Source\Helper\LineSegment.cs" />
     <Compile Include="Source\Object.Sprite.Animation.cs" />
     <Compile Include="Source\Object.StaticObject.IControlledObject.cs" />
     <Compile Include="Source\Object.StaticObject.Door.cs" />
@@ -93,7 +94,6 @@
     <Compile Include="Source\Object.cs" />
     <Compile Include="Source\Object.Sprite.Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Source\Object.StaticObject.Hint.cs" />
     <Compile Include="Source\Object.StaticObject.Ladder.cs" />
     <Compile Include="Source\Object.StaticObject.Light.cs" />
     <Compile Include="Source\Object.StaticObject.Mirror.cs" />
@@ -105,6 +105,7 @@
     <Compile Include="Source\Game1.cs" />
     <Compile Include="Source\Object.Sprite.cs" />
     <Compile Include="Source\Object.StaticObject.cs" />
+    <Compile Include="Source\Object.StaticObject.Ray.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

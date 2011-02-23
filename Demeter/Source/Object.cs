@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 
 namespace Demeter
 {
@@ -42,8 +43,9 @@ namespace Demeter
                 position.Y - Level.CameraOffset.Y); }
         }
 
-        protected float scale;
-        protected static readonly float DEFAULT_SCALE = 1.0f;
+        protected float layerDepth = 0.5f;
+
+        protected float scale = 1.0f;
 
         public virtual int TopCollisionOffset
         {
@@ -70,14 +72,12 @@ namespace Demeter
         {
             this.game = game;
             this.position = new Vector2();
-            this.scale = DEFAULT_SCALE;
         }
 
         public Object(Game1 game, Vector2 position)
         {
             this.game = game;
             this.position = position;
-            this.scale = DEFAULT_SCALE;
         }
 
         public Object(Game1 game, Vector2 position, float scale)

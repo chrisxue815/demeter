@@ -113,8 +113,10 @@ namespace Demeter
 
         public void Draw(GameTime gameTime)
         {
-            Game.SpriteBatch.Begin();
-            Game.SpriteBatch.Draw(backgroundTexture, Vector2.Zero, Color.White);
+            Game.SpriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.FrontToBack, SaveStateMode.SaveState);
+            Game.SpriteBatch.Draw(backgroundTexture,
+                new Rectangle(0, 0, Game.Width, Game.Height), null,
+                Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.1f);
             foreach (Object obj in objects)
             {
                 obj.Draw(gameTime);
@@ -234,13 +236,12 @@ namespace Demeter
                             float px = float.Parse(pxStr);
                             float py = float.Parse(pyStr);
                             Door door = new Door(game, new Vector2(px, py), levelFileNameStr);
-                            level.Objects.Add(door);
+                            level.objects.Add(door);
                         }
                     }
                 }
 
                 level.Initialize();
-
                 level.LoadContent();
 
                 return level;
@@ -265,8 +266,8 @@ namespace Demeter
             foreach (Object obj in objects)
             {
                 Rectangle rect = obj.CollisionRect;
-                Point topLeftIndex = new Point(rect.Left / gridSize + 1, rect.Top / gridSize + 1);
-                Point bottomRightIndex = new Point(rect.Right / gridSize + 1, rect.Bottom / gridSize + 1);
+                Point topLeftIndex = new Point(rect.Left / gridSize, rect.Top / gridSize);
+                Point bottomRightIndex = new Point(rect.Right / gridSize, rect.Bottom / gridSize);
 
                 for (int i = topLeftIndex.X; i <= bottomRightIndex.X; i++)
                 {
@@ -283,8 +284,8 @@ namespace Demeter
             foreach (Object objDetecting in objectsDetecting)
             {
                 Rectangle rect = objDetecting.CollisionRect;
-                Point topLeftIndex = new Point(rect.Left / gridSize + 1, rect.Top / gridSize + 1);
-                Point bottomRightIndex = new Point(rect.Right / gridSize + 1, rect.Bottom / gridSize + 1);
+                Point topLeftIndex = new Point(rect.Left / gridSize, rect.Top / gridSize);
+                Point bottomRightIndex = new Point(rect.Right / gridSize, rect.Bottom / gridSize);
 
                 for (int i = topLeftIndex.X; i <= bottomRightIndex.X; i++)
                 {
@@ -308,6 +309,68 @@ namespace Demeter
                         }
                     }
                 }
+            }
+        }
+
+        public Object FindObject(Vector2 pos, float direction)
+        {
+            Point position = new Point((int)pos.X, (int)pos.Y);
+            Line line = new Line(position, direction);
+
+            int x = position.X / gridSize;
+            int y = position.Y / gridSize;
+
+            int xIncrement;
+            int yIncrement;
+            bool isXIncrement;
+
+            if (direction < 0)
+                direction = -direction;
+            direction = (float)(direction % Math.PI);
+
+            if (direction >= Math.PI / 4 * 7 && direction < Math.PI / 4
+                || direction >= Math.PI / 4 * 3 && direction < Math.PI / 4 * 5)
+            {
+                isXIncrement = true;
+            }
+            else
+                isXIncrement = false;
+
+            if (direction >= Math.PI / 2 * 3 && direction < Math.PI / 2)
+            {
+                xIncrement = 1;
+            }
+            else
+                xIncrement = -1;
+
+            if (direction >= 0 && direction < Math.PI)
+            {
+                yIncrement = 1;
+            }
+            else
+                yIncrement = -1;
+
+            while (true)
+            {
+                List<Object> objs = gridManager[x, y];
+                if (objs == null)
+                    return null;
+                else
+                {
+                    foreach (Object obj in objs)
+                    {
+                        if (line.Intersects(obj.CollisionRect))
+                        {
+                            return obj;
+                        }
+                    }
+                }
+
+                if (isXIncrement)
+                    x += xIncrement;
+                else
+                    y += yIncrement;
+                isXIncrement = !isXIncrement;
             }
         }
 
@@ -344,7 +407,10 @@ namespace Demeter
         {
             get
             {
-                return manager[x, y].ObjectInside;
+                if (x >= 0 && x < width && y >= 0 && y < height)
+                    return manager[x, y].ObjectInside;
+                else
+                    return null;
             }
         }
 

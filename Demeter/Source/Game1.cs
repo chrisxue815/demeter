@@ -36,13 +36,13 @@ namespace Demeter
             get { return level; }
         }
 
-        int width;
+        int width = 800;
         public int Width
         {
             get { return this.width; }
         }
 
-        int height;
+        int height = 600;
         public int Height
         {
             get { return this.height; }
@@ -58,12 +58,12 @@ namespace Demeter
             get { return this.height / 2; }
         }
 
+        public SpriteFont font;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
 
-            width = 800;
-            height = 600;
             graphics.PreferredBackBufferWidth = width;
             graphics.PreferredBackBufferHeight = height;
 
@@ -96,6 +96,8 @@ namespace Demeter
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            font = Content.Load<SpriteFont>("font/Hud");
         }
 
         /// <summary>
