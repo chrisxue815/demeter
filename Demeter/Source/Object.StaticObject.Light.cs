@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Demeter
 {
-    class Mirror : StaticObject, IControlledObject
+    public class Light : StaticObject, IControlledObject
     {
         /// <summary>
         /// The angle between the normal and the x-axis
@@ -22,7 +22,7 @@ namespace Demeter
 
         private const float RotationSpeed = 0.03f;
 
-        public Mirror(Game1 game, Vector2 pos)
+        public Light(Game1 game, Vector2 pos)
             : base(game, pos)
         {
             position = pos;
@@ -30,7 +30,7 @@ namespace Demeter
 
         public override void LoadContent()
         {
-            this.texture = Game.Content.Load<Texture2D>("texture/Object.StaticObject.Mirror.Mirror2");
+            this.texture = Game.Content.Load<Texture2D>("texture/Object.StaticObject.Light.Light1");
         }
 
         public override void Update(GameTime gameTime)
