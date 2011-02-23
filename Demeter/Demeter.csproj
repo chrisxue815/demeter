@@ -86,7 +86,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Source\IExit.cs" />
     <Compile Include="Source\Object.Sprite.Animation.cs" />
     <Compile Include="Source\Object.StaticObject.IControlledObject.cs" />
     <Compile Include="Source\Object.StaticObject.Door.cs" />

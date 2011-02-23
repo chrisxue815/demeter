@@ -7,24 +7,14 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Demeter
 {
-    public class Door : StaticObject, IExit
+    public class Door : StaticObject
     {
-        #region IExit Members
-
-        string IExit.LevelFileName
+        string LevelFileName
         {
             get { return levelFileName; }
         }
-
-        bool IExit.Leave
-        {
-            get { return leave; }
-        }
-
-        #endregion
-
         string levelFileName;
-        bool leave;
+
 
         public Door(Game1 game, Vector2 position, string levelFileName)
             : base(game, position)
@@ -34,7 +24,7 @@ namespace Demeter
 
         public override void LoadContent()
         {
-            this.texture = Game.Content.Load<Texture2D>("Object.StaticObject.Door.Door1");
+            this.texture = Game.Content.Load<Texture2D>(@"texture/Object.StaticObject.Door.Door1");
         }
 
         public override void Update(GameTime gameTime)
@@ -43,7 +33,8 @@ namespace Demeter
 
         public override void CollisionResponse(Object obj)
         {
-            throw new NotImplementedException();
+            Level.Player.CollidedWithDoor = true;
+            Level.Player.ComingLevel = levelFileName;
         }
     }
 }
