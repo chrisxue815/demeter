@@ -10,4 +10,5 @@
   </switch>
   <ladder name="ladder1" px="700" py="450"></ladder>
   <door name="door1" px="800" py="550" levelFileName="level1-1.xml"></door>
+  <platform name="platform1" px="150" py="530" frameWidth="3" frameHeight="1"></platform>
 </level>

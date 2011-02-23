@@ -20,7 +20,19 @@ namespace Demeter
 
         public override void CollisionResponse(Object obj)
         {
-            //throw new NotImplementedException();
+            if (obj is Player)
+            {
+                Player player = Level.Player;
+
+                if (player.Y + player.CollisionHeight > position.Y
+                    && player.Y < position.Y)
+                {
+                    if (player.PrePosition.Y + player.CollisionHeight - Math.Abs(player.BottomCollisionOffset) <= position.Y)
+                    {
+                        player.CanGoDown = false;
+                    }
+                }
+            }
         }
     }
 }

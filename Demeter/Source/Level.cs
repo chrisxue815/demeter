@@ -218,6 +218,30 @@ namespace Demeter
                             Door door = new Door(game, new Vector2(px, py), levelFileNameStr);
                             level.Objects.Add(door);
                         }
+                        else if (reader.Name == "platform" || reader.Name == "block")
+                        {
+                            string pxStr = reader.GetAttribute("px");
+                            string pyStr = reader.GetAttribute("py");
+                            string frameWidthStr = reader.GetAttribute("frameWidth");
+                            string frameHeightStr = reader.GetAttribute("frameHeight");
+                            float px = float.Parse(pxStr);
+                            float py = float.Parse(pyStr);
+                            int frameWidth = int.Parse(frameWidthStr);
+                            int frameHeight = int.Parse(frameHeightStr);
+
+                            TileFrame tileFrame = new TileFrame(frameWidth, frameHeight);
+
+                            if (reader.Name == "platform")
+                            {
+                                Platform platform = new Platform(game, new Vector2(px, py), tileFrame);
+                                level.Objects.Add(platform);
+                            }
+                            else if (reader.Name == "block")
+                            {
+                                Block block = new Block(game, new Vector2(px, py), tileFrame);
+                                level.Objects.Add(block);
+                            }
+                        }
                     }
                 }
 

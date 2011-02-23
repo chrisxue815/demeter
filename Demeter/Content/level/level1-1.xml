@@ -4,10 +4,11 @@
   <ground py="570"></ground>
   <background texture="texture/Background.Background6"></background>
   <cameraoffset px="0" py="0"></cameraoffset>
-  <player px="100" py="400"></player>
+  <player px="50" py="400"></player>
   <switch name="switch1" px="300" py="500">
     <mirror name="mirror1" px="400" py="500"></mirror>
   </switch>
   <ladder name="ladder1" px="500" py="450"></ladder>
   <door name="door1" px="700" py="550" levelFileName="level1-2.xml"></door>
+  <block name="platform1" px="150" py="500" frameWidth="3" frameHeight="1"></block>
 </level>

@@ -24,21 +24,72 @@ namespace Demeter
             {
                 Player player = Level.Player;
 
-                if (player.X + player.CollisionWidth < position.X)
+                if (player.X + player.CollisionWidth > position.X
+                    && player.X < position.X)
                 {
-                    Level.Player.CanGoRight = false;
+                    if (player.PrePosition.Y + player.CollisionHeight < position.Y)
+                    {
+                        Level.Player.CanGoDown = false;
+                    }
+                    else if (player.PrePosition.Y > position.Y + CollisionHeight)
+                    {
+                        Level.Player.CanGoUp = false;
+                    }
+                    else
+                    {
+                        Level.Player.CanGoRight = false;
+                    }
                 }
-                else if (player.X > position.X + CollisionWidth)
+                
+                else if (player.X + player.CollisionWidth > position.X + CollisionWidth
+                    && player.X < position.X + CollisionWidth)
                 {
-                    Level.Player.CanGoLeft = false;
+                    if (player.PrePosition.Y + player.CollisionHeight < position.Y)
+                    {
+                        Level.Player.CanGoDown = false;
+                    }
+                    else if (player.PrePosition.Y > position.Y + CollisionHeight)
+                    {
+                        Level.Player.CanGoUp = false;
+                    }
+                    else
+                    {
+                        Level.Player.CanGoLeft = false;
+                    }
                 }
-                else if (player.Y > position.Y + CollisionHeight)
+
+                else if (player.Y + player.CollisionHeight > position.Y
+                    && player.Y < position.Y)
                 {
-                    Level.Player.CanGoUp = false;
+                    if (player.PrePosition.X + player.CollisionWidth < position.X)
+                    {
+                        Level.Player.CanGoRight = false;
+                    }
+                    else if (player.PrePosition.X + Math.Abs(player.LeftCollisionOffset) > position.X + CollisionWidth)
+                    {
+                        Level.Player.CanGoLeft = false;
+                    }
+                    else
+                    {
+                        Level.Player.CanGoDown = false;
+                    }
                 }
-                else if (player.Y < position.Y)
+
+                else if (player.Y < position.Y + CollisionHeight
+                    && player.Y + player.CollisionHeight > position.Y + CollisionHeight)
                 {
-                    Level.Player.CanGoDown = false;
+                    if (player.PrePosition.X + player.CollisionWidth < position.X)
+                    {
+                        Level.Player.CanGoRight = false;
+                    }
+                    else if (player.PrePosition.X + Math.Abs(player.LeftCollisionOffset)> position.X + CollisionWidth)
+                    {
+                        Level.Player.CanGoLeft = false;
+                    }
+                    else
+                    {
+                        Level.Player.CanGoUp = false;
+                    }
                 }
             }
         }

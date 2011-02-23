@@ -30,13 +30,21 @@ namespace Demeter
         private const float jumpStartSpeed = -8f;
         private const float speedOnLadder = 2f;
 
+        public override float X
+        {
+            get { return position.X + LeftCollisionOffset; }
+        }
+        public override float Y
+        {
+            get { return position.Y + TopCollisionOffset; }
+        }
         public override int TopCollisionOffset
         {
             get { return 5; }
         }
         public override int BottomCollisionOffset
         {
-            get { return -5; }
+            get { return -3; }
         }
         public override int LeftCollisionOffset
         {
@@ -104,6 +112,12 @@ namespace Demeter
         {
             get { return canGoRight; }
             set { canGoRight = value; }
+        }
+
+        Vector2 prePosition;
+        public Vector2 PrePosition
+        {
+            get { return prePosition; }
         }
         private bool collidedWithLadder;
         public bool CollidedWithLadder
@@ -249,7 +263,11 @@ namespace Demeter
                 tryJumping = true;
             }
 
-            if (!canGoLeft || !canGoRight)
+            if (!canGoRight && horizontalMovement == 1)
+            {
+                horizontalMovement = 0;
+            }
+            if (!canGoLeft && horizontalMovement == -1)
             {
                 horizontalMovement = 0;
             }
@@ -311,12 +329,21 @@ namespace Demeter
             {
                 if (CanGoDown)
                 {
-                    speed.Y = MathHelper.Clamp(speed.Y + (GravityAcceleration * elapsed) / 1000f, -MaxFallSpeed, MaxFallSpeed);
+                    if (CanGoUp)
+                    {
+                        speed.Y = MathHelper.Clamp(speed.Y + (GravityAcceleration * elapsed) / 1000f, -MaxFallSpeed, MaxFallSpeed);
+                    }
+                    else
+                    {
+                        speed.Y = 0;
+                        position = prePosition;
+                    }
                 }
                 else
                 {
                     speed.Y = 0;
                 }
+                
             }
 
             if (isJumping)
@@ -333,6 +360,7 @@ namespace Demeter
                 speed.Y = 0;
 
             // Apply speed.
+            prePosition = position;
             position += speed;
         }
 

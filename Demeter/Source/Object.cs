@@ -26,12 +26,12 @@ namespace Demeter
             get { return this.position; }
         }
 
-        public float X
+        public virtual float X
         {
             get { return position.X; }
         }
 
-        public float Y
+        public virtual float Y
         {
             get { return position.Y; }
         }
