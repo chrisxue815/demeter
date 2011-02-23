@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Demeter
 {
@@ -15,6 +16,16 @@ namespace Demeter
 
         public Block(Game1 game, Vector2 position, int width)
             : base(game, position, width)
+        {
+        }
+
+        public override void LoadContent()
+        {
+            texture = Game.Content.Load<Texture2D>("texture/Object.Tile.Tile1");
+            tileFrame = new TileFrame((int)width / texture.Width + 1, 1);
+        }
+
+        public override void Update(GameTime gameTime)
         {
         }
 

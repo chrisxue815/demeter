@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Content;
 
 namespace Demeter
 {
@@ -167,6 +168,7 @@ namespace Demeter
             this.currentAnimation = idleAnimation;
             isAlive = true;
         }
+
 
         /// <summary>
         /// Handles input, performs physics, and animates the player sprite.
@@ -343,7 +345,9 @@ namespace Demeter
             // Draw the current frame.
             Game.SpriteBatch.Draw(currentAnimation.Texture, ScreenPosition,
                 currentAnimation.CurrentSourceRectangle, Color.White,
-                0.0f, currentAnimation.Origin, 1.0f, spriteEffects, 0.0f);
+                0.0f, currentAnimation.Origin, 1.0f, spriteEffects, 0.9f);
+
+            Game.SpriteBatch.DrawString(Game.font, collidedWithLadder.ToString(), Vector2.Zero, Color.White, 0,Vector2.Zero,1,SpriteEffects.None,1);
         }
 
         public override void CollisionResponse(Object obj)

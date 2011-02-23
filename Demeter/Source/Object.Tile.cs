@@ -9,9 +9,15 @@ namespace Demeter
 {
     public abstract class Tile : Object
     {
-        Texture2D texture;
-        TileFrame tileFrame;
-        int width;
+        protected Texture2D texture;
+        public Texture2D Texture
+        {
+            get { return texture; }
+            set { texture = value; }
+        }
+
+        protected TileFrame tileFrame;
+        protected int width;
 
         public override int CollisionWidth
         {
@@ -43,19 +49,6 @@ namespace Demeter
             this.width = width;
         }
 
-        public override void LoadContent()
-        {
-            this.texture = Game.Content.Load<Texture2D>("texture/Object.Tile.Tile1");
-            if (tileFrame == null)
-            {
-                tileFrame = new TileFrame((int)width / texture.Width + 1, 1);
-            }
-        }
-
-        public override void Update(GameTime gameTime)
-        {
-        }
-
         public override void Draw(GameTime gameTime)
         {
             for (int i = 0; i < tileFrame.Width; i++)
@@ -63,7 +56,10 @@ namespace Demeter
                 for (int j = 0; j < tileFrame.Height; j++)
                 {
                     Vector2 pos = new Vector2(position.X + texture.Width * i, position.Y + texture.Height * j);
-                    Game.SpriteBatch.Draw(this.texture, Level.ScreenPosition(pos), Color.White);
+                    Vector2 screenPos = Level.ScreenPosition(pos);
+                    Game.SpriteBatch.Draw(texture,
+                        new Rectangle((int)screenPos.X, (int)screenPos.Y, texture.Width, texture.Height),
+                        null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.2f);
                 }
             }
         }

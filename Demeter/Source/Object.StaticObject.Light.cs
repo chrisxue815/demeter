@@ -22,19 +22,23 @@ namespace Demeter
 
         private const float RotationSpeed = 0.03f;
 
+        private Ray ray;
+
         public Light(Game1 game, Vector2 pos)
             : base(game, pos)
         {
             position = pos;
+            ray = new Ray(game, pos, rotation);
         }
 
         public override void LoadContent()
         {
-            this.texture = Game.Content.Load<Texture2D>("texture/Object.StaticObject.Light.Light1");
+            texture = Game.Content.Load<Texture2D>("texture/Object.StaticObject.Light.Light1");
         }
 
         public override void Update(GameTime gameTime)
         {
+            ray.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime)
@@ -43,7 +47,8 @@ namespace Demeter
                 new Vector2((int)ScreenPosition.X + HalfWidth, (int)ScreenPosition.Y + HalfHeight),
                 null, Color.White, rotation,
                 new Vector2(HalfWidth, HalfHeight),
-                scale, SpriteEffects.None, 0);
+                scale, SpriteEffects.None, 1);
+            ray.Draw(gameTime);
         }
 
         public override void CollisionResponse(Object obj)
