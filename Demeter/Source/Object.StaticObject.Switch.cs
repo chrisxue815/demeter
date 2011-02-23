@@ -59,17 +59,18 @@ namespace Demeter
         public override void CollisionResponse(Object obj)
         {
             KeyboardState keyboardState = Keyboard.GetState();
-            foreach (IControlledObject controlledObj in controlled)
+
+            if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.Down))
             {
-                if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.Down))
+                this.texture = switchOn;
+                foreach (IControlledObject controlledObj in controlled)
                 {
-                    this.texture = switchOn;
                     controlledObj.Control();
                 }
-                else
-                {
-                    this.texture = switchOff;
-                }
+            }
+            else
+            {
+                this.texture = switchOff;
             }
         }
 

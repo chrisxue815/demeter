@@ -28,7 +28,7 @@ namespace Demeter
             get { return this.player; }
         }
        
-        List<Object> Objects;
+        List<Object> objects;
 
         string backgroundTextureAssetName;
         Texture2D backgroundTexture;
@@ -44,6 +44,7 @@ namespace Demeter
         {
             get { return height; }
         }
+
         int groundPositionY;
 
         Vector2 cameraOffset;
@@ -60,12 +61,15 @@ namespace Demeter
 
         const int gridSize = 50;
         GridManager gridManager;
+        List<Object> objectsDetecting;
 
         #endregion
 
         public Level(Game1 game)
         {
             this.game = game;
+            objects = new List<Object>();
+            objectsDetecting = new List<Object>();
         }
 
         public void Initialize()
@@ -77,7 +81,7 @@ namespace Demeter
         {
             backgroundTexture = Game.Content.Load<Texture2D>(backgroundTextureAssetName);
             player.LoadContent();
-            foreach (Object obj in Objects)
+            foreach (Object obj in objects)
             {
                 obj.LoadContent();
             }
@@ -99,7 +103,7 @@ namespace Demeter
                 cameraOffset.Y = player.Position.Y - Game.HalfHeight;
             }
 
-            foreach (Object obj in Objects)
+            foreach (Object obj in objects)
             {
                 obj.Update(gameTime);
             }
@@ -111,7 +115,7 @@ namespace Demeter
         {
             Game.SpriteBatch.Begin();
             Game.SpriteBatch.Draw(backgroundTexture, Vector2.Zero, Color.White);
-            foreach (Object obj in Objects)
+            foreach (Object obj in objects)
             {
                 obj.Draw(gameTime);
             }
@@ -124,7 +128,7 @@ namespace Demeter
         public static Level Load(Game1 game, string levelFileName)
         {
             Level level = new Level(game);
-            level.Objects = new List<Object>();
+            level.levelFileName = levelFileName;
 
             try
             {
@@ -144,7 +148,7 @@ namespace Demeter
                         {
                             string groundPositionY = reader.GetAttribute("py");
                             level.groundPositionY = int.Parse(groundPositionY);
-                            level.Objects.Add(
+                            level.objects.Add(
                                 new Block(game, new Vector2(0, level.groundPositionY), level.width));
                         }
                         else if (reader.Name == "background")
@@ -166,6 +170,7 @@ namespace Demeter
                             float px = float.Parse(pxStr);
                             float py = float.Parse(pyStr);
                             level.player = new Player(game, new Vector2(px, py));
+                            level.objectsDetecting.Add(level.player);
                         }
                         else if (reader.Name == "switch")
                         {
@@ -177,18 +182,31 @@ namespace Demeter
                             XmlReader subtree = reader.ReadSubtree();
                             while (subtree.Read())
                             {
-                                if (subtree.NodeType == XmlNodeType.Element && subtree.Name == "mirror")
+                                if (subtree.NodeType == XmlNodeType.Element)
                                 {
-                                    string pxStr2 = reader.GetAttribute("px");
-                                    string pyStr2 = reader.GetAttribute("py");
-                                    float px2 = float.Parse(pxStr2);
-                                    float py2 = float.Parse(pyStr2);
-                                    Mirror mirror1 = new Mirror(game, new Vector2(px2, py2));
-                                    switch1.Add(mirror1);
-                                    level.Objects.Add(mirror1);
+                                    if (subtree.Name == "light")
+                                    {
+                                        string pxStr2 = reader.GetAttribute("px");
+                                        string pyStr2 = reader.GetAttribute("py");
+                                        float px2 = float.Parse(pxStr2);
+                                        float py2 = float.Parse(pyStr2);
+                                        Light light1 = new Light(game, new Vector2(px2, py2));
+                                        switch1.Add(light1);
+                                        level.objects.Add(light1);
+                                    }
+                                    else if (subtree.Name == "mirror")
+                                    {
+                                        string pxStr2 = reader.GetAttribute("px");
+                                        string pyStr2 = reader.GetAttribute("py");
+                                        float px2 = float.Parse(pxStr2);
+                                        float py2 = float.Parse(pyStr2);
+                                        Mirror mirror1 = new Mirror(game, new Vector2(px2, py2));
+                                        switch1.Add(mirror1);
+                                        level.objects.Add(mirror1);
+                                    }
                                 }
                             }
-                            level.Objects.Add(switch1);
+                            level.objects.Add(switch1);
                         }
                         else if (reader.Name == "ladder")
                         {
@@ -197,7 +215,7 @@ namespace Demeter
                             float px = float.Parse(pxStr);
                             float py = float.Parse(pyStr);
                             Ladder ladder = new Ladder(game, new Vector2(px, py));
-                            level.Objects.Add(ladder);
+                            level.objects.Add(ladder);
                         }
                         else if (reader.Name == "tile")
                         {
@@ -244,13 +262,11 @@ namespace Demeter
 
         public void SetGridManager()
         {
-            foreach (Object obj in Objects)
+            foreach (Object obj in objects)
             {
                 Rectangle rect = obj.CollisionRect;
-                Point topLeft = new Point(rect.Left, rect.Top);
-                Point bottomRight = new Point(rect.Right, rect.Bottom);
-                Point topLeftIndex = new Point(topLeft.X / gridSize + 1, topLeft.Y / gridSize + 1);
-                Point bottomRightIndex = new Point(bottomRight.X / gridSize + 1, bottomRight.Y / gridSize + 1);
+                Point topLeftIndex = new Point(rect.Left / gridSize + 1, rect.Top / gridSize + 1);
+                Point bottomRightIndex = new Point(rect.Right / gridSize + 1, rect.Bottom / gridSize + 1);
 
                 for (int i = topLeftIndex.X; i <= bottomRightIndex.X; i++)
                 {
@@ -264,31 +280,32 @@ namespace Demeter
 
         public void CollisionDetection()
         {
-            Rectangle rect = player.CollisionRect;
-            Point topLeft = new Point(rect.Left, rect.Top);
-            Point bottomRight = new Point(rect.Right, rect.Bottom);
-            Point topLeftIndex = new Point(topLeft.X / gridSize + 1, topLeft.Y / gridSize + 1);
-            Point bottomRightIndex = new Point(bottomRight.X / gridSize + 1, bottomRight.Y / gridSize + 1);
-
-            for (int i = topLeftIndex.X; i <= bottomRightIndex.X; i++)
+            foreach (Object objDetecting in objectsDetecting)
             {
-                for (int j = topLeftIndex.Y; j <= bottomRightIndex.Y; j++)
+                Rectangle rect = objDetecting.CollisionRect;
+                Point topLeftIndex = new Point(rect.Left / gridSize + 1, rect.Top / gridSize + 1);
+                Point bottomRightIndex = new Point(rect.Right / gridSize + 1, rect.Bottom / gridSize + 1);
+
+                for (int i = topLeftIndex.X; i <= bottomRightIndex.X; i++)
                 {
-                    try
+                    for (int j = topLeftIndex.Y; j <= bottomRightIndex.Y; j++)
                     {
-                        List<Object> objectInside = gridManager[i, j];
-                        foreach (Object obj in objectInside)
+                        try
                         {
-                            if (player.CollisionRect.Intersects(obj.CollisionRect))
+                            List<Object> objectInside = gridManager[i, j];
+                            foreach (Object obj in objectInside)
                             {
-                                obj.CollisionResponse(player);
-                                player.CollisionResponse(obj);
+                                if (player.CollisionRect.Intersects(obj.CollisionRect))
+                                {
+                                    obj.CollisionResponse(player);
+                                    player.CollisionResponse(obj);
+                                }
                             }
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        player.IsAlive = false;
+                        catch (Exception ex)
+                        {
+                            player.IsAlive = false;
+                        }
                     }
                 }
             }

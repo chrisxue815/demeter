@@ -52,7 +52,7 @@ namespace Demeter
             get { return speed; }
             set { speed = value; }
         }
-        Vector2 speed;
+        Vector2 speed = Vector2.Zero;
 
         /// <summary>
         /// Gets whether or not the player is alive
@@ -81,25 +81,25 @@ namespace Demeter
         }
 
         #region movement
-        bool canGoUp;
+        bool canGoUp = true;
         public bool CanGoUp
         {
             get { return canGoUp; }
             set { canGoUp = value; }
         }
-        bool canGoDown;
+        bool canGoDown = true;
         public bool CanGoDown
         {
             get { return canGoDown; }
             set { canGoDown = value; }
         }
-        bool canGoLeft;
+        bool canGoLeft = true;
         public bool CanGoLeft
         {
             get { return canGoLeft; }
             set { canGoLeft = value; }
         }
-        bool canGoRight;
+        bool canGoRight = true;
         public bool CanGoRight
         {
             get { return canGoRight; }
@@ -123,9 +123,9 @@ namespace Demeter
         /// <summary>
         /// Current user movement input.
         /// </summary>
-        private int horizontalMovement;
-        private int verticalMovement;
-        private bool isLadderUsed;
+        private int horizontalMovement = 0;
+        private int verticalMovement = 0;
+        private bool isLadderUsed = false;
         private Ladder ladderUsed;
         internal Ladder LadderUsed
         {
@@ -146,13 +146,6 @@ namespace Demeter
         public Player(Game1 game, Vector2 position)
             : base(game, position)
         {
-            this.speed = Vector2.Zero;
-            // initialize collision offset
-
-            this.canGoUp = true;
-            this.canGoDown = true;
-            this.canGoLeft = true;
-            this.canGoRight = true;
         }
 
         /// <summary>
