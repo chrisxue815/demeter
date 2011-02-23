@@ -40,8 +40,6 @@ namespace Demeter
                 {
                     Level.Player.CanGoDown = false;
                 }
-
-                Level.Player.IsInTile = true;
             }
         }
     }

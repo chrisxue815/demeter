@@ -91,17 +91,11 @@ namespace Demeter
             get { return canGoRight; }
             set { canGoRight = value; }
         }
-        bool isInTile;
-        public bool IsInTile
+        private bool collidedWithLadder;
+        public bool CollidedWithLadder
         {
-            get { return isInTile; }
-            set { isInTile = value; }
-        }
-        private bool isOnLadder;
-        public bool IsOnLadder
-        {
-            get { return isOnLadder; }
-            set { isOnLadder = value; }
+            get { return collidedWithLadder; }
+            set { collidedWithLadder = value; }
         }
         #endregion
 
@@ -194,8 +188,7 @@ namespace Demeter
             canGoDown = true;
             canGoLeft = true;
             canGoRight = true;
-            isOnLadder = false;
-            isInTile = false;
+            collidedWithLadder = false;
             isJumping = false;
 
             base.Update(gameTime);
@@ -238,7 +231,7 @@ namespace Demeter
             {
                 horizontalMovement = 0;
             }
-            if (verticalMovement == -1 && isOnLadder)
+            if (verticalMovement == -1 && collidedWithLadder)
             {
                 isLadderUsed = true;
             }
@@ -246,7 +239,7 @@ namespace Demeter
             {
                 isJumping = true;
             }
-            if (!isOnLadder || tryJumping || horizontalMovement != 0)
+            if (!collidedWithLadder || tryJumping || horizontalMovement != 0)
             {
                 isLadderUsed = false;
             }
@@ -275,7 +268,7 @@ namespace Demeter
 
             if (isLadderUsed)
             {
-                if (!(IsInTile && verticalMovement == 1))
+                if (!(!canGoDown && verticalMovement == 1))
                 {
                     speed.Y = verticalMovement * speedOnLadder;
                 }

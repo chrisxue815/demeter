@@ -29,7 +29,7 @@ namespace Demeter
             if (obj is Player)
             {
                 Level.Player.LadderUsed = this;
-                Level.Player.IsOnLadder = true;
+                Level.Player.CollidedWithLadder = true;
             }
         }
     }
