@@ -9,9 +9,24 @@ namespace Demeter
 {
     class Ladder : StaticObject
     {
-        public Ladder(Game1 game, Vector2 position)
+        public override int CollisionWidth
+        {
+            get { return 51; }
+        }
+
+        public override int CollisionHeight
+        {
+            get { return height; }
+        }
+        private int height;
+
+        private int frame;
+
+        public Ladder(Game1 game, Vector2 position, int height)
             :base(game, position)
         {
+            this.height = height;
+            frame = (int)Math.Ceiling((double)height / texture.Height);
         }
 
         public override void LoadContent()
@@ -22,6 +37,17 @@ namespace Demeter
         public override void Update(GameTime gameTime)
         {
             //throw new NotImplementedException();
+        }
+
+        public override void Draw(GameTime gameTime)
+        {
+            for (int i = 0; i < frame; i++)
+            {
+                Rectangle screenRect = new Rectangle((int)ScreenPosition.X,
+                    (int)ScreenPosition.Y + i * texture.Height, texture.Width, texture.Height);
+                Game.SpriteBatch.Draw(texture, screenRect, null, Color.White,
+                    0, Vector2.Zero, SpriteEffects.None, layerDepth);
+            }
         }
 
         public override void CollisionResponse(Object obj)

@@ -9,7 +9,7 @@ namespace Demeter
 {
     public class Platform : Tile
     {
-        public Platform(Game1 game, Vector2 position, TileFrame tileFrame)
+        public Platform(Game1 game, Vector2 position, Point tileFrame)
             : base(game, position, tileFrame)
         {
         }
@@ -19,9 +19,14 @@ namespace Demeter
         {
         }
 
+        public Platform(Game1 game, Vector2 position, int width, int height)
+            : base(game, position, width, height)
+        {
+        }
+
         public override void LoadContent()
         {
-            texture = Game.Content.Load<Texture2D>("texture/Object.StaticObject.Mirror.Mirror2");
+            texture = Game.Content.Load<Texture2D>("texture/Object.Tile.Platform.Platform1");
         }
 
         public override void Update(GameTime gameTime)

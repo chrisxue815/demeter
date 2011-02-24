@@ -9,7 +9,7 @@ namespace Demeter
 {
     public class Block : Tile
     {
-        public Block(Game1 game, Vector2 position, TileFrame tileFrame)
+        public Block(Game1 game, Vector2 position, Point tileFrame)
             : base(game, position, tileFrame)
         {
         }
@@ -19,10 +19,14 @@ namespace Demeter
         {
         }
 
+        public Block(Game1 game, Vector2 position, int width, int height)
+            : base(game, position, width, height)
+        {
+        }
+
         public override void LoadContent()
         {
-            texture = Game.Content.Load<Texture2D>("texture/Object.Tile.Tile1");
-            tileFrame = new TileFrame((int)width / texture.Width + 1, 1);
+            texture = Game.Content.Load<Texture2D>("texture/Object.Tile.Block.Block1");
         }
 
         public override void Update(GameTime gameTime)
@@ -35,21 +39,32 @@ namespace Demeter
             {
                 Player player = Level.Player;
 
-                if (player.X + player.CollisionWidth < position.X)
+                float horizontalDistance1 = Math.Abs(player.X + player.CollisionWidth - this.X);
+                float horizontalDistance2 = Math.Abs(this.X + this.CollisionWidth - player.X);
+                float verticalDistance1 = Math.Abs(player.Y + player.CollisionHeight - this.Y);
+                float verticalDistance2 = Math.Abs(this.Y + this.CollisionHeight - player.Y);
+
+                float horizontalDistance = Math.Min(horizontalDistance1, horizontalDistance2);
+                float verticalDistance = Math.Min(verticalDistance1, verticalDistance2);
+
+                if (horizontalDistance < verticalDistance)
                 {
-                    Level.Player.CanGoRight = false;
+                    if (player.X < this.X)
+                    {
+                        player.CanGoRight = false;
+                    }
+                    else
+                        player.CanGoLeft = false;
                 }
-                else if (player.X > position.X + CollisionWidth)
+                else
                 {
-                    Level.Player.CanGoLeft = false;
-                }
-                else if (player.Y > position.Y + CollisionHeight)
-                {
-                    Level.Player.CanGoUp = false;
-                }
-                else if (player.Y < position.Y)
-                {
-                    Level.Player.CanGoDown = false;
+                    if (player.Y < this.Y)
+                    {
+                        player.CanGoDown = false;
+                        player.Y = this.Y - player.CollisionHeight + 1;
+                    }
+                    else
+                        player.CanGoUp = false;
                 }
             }
         }

@@ -82,10 +82,7 @@ namespace Demeter
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
             base.Initialize();
-
-            level = Level.Load(this, "level1-1.xml");
         }
 
         /// <summary>
@@ -98,6 +95,8 @@ namespace Demeter
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             font = Content.Load<SpriteFont>("font/Hud");
+
+            level = Level.Load(this, "level1-1.xml");
         }
 
         /// <summary>
@@ -142,7 +141,9 @@ namespace Demeter
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            SpriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.FrontToBack, SaveStateMode.SaveState);
             level.Draw(gameTime);
+            SpriteBatch.End();
 
             base.Draw(gameTime);
         }

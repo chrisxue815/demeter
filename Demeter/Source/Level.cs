@@ -80,11 +80,6 @@ namespace Demeter
         public void LoadContent()
         {
             backgroundTexture = Game.Content.Load<Texture2D>(backgroundTextureAssetName);
-            player.LoadContent();
-            foreach (Object obj in objects)
-            {
-                obj.LoadContent();
-            }
             SetGridManager();
         }
 
@@ -113,16 +108,14 @@ namespace Demeter
 
         public void Draw(GameTime gameTime)
         {
-            Game.SpriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.FrontToBack, SaveStateMode.SaveState);
-            Game.SpriteBatch.Draw(backgroundTexture,
+            /*Game.SpriteBatch.Draw(backgroundTexture,
                 new Rectangle(0, 0, Game.Width, Game.Height), null,
-                Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.1f);
+                Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.1f);*/
             foreach (Object obj in objects)
             {
                 obj.Draw(gameTime);
             }
             player.Draw(gameTime);
-            Game.SpriteBatch.End();
         }
 
         #region xml
@@ -214,9 +207,11 @@ namespace Demeter
                         {
                             string pxStr = reader.GetAttribute("px");
                             string pyStr = reader.GetAttribute("py");
+                            string heightStr = reader.GetAttribute("height");
                             float px = float.Parse(pxStr);
                             float py = float.Parse(pyStr);
-                            Ladder ladder = new Ladder(game, new Vector2(px, py));
+                            int height = int.Parse(heightStr);
+                            Ladder ladder = new Ladder(game, new Vector2(px, py), height);
                             level.objects.Add(ladder);
                         }
                         else if (reader.Name == "tile")
@@ -237,6 +232,28 @@ namespace Demeter
                             float py = float.Parse(pyStr);
                             Door door = new Door(game, new Vector2(px, py), levelFileNameStr);
                             level.objects.Add(door);
+                        }
+                        else if (reader.Name == "platform" || reader.Name == "block")
+                        {
+                            string pxStr = reader.GetAttribute("px");
+                            string pyStr = reader.GetAttribute("py");
+                            string widthStr = reader.GetAttribute("width");
+                            string heightStr = reader.GetAttribute("height");
+                            float px = float.Parse(pxStr);
+                            float py = float.Parse(pyStr);
+                            int width = int.Parse(widthStr);
+                            int height = int.Parse(heightStr);
+
+                            if (reader.Name == "platform")
+                            {
+                                Platform platform = new Platform(game, new Vector2(px, py), width, height);
+                                level.objects.Add(platform);
+                            }
+                            else if (reader.Name == "block")
+                            {
+                                Block block = new Block(game, new Vector2(px, py), width, height);
+                                level.objects.Add(block);
+                            }
                         }
                     }
                 }

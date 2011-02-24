@@ -8,6 +8,6 @@
   <switch name="switch1" px="200" py="500">
     <mirror name="mirror1" px="400" py="500"></mirror>
   </switch>
-  <ladder name="ladder1" px="700" py="450"></ladder>
+  <ladder name="ladder1" px="700" py="450" height="89"></ladder>
   <door name="door1" px="800" py="550" levelFileName="level1-1.xml"></door>
 </level>

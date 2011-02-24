@@ -11,6 +11,15 @@ namespace Demeter
 {
     class Switch : StaticObject
     {
+        public override int CollisionWidth
+        {
+            get { return 90; }
+        }
+        public override int CollisionHeight
+        {
+            get { return 90; }
+        }
+
         List<IControlledObject> controlled;
         
         Texture2D switchOn;

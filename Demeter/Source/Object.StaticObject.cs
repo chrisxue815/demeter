@@ -16,24 +16,13 @@ namespace Demeter
             set { texture = value; }
         }
 
-        public int Width
+        public Rectangle ScreenRectangle
         {
-            get { return Texture.Width; }
-        }
-
-        public int Height
-        {
-            get { return Texture.Height; }
-        }
-
-        public override int CollisionWidth
-        {
-            get { return Texture.Width - LeftCollisionOffset - RightCollisionOffset; }
-        }
-
-        public override int CollisionHeight
-        {
-            get { return Texture.Height - TopCollisionOffset - BottomCollisionOffset; }
+            get
+            {
+                return new Rectangle((int)ScreenPosition.X, (int)ScreenPosition.Y,
+                    texture.Width, texture.Height);
+            }
         }
         
         public int HalfWidth
@@ -63,9 +52,8 @@ namespace Demeter
 
         public override void Draw(GameTime gameTime)
         {
-            Game.SpriteBatch.Draw(Texture,
-                new Rectangle((int)ScreenPosition.X, (int)ScreenPosition.Y, Width, Height),
-                null, Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth);
+            Game.SpriteBatch.Draw(texture, ScreenRectangle, null,
+                Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth);
         }
     }
 }

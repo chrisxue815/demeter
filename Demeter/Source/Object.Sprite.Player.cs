@@ -12,12 +12,39 @@ namespace Demeter
 {
     public class Player : Sprite
     {
+        #region Logical
+        public override int CollisionWidth
+        {
+            get { return 45; }
+        }
+        public override int CollisionHeight
+        {
+            get { return 90; }
+        }
+        #endregion
+
+        #region Drawing
+
+        public override int TopCollisionOffset
+        {
+            get { return 0; }
+        }
+
+        public override int LeftCollisionOffset
+        {
+            get { return 0; }
+        }
+
+        static readonly Point DEFAULT_FRAME_SIZE = new Point(45, 90);
+
         // animations
         Animation idleAnimation;
         Animation runAnimation;
         Animation jumpAnimation;
         Animation dieAnimation;
         Animation celebrateAnimation;
+
+        #endregion
 
         // Constants for controling horizontal movement
         private const float MoveAcceleration = 150.0f;
@@ -30,23 +57,6 @@ namespace Demeter
         private const float MaxFallSpeed = 8.0f;
         private const float jumpStartSpeed = -8f;
         private const float speedOnLadder = 2f;
-
-        public override int TopCollisionOffset
-        {
-            get { return 5; }
-        }
-        public override int BottomCollisionOffset
-        {
-            get { return -5; }
-        }
-        public override int LeftCollisionOffset
-        {
-            get { return 14; }
-        }
-        public override int RightCollisionOffset
-        {
-            get { return 14; }
-        }
 
         public Vector2 Speed
         {
@@ -141,8 +151,6 @@ namespace Demeter
         {
             get { return this.spriteEffects; }
         }
-
-        static readonly Point DEFAULT_FRAME_SIZE = new Point(48, 48);
 
         public Player(Game1 game, Vector2 position)
             : base(game, position)
@@ -244,11 +252,11 @@ namespace Demeter
                 tryJumping = true;
             }
 
-            if (!canGoLeft || !canGoRight)
+            if (!canGoLeft && horizontalMovement == -1 || !canGoRight && horizontalMovement == 1)
             {
                 horizontalMovement = 0;
             }
-            if (verticalMovement == -1 && collidedWithLadder)
+            if (verticalMovement != 0 && collidedWithLadder && this.Y >= ladderUsed.Y)
             {
                 isLadderUsed = true;
             }
@@ -289,13 +297,15 @@ namespace Demeter
 
             if (isLadderUsed)
             {
-                if (!(!canGoDown && verticalMovement == 1))
+                if (!canGoDown && verticalMovement == 1 ||
+                    !canGoUp && verticalMovement == -1 ||
+                    position.Y < ladderUsed.Y && verticalMovement == -1)
                 {
-                    speed.Y = verticalMovement * speedOnLadder;
+                    speed.Y = 0;
                 }
                 else
                 {
-                    speed.Y = 0;
+                    speed.Y = verticalMovement * speedOnLadder;
                 }
                 if (verticalMovement == -1 && position.Y + CollisionHeight < ladderUsed.Y)
                 {
@@ -304,11 +314,8 @@ namespace Demeter
             }
             else
             {
-                if (CanGoDown)
-                {
-                    speed.Y = MathHelper.Clamp(speed.Y + (GravityAcceleration * elapsed) / 1000f, -MaxFallSpeed, MaxFallSpeed);
-                }
-                else
+                speed.Y = MathHelper.Clamp(speed.Y + (GravityAcceleration * elapsed) / 1000f, -MaxFallSpeed, MaxFallSpeed);
+                if (!CanGoDown && speed.Y > 0 || !CanGoUp && speed.Y < 0)
                 {
                     speed.Y = 0;
                 }
@@ -347,7 +354,8 @@ namespace Demeter
                 currentAnimation.CurrentSourceRectangle, Color.White,
                 0.0f, currentAnimation.Origin, 1.0f, spriteEffects, 0.9f);
 
-            Game.SpriteBatch.DrawString(Game.font, collidedWithLadder.ToString(), Vector2.Zero, Color.White, 0,Vector2.Zero,1,SpriteEffects.None,1);
+            Game.SpriteBatch.DrawString(Game.font, collidedWithLadder.ToString(),
+                Vector2.Zero, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 1);
         }
 
         public override void CollisionResponse(Object obj)
