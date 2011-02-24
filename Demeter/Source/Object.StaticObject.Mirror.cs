@@ -11,6 +11,14 @@ namespace Demeter
 {
     class Mirror : StaticObject, IControlledObject
     {
+        public override int CollisionWidth
+        {
+            get { return 128; }
+        }
+        public override int CollisionHeight
+        {
+            get { return 24; }
+        }
         /// <summary>
         /// The angle between the normal and the x-axis
         /// </summary>
@@ -34,11 +42,12 @@ namespace Demeter
             : base(game, pos)
         {
             position = pos;
+            LoadContent();
         }
 
         public override void LoadContent()
         {
-            texture = Game.Content.Load<Texture2D>("texture/Object.StaticObject.Mirror.Mirror2");
+            texture = Game.Content.Load<Texture2D>("texture/Object.StaticObject.Mirror.Mirror1");
         }
 
         public override void Update(GameTime gameTime)

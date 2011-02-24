@@ -10,6 +10,14 @@ namespace Demeter
 {
     public class Light : StaticObject, IControlledObject
     {
+        public override int CollisionWidth
+        {
+            get { return 46; }
+        }
+        public override int CollisionHeight
+        {
+            get { return 23; }
+        }
         /// <summary>
         /// The angle between the normal and the x-axis
         /// </summary>

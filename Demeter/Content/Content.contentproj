@@ -84,56 +84,10 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="texture\Object.StaticObject.Tip.Tip1.jpg">
-      <Name>Object.StaticObject.Tip.Tip1</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="texture\Object.StaticObject.Mirror.Mirror1.png">
       <Name>Object.StaticObject.Mirror.Mirror1</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="texture\Background.Background1.png">
-      <Name>Background.Background1</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="texture\Background.Background2.png">
-      <Name>Background.Background2</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="texture\Background.Background3.png">
-      <Name>Background.Background3</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="texture\Background.Background4.png">
-      <Name>Background.Background4</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="texture\Background.Background5.png">
-      <Name>Background.Background5</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="texture\Background.Background6.png">
-      <Name>Background.Background6</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="texture\Object.Tile.Tile1.png">
-      <Name>Object.Tile.Tile1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -174,8 +128,20 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="texture\Object.StaticObject.Mirror.Mirror2.png">
-      <Name>Object.StaticObject.Mirror.Mirror2</Name>
+    <Compile Include="texture\Object.Tile.Block.Block1.png">
+      <Name>Object.Tile.Block.Block1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="texture\Object.Tile.Platform.Platform1.png">
+      <Name>Object.Tile.Platform.Platform1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="texture\Background.Background6.png">
+      <Name>Background.Background6</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

@@ -9,6 +9,14 @@ namespace Demeter
 {
     public class Ray : StaticObject
     {
+        public override int CollisionWidth
+        {
+            get { return 0; }
+        }
+        public override int CollisionHeight
+        {
+            get { return 0; }
+        }
         /// <summary>
         /// The angle between the normal and the x-axis
         /// </summary>
@@ -28,9 +36,11 @@ namespace Demeter
 
         public override void LoadContent()
         {
+            Line line = new Line(position, direction);
             texture = new Texture2D(Game.GraphicsDevice, 200, 100);
             Color[] color = new Color[200 * 100];
-            for (int i = 0; i < 200 * 100; i++) color[i] = new Color(0, 0, 0, 100);
+            for (int i = 0; i < 200 * 100; i++)
+                color[i] = new Color(0, 0, 0, 100);
             texture.SetData(color);
         }
 
@@ -42,6 +52,11 @@ namespace Demeter
                 if (obj is Mirror)
                     ((Mirror)obj).Lighted = true;
             }
+        }
+
+        public override void Draw(GameTime gameTime)
+        {
+            base.Draw(gameTime);
         }
 
         public override void CollisionResponse(Object obj)

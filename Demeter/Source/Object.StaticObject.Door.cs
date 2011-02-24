@@ -9,6 +9,14 @@ namespace Demeter
 {
     public class Door : StaticObject
     {
+        public override int CollisionWidth
+        {
+            get { return 64; }
+        }
+        public override int CollisionHeight
+        {
+            get { return 48; }
+        }
         string LevelFileName
         {
             get { return levelFileName; }

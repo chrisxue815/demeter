@@ -21,7 +21,7 @@ namespace Demeter
             get { return this.Game.Level; }
         }
 
-        protected Vector2 position;
+        protected Vector2 position = Vector2.Zero;
         public Vector2 Position
         {
             get { return this.position; }
@@ -30,17 +30,22 @@ namespace Demeter
         public float X
         {
             get { return position.X; }
+            set { position.X = value; }
         }
 
         public float Y
         {
             get { return position.Y; }
+            set { position.Y = value; }
         }
 
         public Vector2 ScreenPosition
         {
-            get { return new Vector2(position.X - Level.CameraOffset.X,
-                position.Y - Level.CameraOffset.Y); }
+            get
+            {
+                return new Vector2(position.X - Level.CameraOffset.X + TopCollisionOffset,
+                    position.Y - Level.CameraOffset.Y + LeftCollisionOffset);
+            }
         }
 
         protected float layerDepth = 0.5f;
@@ -51,15 +56,7 @@ namespace Demeter
         {
             get { return 0; }
         }
-        public virtual int BottomCollisionOffset
-        {
-            get { return 0; }
-        }
         public virtual int LeftCollisionOffset
-        {
-            get { return 0; }
-        }
-        public virtual int RightCollisionOffset
         {
             get { return 0; }
         }
@@ -71,13 +68,14 @@ namespace Demeter
         public Object(Game1 game)
         {
             this.game = game;
-            this.position = new Vector2();
+            LoadContent();
         }
 
         public Object(Game1 game, Vector2 position)
         {
             this.game = game;
             this.position = position;
+            LoadContent();
         }
 
         public Object(Game1 game, Vector2 position, float scale)
@@ -85,6 +83,7 @@ namespace Demeter
             this.game = game;
             this.position = position;
             this.scale = scale;
+            LoadContent();
         }
 
         public abstract void LoadContent();

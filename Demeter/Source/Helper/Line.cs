@@ -33,6 +33,11 @@ namespace Demeter
             }
         }
 
+        public Line(Vector2 p1, float direction)
+            : this(new Point((int)p1.X, (int)p1.Y), direction)
+        {
+        }
+
         public bool Intersects(Rectangle rect)
         {
             if (p1.X == p2.X)
