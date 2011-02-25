@@ -28,7 +28,12 @@ namespace Demeter
             get { return this.player; }
         }
        
-        List<Object> objects;
+        List<Object> objects = new List<Object>();
+        public List<Object> Objects
+        {
+          get { return objects; }
+          set { objects = value; }
+        }
 
         string backgroundTextureAssetName;
         Texture2D backgroundTexture;
@@ -61,16 +66,135 @@ namespace Demeter
 
         const int gridSize = 50;
         GridManager gridManager;
-        List<Object> objectsDetecting;
+        List<Object> objectsDetecting = new List<Object>();
 
         #endregion
 
         public Level(Game1 game)
         {
             this.game = game;
-            objects = new List<Object>();
-            objectsDetecting = new List<Object>();
         }
+
+        #region xml
+        public Level(Game1 game, string levelFileName)
+            : this(game)
+        {
+            this.levelFileName = levelFileName;
+
+            try
+            {
+                XmlTextReader reader = new XmlTextReader("Content/level/" + levelFileName);
+                while (reader.Read())
+                {
+                    if (reader.NodeType == XmlNodeType.Element)
+                    {
+                        if (reader.Name == "size")
+                        {
+                            string width = reader.GetAttribute("width");
+                            string height = reader.GetAttribute("height");
+                            this.width = int.Parse(width);
+                            this.height = int.Parse(height);
+                        }
+                        else if (reader.Name == "ground")
+                        {
+                            string groundPositionY = reader.GetAttribute("py");
+                            this.groundPositionY = int.Parse(groundPositionY);
+                            this.objects.Add(
+                                new Block(game, new Vector2(0, this.groundPositionY), this.width));
+                        }
+                        else if (reader.Name == "background")
+                        {
+                            this.backgroundTextureAssetName = reader.GetAttribute("texture");
+                        }
+                        else if (reader.Name == "cameraoffset")
+                        {
+                            string pxStr = reader.GetAttribute("px");
+                            string pyStr = reader.GetAttribute("py");
+                            float px = float.Parse(pxStr);
+                            float py = float.Parse(pyStr);
+                            this.cameraOffset = new Vector2(px, py);
+                        }
+                        else if (reader.Name == "player")
+                        {
+                            player = new Player(game, reader);
+                            objectsDetecting.Add(player);
+                        }
+                        else if (reader.Name == "shiftstick")
+                        {
+                            ShiftStick stick = new ShiftStick(game, reader);
+                            objects.Add(stick);
+
+                            XmlReader subtree = reader.ReadSubtree();
+                            while (subtree.Read())
+                            {
+                                if (subtree.NodeType == XmlNodeType.Element)
+                                {
+                                    if (subtree.Name == "lightsource")
+                                    {
+                                        LightSource light1 = new LightSource(game, reader);
+                                        stick.Add(light1);
+                                        objects.Add(light1);
+                                    }
+                                    else if (subtree.Name == "mirror")
+                                    {
+                                        Mirror mirror1 = new Mirror(game, reader);
+                                        stick.Add(mirror1);
+                                        objects.Add(mirror1);
+                                    }
+                                }
+                            }
+                        }
+                        else if (reader.Name == "switch")
+                        {
+                            Switch switch1 = new Switch(game, reader);
+                            objects.Add(switch1);
+
+                            XmlReader subtree = reader.ReadSubtree();
+                            while (subtree.Read())
+                            {
+                                if (subtree.NodeType == XmlNodeType.Element)
+                                {
+                                    if (subtree.Name == "platform")
+                                    {
+                                        Platform platform = new Platform(game, reader);
+                                        switch1.Add(platform);
+                                        objects.Add(platform);
+                                    }
+                                }
+                            }
+                        }
+                        else if (reader.Name == "ladder")
+                        {
+                            Ladder ladder = new Ladder(game, reader);
+                            objects.Add(ladder);
+                        }
+                        else if (reader.Name == "door")
+                        {
+                            Door door = new Door(game, reader);
+                            objects.Add(door);
+                        }
+                        else if (reader.Name == "platform")
+                        {
+                            Platform platform = new Platform(game, reader);
+                            objects.Add(platform);
+                        }
+                        else if (reader.Name == "block")
+                        {
+                            Block block = new Block(game, reader);
+                            objects.Add(block);
+                        }
+                    }
+                }
+
+                this.Initialize();
+                this.LoadContent();
+            }
+            catch (Exception ex)
+            {
+                return;
+            }
+        }
+        #endregion
 
         public void Initialize()
         {
@@ -107,7 +231,7 @@ namespace Demeter
 
             if (player.CanGoDown)
             {
-                player.PrePosition = player.Position;
+                player.LastPosition = player.Position;
             }
         }
 
@@ -122,199 +246,6 @@ namespace Demeter
             }
             player.Draw(gameTime);
         }
-
-        #region xml
-
-        public static Level Load(Game1 game, string levelFileName)
-        {
-            Level level = new Level(game);
-            level.levelFileName = levelFileName;
-
-            try
-            {
-                XmlTextReader reader = new XmlTextReader("Content/level/" + levelFileName);
-                while (reader.Read())
-                {
-                    if (reader.NodeType == XmlNodeType.Element)
-                    {
-                        if (reader.Name == "size")
-                        {
-                            string width = reader.GetAttribute("width");
-                            string height = reader.GetAttribute("height");
-                            level.width = int.Parse(width);
-                            level.height = int.Parse(height);
-                        }
-                        else if (reader.Name == "ground")
-                        {
-                            string groundPositionY = reader.GetAttribute("py");
-                            level.groundPositionY = int.Parse(groundPositionY);
-                            level.objects.Add(
-                                new Block(game, new Vector2(0, level.groundPositionY), level.width));
-                        }
-                        else if (reader.Name == "background")
-                        {
-                            level.backgroundTextureAssetName = reader.GetAttribute("texture");
-                        }
-                        else if (reader.Name == "cameraoffset")
-                        {
-                            string pxStr = reader.GetAttribute("px");
-                            string pyStr = reader.GetAttribute("py");
-                            float px = float.Parse(pxStr);
-                            float py = float.Parse(pyStr);
-                            level.cameraOffset = new Vector2(px, py);
-                        }
-                        else if (reader.Name == "player")
-                        {
-                            string pxStr = reader.GetAttribute("px");
-                            string pyStr = reader.GetAttribute("py");
-                            float px = float.Parse(pxStr);
-                            float py = float.Parse(pyStr);
-                            level.player = new Player(game, new Vector2(px, py));
-                            level.objectsDetecting.Add(level.player);
-                        }
-                        else if (reader.Name == "switch")
-                        {
-                            string pxStr = reader.GetAttribute("px");
-                            string pyStr = reader.GetAttribute("py");
-                            string one_offStr = reader.GetAttribute("one_off");
-                            string moveableStr = reader.GetAttribute("moveable");
-                            float px = float.Parse(pxStr);
-                            float py = float.Parse(pyStr);
-                            bool one_off;
-                            bool moveable;
-                            if (one_offStr == "true")
-                            {
-                                one_off = true;
-                            }
-                            else
-                            {
-                                one_off = false;
-                            }
-                            if (moveableStr == "true")
-                            {
-                                moveable = true;
-                            }
-                            else
-                            {
-                                moveable = false;
-                            }
-                            Switch switch1 = new Switch(game, new Vector2(px, py), one_off, moveable);
-                            XmlReader subtree = reader.ReadSubtree();
-                            while (subtree.Read())
-                            {
-                                if (subtree.NodeType == XmlNodeType.Element)
-                                {
-                                    if (subtree.Name == "light")
-                                    {
-                                        string pxStr2 = reader.GetAttribute("px");
-                                        string pyStr2 = reader.GetAttribute("py");
-                                        float px2 = float.Parse(pxStr2);
-                                        float py2 = float.Parse(pyStr2);
-                                        LightSource light1 = new LightSource(game, new Vector2(px2, py2));
-                                        switch1.Add(light1);
-                                        level.objects.Add(light1);
-                                    }
-                                    else if (subtree.Name == "mirror")
-                                    {
-                                        string pxStr2 = reader.GetAttribute("px");
-                                        string pyStr2 = reader.GetAttribute("py");
-                                        float px2 = float.Parse(pxStr2);
-                                        float py2 = float.Parse(pyStr2);
-                                        Mirror mirror1 = new Mirror(game, new Vector2(px2, py2));
-                                        switch1.Add(mirror1);
-                                        level.objects.Add(mirror1);
-                                    }
-                                    else if (subtree.Name == "platform")
-                                    {
-                                        string pxStr2 = reader.GetAttribute("px");
-                                        string pyStr2 = reader.GetAttribute("py");
-                                        string widthStr2 = reader.GetAttribute("width");
-                                        string heightStr2 = reader.GetAttribute("height");
-                                        float px2 = float.Parse(pxStr2);
-                                        float py2 = float.Parse(pyStr2);
-                                        int width2 = int.Parse(widthStr2);
-                                        int height2 = int.Parse(heightStr2);
-
-                                        Platform platform = new Platform(game, new Vector2(px2, py2), width2, height2);
-                                        switch1.Add(platform);
-                                        level.objects.Add(platform);
-                                    }
-                                }
-                            }
-                            level.objects.Add(switch1);
-                        }
-                        else if (reader.Name == "ladder")
-                        {
-                            string pxStr = reader.GetAttribute("px");
-                            string pyStr = reader.GetAttribute("py");
-                            string heightStr = reader.GetAttribute("height");
-                            float px = float.Parse(pxStr);
-                            float py = float.Parse(pyStr);
-                            int height = int.Parse(heightStr);
-                            Ladder ladder = new Ladder(game, new Vector2(px, py), height);
-                            level.objects.Add(ladder);
-                        }
-                        else if (reader.Name == "tile")
-                        {
-                            string pxStr = reader.GetAttribute("px");
-                            string pyStr = reader.GetAttribute("py");
-                            float px = float.Parse(pxStr);
-                            float py = float.Parse(pyStr);
-                            //Tile tile = new Tile(game, new Vector2(px, py));
-                            //level.staticObjects.Add(tile);
-                        }
-                        else if (reader.Name == "door")
-                        {
-                            string pxStr = reader.GetAttribute("px");
-                            string pyStr = reader.GetAttribute("py");
-                            string levelFileNameStr = reader.GetAttribute("levelFileName");
-                            float px = float.Parse(pxStr);
-                            float py = float.Parse(pyStr);
-                            Door door = new Door(game, new Vector2(px, py), levelFileNameStr);
-                            level.objects.Add(door);
-                        }
-                        else if (reader.Name == "platform" || reader.Name == "block")
-                        {
-                            string pxStr = reader.GetAttribute("px");
-                            string pyStr = reader.GetAttribute("py");
-                            string widthStr = reader.GetAttribute("width");
-                            string heightStr = reader.GetAttribute("height");
-                            float px = float.Parse(pxStr);
-                            float py = float.Parse(pyStr);
-                            int width = int.Parse(widthStr);
-                            int height = int.Parse(heightStr);
-
-                            if (reader.Name == "platform")
-                            {
-                                Platform platform = new Platform(game, new Vector2(px, py), width, height);
-                                level.objects.Add(platform);
-                            }
-                            else if (reader.Name == "block")
-                            {
-                                Block block = new Block(game, new Vector2(px, py), width, height);
-                                level.objects.Add(block);
-                            }
-                        }
-                    }
-                }
-
-                level.Initialize();
-                level.LoadContent();
-
-                return level;
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
-        }
-
-        public bool Save(string levelFileName)
-        {
-            return true;
-        }
-
-        #endregion
 
         #region collision detection
 

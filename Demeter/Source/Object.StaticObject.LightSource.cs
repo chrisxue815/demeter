@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Xml;
 
 namespace Demeter
 {
@@ -30,13 +31,22 @@ namespace Demeter
 
         private const float RotationSpeed = 0.03f;
 
-        private LightRay ray;
-
         public LightSource(Game1 game, Vector2 pos)
             : base(game, pos)
         {
             position = pos;
-            ray = new LightRay(game, pos, rotation);
+        }
+
+        public LightSource(Game1 game, XmlTextReader reader)
+            : base(game)
+        {
+            string pxStr2 = reader.GetAttribute("px");
+            string pyStr2 = reader.GetAttribute("py");
+            float px2 = float.Parse(pxStr2);
+            float py2 = float.Parse(pyStr2);
+
+            this.game = game;
+            this.position = new Vector2(px2, py2);
         }
 
         public override void LoadContent()
@@ -46,7 +56,6 @@ namespace Demeter
 
         public override void Update(GameTime gameTime)
         {
-            ray.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime)
@@ -56,7 +65,6 @@ namespace Demeter
                 null, Color.White, rotation,
                 new Vector2(HalfWidth, HalfHeight),
                 scale, SpriteEffects.None, 1);
-            ray.Draw(gameTime);
         }
 
         public override void CollisionResponse(Object obj)

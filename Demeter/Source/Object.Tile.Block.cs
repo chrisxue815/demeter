@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Xml;
 
 namespace Demeter
 {
@@ -22,6 +23,24 @@ namespace Demeter
         public Block(Game1 game, Vector2 position, int width, int height)
             : base(game, position, width, height)
         {
+        }
+
+        public Block(Game1 game, XmlTextReader reader)
+            : base(game)
+        {
+            string pxStr = reader.GetAttribute("px");
+            string pyStr = reader.GetAttribute("py");
+            string widthStr = reader.GetAttribute("width");
+            string heightStr = reader.GetAttribute("height");
+            float px = float.Parse(pxStr);
+            float py = float.Parse(pyStr);
+            int width = int.Parse(widthStr);
+            int height = int.Parse(heightStr);
+
+            this.game = game;
+            this.position = new Vector2(px, py);
+            this.Width = width;
+            this.Height = height;
         }
 
         public override void LoadContent()

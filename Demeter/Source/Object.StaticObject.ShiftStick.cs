@@ -10,7 +10,7 @@ using System.Xml;
 
 namespace Demeter
 {
-    class Switch : StaticObject
+    class ShiftStick : StaticObject
     {
         public override int CollisionWidth
         {
@@ -26,15 +26,21 @@ namespace Demeter
         Texture2D switchOn;
         Texture2D switchOff;
 
-        private bool wasKeyDown = false;
+        public int MoveSpeed
+        {
+            get { return 2; }
+        }
 
-        public Switch(Game1 game, Vector2 pos)
+        private bool canBePressed;
+        private int pressCD = 0;
+
+        public ShiftStick(Game1 game, Vector2 pos, bool one_off, bool moveable)
             : base(game, pos)
         {
             position = pos;
         }
 
-        public Switch(Game1 game, XmlTextReader reader)
+        public ShiftStick(Game1 game, XmlTextReader reader)
             : base(game)
         {
             string pxStr = reader.GetAttribute("px");
@@ -66,21 +72,16 @@ namespace Demeter
         {
             KeyboardState keyboardState = Keyboard.GetState();
 
-            if (keyboardState.IsKeyDown(Keys.Up))
+            if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.Down))
             {
-                if (!wasKeyDown)
+                foreach (IControlledObject controlledObj in controlled)
                 {
-                    foreach (IControlledObject controlledObj in controlled)
-                    {
-                        controlledObj.Control();
-                    }
-                    texture = switchOn;
+                    controlledObj.Control();
                 }
-                wasKeyDown = true;
+                texture = switchOn;
             }
             else
             {
-                wasKeyDown = false;
                 texture = switchOff;
             }
         }
