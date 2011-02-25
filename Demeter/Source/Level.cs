@@ -81,130 +81,122 @@ namespace Demeter
         {
             this.levelFileName = levelFileName;
 
-            try
+            XmlTextReader reader = new XmlTextReader("Content/level/" + levelFileName);
+            while (reader.Read())
             {
-                XmlTextReader reader = new XmlTextReader("Content/level/" + levelFileName);
-                while (reader.Read())
+                if (reader.NodeType == XmlNodeType.Element)
                 {
-                    if (reader.NodeType == XmlNodeType.Element)
+                    if (reader.Name == "size")
                     {
-                        if (reader.Name == "size")
-                        {
-                            string width = reader.GetAttribute("width");
-                            string height = reader.GetAttribute("height");
-                            this.width = int.Parse(width);
-                            this.height = int.Parse(height);
-                        }
-                        else if (reader.Name == "ground")
-                        {
-                            string groundPositionY = reader.GetAttribute("py");
-                            this.groundPositionY = int.Parse(groundPositionY);
-                            this.objects.Add(
-                                new Block(game, new Vector2(0, this.groundPositionY), this.width));
-                        }
-                        else if (reader.Name == "background")
-                        {
-                            this.backgroundTextureAssetName = reader.GetAttribute("texture");
-                        }
-                        else if (reader.Name == "cameraoffset")
-                        {
-                            string pxStr = reader.GetAttribute("px");
-                            string pyStr = reader.GetAttribute("py");
-                            float px = float.Parse(pxStr);
-                            float py = float.Parse(pyStr);
-                            this.cameraOffset = new Vector2(px, py);
-                        }
-                        else if (reader.Name == "player")
-                        {
-                            player = new Player(game, reader);
-                            objectsDetecting.Add(player);
-                        }
-                        else if (reader.Name == "shiftstick")
-                        {
-                            ShiftStick stick = new ShiftStick(game, reader);
-                            objects.Add(stick);
+                        string width = reader.GetAttribute("width");
+                        string height = reader.GetAttribute("height");
+                        this.width = int.Parse(width);
+                        this.height = int.Parse(height);
+                    }
+                    else if (reader.Name == "ground")
+                    {
+                        string groundPositionY = reader.GetAttribute("py");
+                        this.groundPositionY = int.Parse(groundPositionY);
+                        this.objects.Add(
+                            new Block(game, new Vector2(0, this.groundPositionY), this.width));
+                    }
+                    else if (reader.Name == "background")
+                    {
+                        this.backgroundTextureAssetName = reader.GetAttribute("texture");
+                    }
+                    else if (reader.Name == "cameraoffset")
+                    {
+                        string pxStr = reader.GetAttribute("px");
+                        string pyStr = reader.GetAttribute("py");
+                        float px = float.Parse(pxStr);
+                        float py = float.Parse(pyStr);
+                        this.cameraOffset = new Vector2(px, py);
+                    }
+                    else if (reader.Name == "player")
+                    {
+                        player = new Player(game, reader);
+                        objectsDetecting.Add(player);
+                    }
+                    else if (reader.Name == "shiftstick")
+                    {
+                        ShiftStick stick = new ShiftStick(game, reader);
+                        objects.Add(stick);
 
-                            XmlReader subtree = reader.ReadSubtree();
-                            while (subtree.Read())
+                        XmlReader subtree = reader.ReadSubtree();
+                        while (subtree.Read())
+                        {
+                            if (subtree.NodeType == XmlNodeType.Element)
                             {
-                                if (subtree.NodeType == XmlNodeType.Element)
+                                if (subtree.Name == "lightsource")
                                 {
-                                    if (subtree.Name == "lightsource")
-                                    {
-                                        LightSource light1 = new LightSource(game, reader);
-                                        stick.Add(light1);
-                                        objects.Add(light1);
-                                    }
-                                    else if (subtree.Name == "mirror")
-                                    {
-                                        Mirror mirror1 = new Mirror(game, reader);
-                                        stick.Add(mirror1);
-                                        objects.Add(mirror1);
-                                    }
+                                    LightSource light1 = new LightSource(game, reader);
+                                    stick.Add(light1);
+                                    objects.Add(light1);
+                                }
+                                else if (subtree.Name == "mirror")
+                                {
+                                    Mirror mirror1 = new Mirror(game, reader);
+                                    stick.Add(mirror1);
+                                    objects.Add(mirror1);
                                 }
                             }
-                        }
-                        else if (reader.Name == "switch")
-                        {
-                            Switch switch1 = new Switch(game, reader);
-                            objects.Add(switch1);
-
-                            XmlReader subtree = reader.ReadSubtree();
-                            while (subtree.Read())
-                            {
-                                if (subtree.NodeType == XmlNodeType.Element)
-                                {
-                                    if (subtree.Name == "platform")
-                                    {
-                                        Platform platform = new Platform(game, reader);
-                                        switch1.Add(platform);
-                                        objects.Add(platform);
-                                    }
-                                }
-                            }
-                        }
-                        else if (reader.Name == "ladder")
-                        {
-                            Ladder ladder = new Ladder(game, reader);
-                            objects.Add(ladder);
-                        }
-                        else if (reader.Name == "door")
-                        {
-                            Door door = new Door(game, reader);
-                            objects.Add(door);
-                        }
-                        else if (reader.Name == "platform")
-                        {
-                            Platform platform = new Platform(game, reader);
-                            objects.Add(platform);
-                        }
-                        else if (reader.Name == "block")
-                        {
-                            Block block = new Block(game, reader);
-                            objects.Add(block);
                         }
                     }
-                }
+                    else if (reader.Name == "switch")
+                    {
+                        Switch switch1 = new Switch(game, reader);
+                        objects.Add(switch1);
 
-                this.Initialize();
-                this.LoadContent();
+                        XmlReader subtree = reader.ReadSubtree();
+                        while (subtree.Read())
+                        {
+                            if (subtree.NodeType == XmlNodeType.Element)
+                            {
+                                if (subtree.Name == "block")
+                                {
+                                    Block block = new Block(game, reader);
+                                    switch1.Add(block);
+                                    objects.Add(block);
+                                }
+                            }
+                        }
+                    }
+                    else if (reader.Name == "ladder")
+                    {
+                        Ladder ladder = new Ladder(game, reader);
+                        objects.Add(ladder);
+                    }
+                    else if (reader.Name == "door")
+                    {
+                        Door door = new Door(game, reader);
+                        objects.Add(door);
+                    }
+                    else if (reader.Name == "platform")
+                    {
+                        Platform platform = new Platform(game, reader);
+                        objects.Add(platform);
+                    }
+                    else if (reader.Name == "block")
+                    {
+                        Block block = new Block(game, reader);
+                        objects.Add(block);
+                    }
+                }
             }
-            catch (Exception ex)
-            {
-                return;
-            }
+
+            this.Initialize();
+            this.LoadContent();
         }
         #endregion
 
         public void Initialize()
         {
-            gridManager = new GridManager(width / gridSize + 1, height / gridSize + 1);
+            SetGridManager();
         }
 
         public void LoadContent()
         {
             backgroundTexture = Game.Content.Load<Texture2D>(backgroundTextureAssetName);
-            SetGridManager();
         }
 
         public void Update(GameTime gameTime)
@@ -251,6 +243,7 @@ namespace Demeter
 
         public void SetGridManager()
         {
+            gridManager = new GridManager(width / gridSize + 1, height / gridSize + 1);
             foreach (Object obj in objects)
             {
                 Rectangle rect = obj.CollisionRect;

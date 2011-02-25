@@ -8,12 +8,8 @@ using System.Xml;
 
 namespace Demeter
 {
-    public class Platform : Tile, IControlledObject
+    public class Platform : Tile
     {
-        public int MoveSpeed
-        {
-            get { return 2; }
-        }
 
         public Platform(Game1 game, Vector2 position, Point tileFrame)
             : base(game, position, tileFrame)
@@ -55,6 +51,7 @@ namespace Demeter
         public override void Update(GameTime gameTime)
         {
         }
+
         public override void CollisionResponse(Object obj)
         {
             if (obj is Player)
@@ -68,16 +65,5 @@ namespace Demeter
                 }
             }
         }
-
-        #region IControlledObject Members
-
-        public void Control()
-        {
-            X += MoveSpeed;
-            Level.Player.Speed = Vector2.Zero;
-            Level.Player.X += MoveSpeed;
-        }
-
-        #endregion
     }
 }

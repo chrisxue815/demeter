@@ -10,9 +10,9 @@
     <mirror name="mirror1" px="400" py="480"></mirror>
   </shiftstick>
   <switch name="switch2" px="200" py="360">
-    <platform name="platform2" px="200" py="430" width="200" height="48"></platform>
+    <block name="block2" px="200" py="430" width="256" height="48"></block>
   </switch>
   <ladder name="ladder1" px="150" py="150" height="400"></ladder>
-  <platform name="platform1" px="200" py="500" width="200" height="48"></platform>
-  <door name="door1" px="700" py="550" levelFileName="level1-2.xml"></door>
+  <platform name="platform1" px="200" py="500" width="256" height="48"></platform>
+  <door name="door1" px="500" py="522" levelFileName="level1-2.xml"></door>
 </level>

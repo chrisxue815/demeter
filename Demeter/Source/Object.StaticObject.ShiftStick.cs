@@ -23,8 +23,8 @@ namespace Demeter
 
         List<IControlledObject> controlled = new List<IControlledObject>();
 
-        Texture2D switchOn;
-        Texture2D switchOff;
+        Texture2D switchOnTexture;
+        Texture2D switchOffTexture;
 
         public int MoveSpeed
         {
@@ -54,9 +54,9 @@ namespace Demeter
 
         public override void LoadContent()
         {
-            switchOn = Game.Content.Load<Texture2D>("texture/Object.StaticObject.Switch.SwitchOn");
-            switchOff = Game.Content.Load<Texture2D>("texture/Object.StaticObject.Switch.SwitchOff");
-            texture = switchOff;
+            switchOnTexture = Game.Content.Load<Texture2D>("texture/Object.StaticObject.Switch.SwitchOn");
+            switchOffTexture = Game.Content.Load<Texture2D>("texture/Object.StaticObject.Switch.SwitchOff");
+            texture = switchOffTexture;
         }
 
         public Vector2 GetPosition()
@@ -78,11 +78,11 @@ namespace Demeter
                 {
                     controlledObj.Control();
                 }
-                texture = switchOn;
+                texture = switchOnTexture;
             }
             else
             {
-                texture = switchOff;
+                texture = switchOffTexture;
             }
         }
 
