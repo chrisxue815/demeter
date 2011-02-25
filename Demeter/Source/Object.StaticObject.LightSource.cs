@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Demeter
 {
-    public class Light : StaticObject, IControlledObject
+    public class LightSource : StaticObject, IControlledObject
     {
         public override int CollisionWidth
         {
@@ -30,13 +30,13 @@ namespace Demeter
 
         private const float RotationSpeed = 0.03f;
 
-        private Ray ray;
+        private LightRay ray;
 
-        public Light(Game1 game, Vector2 pos)
+        public LightSource(Game1 game, Vector2 pos)
             : base(game, pos)
         {
             position = pos;
-            ray = new Ray(game, pos, rotation);
+            ray = new LightRay(game, pos, rotation);
         }
 
         public override void LoadContent()
