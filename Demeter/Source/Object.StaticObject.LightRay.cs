@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Demeter
 {
-    public class Ray : StaticObject
+    public class LightRay : StaticObject
     {
         public override int CollisionWidth
         {
@@ -17,9 +17,7 @@ namespace Demeter
         {
             get { return 0; }
         }
-        /// <summary>
-        /// The angle between the normal and the x-axis
-        /// </summary>
+
         public float Direction
         {
             get { return direction; }
@@ -27,7 +25,9 @@ namespace Demeter
         }
         float direction;
 
-        public Ray(Game1 game, Vector2 position, float direction)
+        List<ReflectionPoint> reflectionPoint;
+
+        public LightRay(Game1 game, Vector2 position, float direction)
             : base(game, position)
         {
             this.direction = direction;
@@ -50,7 +50,8 @@ namespace Demeter
             if (obj != null)
             {
                 if (obj is Mirror)
-                    ((Mirror)obj).Lighted = true;
+                {
+                }
             }
         }
 
@@ -61,6 +62,18 @@ namespace Demeter
 
         public override void CollisionResponse(Object obj)
         {
+        }
+    }
+
+    public class ReflectionPoint
+    {
+        Point point;
+        float normalDirection;
+
+        public ReflectionPoint(Point point, float normalDirection)
+        {
+            this.point = point;
+            this.normalDirection = normalDirection;
         }
     }
 }

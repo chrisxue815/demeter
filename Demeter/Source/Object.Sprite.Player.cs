@@ -49,8 +49,6 @@ namespace Demeter
         // Constants for controling horizontal movement
         private const float MoveAcceleration = 150.0f;
         private const float MaxMoveSpeed = 5.0f;
-        private const float GroundDragFactor = 0.58f;
-        private const float AirDragFactor = 0.65f;
 
         // Constants for controlling vertical movement
         private const float GravityAcceleration = 20.0f;
@@ -65,6 +63,12 @@ namespace Demeter
         }
         Vector2 speed = Vector2.Zero;
 
+        public bool FacingRight
+        {
+            get { return facingRight; }
+        }
+        bool facingRight = true;
+
         /// <summary>
         /// Gets whether or not the player is alive
         /// </summary>
@@ -76,19 +80,33 @@ namespace Demeter
         }
 
         private bool isJumping;
+        public bool IsJumping
+        {
+            get { return isJumping; }
+            set { isJumping = value; }
+        }
 
-        private bool isLeaving;
         public bool IsLeaving
         {
             get { return isLeaving; }
             set { isLeaving = value; }
         }
+        private bool isLeaving;
 
-        string comingLevel;
         public string ComingLevel
         {
             get { return comingLevel; }
             set { comingLevel = value; }
+        }
+        string comingLevel;
+
+        public bool InTheAir
+        {
+            get { return canGoDown; }
+        }
+        public bool OnGround
+        {
+            get { return !canGoDown; }
         }
 
         #region movement
@@ -196,7 +214,7 @@ namespace Demeter
             {
                 this.currentAnimation = jumpAnimation;
             }
-            else if (horizontalMovement != 0)
+            else if (speed.X != 0)
             {
                 this.currentAnimation = runAnimation;
             }
@@ -213,6 +231,7 @@ namespace Demeter
             canGoLeft = true;
             canGoRight = true;
             collidedWithLadder = false;
+            collidedWithDoor = false;
             isJumping = false;
 
             base.Update(gameTime);
@@ -232,41 +251,54 @@ namespace Demeter
 
             if (keyboardState.IsKeyDown(Keys.Left))
             {   // player moves left
-                horizontalMovement = -1;
+                horizontalMovement -= 1;
+                facingRight = false;
             }
             if (keyboardState.IsKeyDown(Keys.Right))
             {   // player moves right
-                horizontalMovement = 1;
+                horizontalMovement += 1;
+                facingRight = true;
             }
             if (keyboardState.IsKeyDown(Keys.Up))
             {   //player moves up
-                verticalMovement = -1;
+                verticalMovement -= 1;
                 tryLeaving = true;
             }
             if (keyboardState.IsKeyDown(Keys.Down))
             {   //player moves down
-                verticalMovement = 1;
+                verticalMovement += 1;
             }
             if (keyboardState.IsKeyDown(Keys.Space))
             {   // player jump
                 tryJumping = true;
             }
 
-            if (!canGoLeft && horizontalMovement == -1 || !canGoRight && horizontalMovement == 1)
-            {
-                horizontalMovement = 0;
-            }
-            if (verticalMovement != 0 && collidedWithLadder && this.Y >= ladderUsed.Y)
-            {
-                isLadderUsed = true;
-            }
-            if (tryJumping && !canGoDown && canGoUp)
+            if (tryJumping && OnGround && canGoUp)
             {
                 isJumping = true;
             }
-            if (!collidedWithLadder || tryJumping || horizontalMovement != 0)
+            if (verticalMovement != 0 && !isLadderUsed && collidedWithLadder && this.Y >= ladderUsed.Y)
+            {
+                float offset = (ladderUsed.X + ladderUsed.CollisionWidth / 2) -
+                    (this.X + CollisionWidth / 2);
+                if (Math.Abs(offset) < 1f)
+                {
+                    this.X += offset;
+                    isLadderUsed = true;
+                }
+                else if (OnGround && (facingRight == offset >= 0))
+                {
+                    horizontalMovement = facingRight ? 1 : -1;
+                }
+            }
+            if (!collidedWithLadder || tryJumping ||
+                (horizontalMovement != 0 && (verticalMovement == 0 || this.Y < ladderUsed.Y)))
             {
                 isLadderUsed = false;
+            }
+            if (!isLadderUsed)
+            {
+                verticalMovement = 0;
             }
             if (collidedWithDoor && tryLeaving)
             {
@@ -284,22 +316,10 @@ namespace Demeter
             // Base speed is a combination of horizontal movement control and
             // acceleration downward due to gravity.
 
-            speed.X = horizontalMovement * MoveAcceleration * elapsed / 1000f;
-
-            // Apply pseudo-drag horizontally.
-            if (!CanGoDown)
-                speed.X *= GroundDragFactor;
-            else
-                speed.X *= AirDragFactor;
-
-            // Prevent the player from running faster than his top speed.
-            speed.X = MathHelper.Clamp(speed.X, -MaxMoveSpeed, MaxMoveSpeed);
-
             if (isLadderUsed)
             {
-                if (!canGoDown && verticalMovement == 1 ||
-                    !canGoUp && verticalMovement == -1 ||
-                    position.Y < ladderUsed.Y && verticalMovement == -1)
+                speed.X = 0;
+                if (position.Y < ladderUsed.Y && verticalMovement == -1)
                 {
                     speed.Y = 0;
                 }
@@ -314,25 +334,55 @@ namespace Demeter
             }
             else
             {
-                speed.Y = MathHelper.Clamp(speed.Y + (GravityAcceleration * elapsed) / 1000f, -MaxFallSpeed, MaxFallSpeed);
-                if (!CanGoDown && speed.Y > 0 || !CanGoUp && speed.Y < 0)
+                if (InTheAir)
+                {
+                    if (horizontalMovement != 0)
+                        speed.X = horizontalMovement * MoveAcceleration * elapsed / 1000f;
+                }
+                else
+                {
+                    speed.X = horizontalMovement * MoveAcceleration * elapsed / 1000f;
+                }
+                if (isJumping)
+                {
+                    speed.Y = jumpStartSpeed;
+                }
+                else
+                {
+                    speed.Y += (GravityAcceleration * elapsed) / 1000f;
+                }
+                if (!canGoDown && speed.Y > 0 || !canGoUp && speed.Y < 0)
                 {
                     speed.Y = 0;
                 }
             }
 
-            if (isJumping)
+            // Prevent the player from running faster than his top speed.
+            speed.X = MathHelper.Clamp(speed.X, -MaxMoveSpeed, MaxMoveSpeed);
+            speed.Y = MathHelper.Clamp(speed.Y, -MaxFallSpeed, MaxFallSpeed);
+
+            if (!canGoLeft && speed.X < 0 ||
+                !canGoRight && speed.X > 0)
             {
-                speed.Y = jumpStartSpeed;
+                speed.X = 0;
+            }
+            if (!canGoUp && speed.Y < 0 ||
+                !canGoDown && speed.Y > 0)
+            {
+                speed.Y = 0;
             }
 
             // Out of Border
-            if ((speed.X < 0 && position.X < 3) || 
+            if ((speed.X < 0 && position.X < 3) ||
                 (speed.X > 0 && position.X > Level.Width - 50))
+            {
                 speed.X = 0;
+            }
             if ((speed.Y < 0 && position.Y < 3) ||
                 (speed.Y > 0 && position.Y > Level.Height - 50))
+            {
                 speed.Y = 0;
+            }
 
             // Apply speed.
             position += speed;
@@ -344,9 +394,9 @@ namespace Demeter
                 throw new NotSupportedException("No animation is currently playing.");
 
             // Flip the sprite to face the way we are moving.
-            if (speed.X > 0)
+            if (facingRight)
                 spriteEffects = SpriteEffects.FlipHorizontally;
-            else if (speed.X < 0)
+            else
                 spriteEffects = SpriteEffects.None;
 
             // Draw the current frame.
@@ -356,6 +406,8 @@ namespace Demeter
 
             Game.SpriteBatch.DrawString(Game.font, collidedWithLadder.ToString(),
                 Vector2.Zero, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 1);
+            Game.SpriteBatch.DrawString(Game.font, isLadderUsed.ToString(),
+                new Vector2(0,50), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 1);
         }
 
         public override void CollisionResponse(Object obj)

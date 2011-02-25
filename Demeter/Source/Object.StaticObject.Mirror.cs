@@ -17,7 +17,7 @@ namespace Demeter
         }
         public override int CollisionHeight
         {
-            get { return 24; }
+            get { return 0; }
         }
         /// <summary>
         /// The angle between the normal and the x-axis
@@ -28,13 +28,6 @@ namespace Demeter
             set { rotation = value; }
         }
         float rotation = 0;
-
-        public bool Lighted
-        {
-            get { return lighted; }
-            set { lighted = value; }
-        }
-        bool lighted = false;
 
         private const float RotationSpeed = 0.03f;
 
