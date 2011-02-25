@@ -210,7 +210,7 @@ namespace Demeter
                                         string pyStr2 = reader.GetAttribute("py");
                                         float px2 = float.Parse(pxStr2);
                                         float py2 = float.Parse(pyStr2);
-                                        Light light1 = new Light(game, new Vector2(px2, py2));
+                                        LightSource light1 = new LightSource(game, new Vector2(px2, py2));
                                         switch1.Add(light1);
                                         level.objects.Add(light1);
                                     }
