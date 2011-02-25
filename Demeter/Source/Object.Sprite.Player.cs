@@ -91,6 +91,14 @@ namespace Demeter
             set { comingLevel = value; }
         }
 
+        Vector2 prePosition;
+        public Vector2 PrePosition
+        {
+            get { return prePosition; }
+            set { prePosition = value; }
+        }
+
+
         #region movement
         bool canGoUp = true;
         public bool CanGoUp
@@ -315,7 +323,7 @@ namespace Demeter
             else
             {
                 speed.Y = MathHelper.Clamp(speed.Y + (GravityAcceleration * elapsed) / 1000f, -MaxFallSpeed, MaxFallSpeed);
-                if (!CanGoDown && speed.Y > 0 || !CanGoUp && speed.Y < 0)
+                if (!CanGoDown && speed.Y >= 0 || !CanGoUp && speed.Y <= 0)
                 {
                     speed.Y = 0;
                 }

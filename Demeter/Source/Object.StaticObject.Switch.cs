@@ -13,11 +13,11 @@ namespace Demeter
     {
         public override int CollisionWidth
         {
-            get { return 90; }
+            get { return 45; }
         }
         public override int CollisionHeight
         {
-            get { return 90; }
+            get { return 70; }
         }
 
         List<IControlledObject> controlled;
@@ -36,11 +36,24 @@ namespace Demeter
             set { switchOff = value; }
         }
 
-        public Switch(Game1 game, Vector2 pos)
+        public int MoveSpeed
+        {
+            get { return 2; }
+        }
+
+        private bool one_off;
+        private bool moveable;
+        private bool canBePressed;
+        private int pressCD;
+
+        public Switch(Game1 game, Vector2 pos, bool one_off, bool moveable)
             : base(game, pos)
         {
             position = pos;
             this.controlled = new List<IControlledObject>();
+            this.one_off = one_off;
+            this.moveable = moveable;
+            this.pressCD = 0;
         }
 
         public override void LoadContent()
@@ -57,6 +70,24 @@ namespace Demeter
 
         public override void Update(GameTime gameTime)
         {
+            if (texture == SwitchOn)
+            {
+                foreach (IControlledObject controlledObj in controlled)
+                {
+                    controlledObj.Control();
+                }
+                if (moveable)
+                {
+                    X += MoveSpeed;
+                }
+            }
+
+            if (one_off)
+            {
+                texture = switchOff;
+            }
+
+            pressCD += gameTime.ElapsedGameTime.Milliseconds;
         }
 
         public override void CollisionResponse(Object obj)
@@ -65,15 +96,33 @@ namespace Demeter
 
             if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.Down))
             {
-                texture = switchOn;
-                foreach (IControlledObject controlledObj in controlled)
+                if (one_off)
                 {
-                    controlledObj.Control();
+                    texture = switchOn;
                 }
             }
-            else
+            if (pressCD > 100)
             {
-                texture = switchOff;
+                pressCD -= 100;
+                canBePressed = true;
+                if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.Down))
+                {
+                    if (!one_off)
+                    {
+                        if (canBePressed)
+                        {
+                            if (texture == switchOff)
+                            {
+                                texture = switchOn;
+                            }
+                            else
+                            {
+                                texture = switchOff;
+                            }
+                        }
+                    }
+                    canBePressed = false;
+                }
             }
         }
 

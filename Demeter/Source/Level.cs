@@ -104,6 +104,11 @@ namespace Demeter
             }
 
             CollisionDetection();
+
+            if (player.CanGoDown)
+            {
+                player.PrePosition = player.Position;
+            }
         }
 
         public void Draw(GameTime gameTime)
@@ -171,9 +176,29 @@ namespace Demeter
                         {
                             string pxStr = reader.GetAttribute("px");
                             string pyStr = reader.GetAttribute("py");
+                            string one_offStr = reader.GetAttribute("one_off");
+                            string moveableStr = reader.GetAttribute("moveable");
                             float px = float.Parse(pxStr);
                             float py = float.Parse(pyStr);
-                            Switch switch1 = new Switch(game, new Vector2(px, py));
+                            bool one_off;
+                            bool moveable;
+                            if (one_offStr == "true")
+                            {
+                                one_off = true;
+                            }
+                            else
+                            {
+                                one_off = false;
+                            }
+                            if (moveableStr == "true")
+                            {
+                                moveable = true;
+                            }
+                            else
+                            {
+                                moveable = false;
+                            }
+                            Switch switch1 = new Switch(game, new Vector2(px, py), one_off, moveable);
                             XmlReader subtree = reader.ReadSubtree();
                             while (subtree.Read())
                             {
@@ -198,6 +223,21 @@ namespace Demeter
                                         Mirror mirror1 = new Mirror(game, new Vector2(px2, py2));
                                         switch1.Add(mirror1);
                                         level.objects.Add(mirror1);
+                                    }
+                                    else if (subtree.Name == "platform")
+                                    {
+                                        string pxStr2 = reader.GetAttribute("px");
+                                        string pyStr2 = reader.GetAttribute("py");
+                                        string widthStr2 = reader.GetAttribute("width");
+                                        string heightStr2 = reader.GetAttribute("height");
+                                        float px2 = float.Parse(pxStr2);
+                                        float py2 = float.Parse(pyStr2);
+                                        int width2 = int.Parse(widthStr2);
+                                        int height2 = int.Parse(heightStr2);
+
+                                        Platform platform = new Platform(game, new Vector2(px2, py2), width2, height2);
+                                        switch1.Add(platform);
+                                        level.objects.Add(platform);
                                     }
                                 }
                             }
