@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<level>
+  <size width="1000" height="600"></size>
+  <ground py="570"></ground>
+  <background texture="texture/Background.Background6"></background>
+  <cameraoffset px="0" py="0"></cameraoffset>
+  <player px="100" py="400"></player>
+  <switch name="switch1" px="200" py="500" one_off="true" moveable="false">
+    <mirror name="mirror1" px="400" py="500"></mirror>
+  </switch>
+  <ladder name="ladder1" px="700" py="450" height="89"></ladder>
+  <block name="block1" px="200" py="500" width="200" height="48"></block>
+  <door name="door1" px="800" py="550" levelFileName="level1-1.xml"></door>
+</level>
