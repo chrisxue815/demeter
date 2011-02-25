@@ -271,12 +271,10 @@ namespace Demeter
             if (keyboardState.IsKeyDown(Keys.Left))
             {   // player moves left
                 horizontalMovement -= 1;
-                facingRight = false;
             }
             if (keyboardState.IsKeyDown(Keys.Right))
             {   // player moves right
                 horizontalMovement += 1;
-                facingRight = true;
             }
             if (keyboardState.IsKeyDown(Keys.Up))
             {   //player moves up
@@ -305,9 +303,9 @@ namespace Demeter
                     this.X += offset;
                     isLadderUsed = true;
                 }
-                else if (OnTheGround && (facingRight == offset >= 0))
+                else if (OnTheGround)
                 {
-                    horizontalMovement = facingRight ? 1 : -1;
+                    horizontalMovement = offset >= 0 ? 1 : -1;
                 }
             }
             if (!collidedWithLadder || tryJumping ||
@@ -322,6 +320,15 @@ namespace Demeter
             if (collidedWithDoor && tryLeaving)
             {
                 isLeaving = true;
+            }
+
+            if (horizontalMovement == 1)
+            {
+                facingRight = true;
+            }
+            else if (horizontalMovement == -1)
+            {
+                facingRight = false;
             }
         }
 

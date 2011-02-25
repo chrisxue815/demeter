@@ -21,10 +21,12 @@ namespace Demeter
             get { return 70; }
         }
 
+        bool switchOn;
+
         List<IControlledObject> controlled = new List<IControlledObject>();
 
-        Texture2D switchOn;
-        Texture2D switchOff;
+        Texture2D switchOnTexture;
+        Texture2D switchOffTexture;
 
         private bool wasKeyDown = false;
 
@@ -48,9 +50,9 @@ namespace Demeter
 
         public override void LoadContent()
         {
-            switchOn = Game.Content.Load<Texture2D>("texture/Object.StaticObject.Switch.SwitchOn");
-            switchOff = Game.Content.Load<Texture2D>("texture/Object.StaticObject.Switch.SwitchOff");
-            texture = switchOff;
+            switchOnTexture = Game.Content.Load<Texture2D>("texture/Object.StaticObject.Switch.SwitchOn");
+            switchOffTexture = Game.Content.Load<Texture2D>("texture/Object.StaticObject.Switch.SwitchOff");
+            texture = switchOffTexture;
         }
 
         public Vector2 GetPosition()
@@ -74,15 +76,19 @@ namespace Demeter
                     {
                         controlledObj.Control();
                     }
-                    texture = switchOn;
+                    switchOn = !switchOn;
                 }
                 wasKeyDown = true;
             }
             else
             {
                 wasKeyDown = false;
-                texture = switchOff;
             }
+
+            if (switchOn)
+                texture = switchOnTexture;
+            else
+                texture = switchOffTexture;
         }
 
         public void Add(IControlledObject obj)

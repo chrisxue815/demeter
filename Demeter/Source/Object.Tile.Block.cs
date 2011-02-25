@@ -8,7 +8,7 @@ using System.Xml;
 
 namespace Demeter
 {
-    public class Block : Tile
+    public class Block : Tile, IControlledObject
     {
         public Block(Game1 game, Vector2 position, Point tileFrame)
             : base(game, position, tileFrame)
@@ -87,5 +87,14 @@ namespace Demeter
                 }
             }
         }
+
+        #region IControlledObject Members
+
+        void IControlledObject.Control()
+        {
+            //throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }
