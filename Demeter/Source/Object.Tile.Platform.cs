@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Xml;
 
 namespace Demeter
 {
@@ -29,6 +30,23 @@ namespace Demeter
         {
         }
 
+        public Platform(Game1 game, XmlTextReader reader)
+            : base(game)
+        {
+            string pxStr = reader.GetAttribute("px");
+            string pyStr = reader.GetAttribute("py");
+            string widthStr = reader.GetAttribute("width");
+            string heightStr = reader.GetAttribute("height");
+            float px = float.Parse(pxStr);
+            float py = float.Parse(pyStr);
+            int width = int.Parse(widthStr);
+            int height = int.Parse(heightStr);
+
+            this.position = new Vector2(px, py);
+            this.Width = width;
+            this.Height = height;
+        }
+
         public override void LoadContent()
         {
             texture = Game.Content.Load<Texture2D>("texture/Object.Tile.Platform.Platform1");
@@ -43,7 +61,7 @@ namespace Demeter
             {
                 Player player = Level.Player;
 
-                if ((int)player.PrePosition.Y + player.CollisionHeight <= this.Y)
+                if ((int)player.LastPosition.Y + player.CollisionHeight <= this.Y)
                 {
                     player.CanGoDown = false;
                     player.Y = this.Y - player.CollisionHeight + 1;

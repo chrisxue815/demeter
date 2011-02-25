@@ -9,17 +9,36 @@ namespace Demeter
 {
     public abstract class Tile : Object
     {
+        private int width;
+        protected int Width
+        {
+            get { return width; }
+            set
+            {
+                width = value;
+                tileFrame.X = (int)Math.Ceiling((double)width / texture.Width);
+            }
+        }
+
+        private int height;
+        protected int Height
+        {
+            get { return height; }
+            set
+            {
+                height = value;
+                tileFrame.Y = (int)Math.Ceiling((double)height / texture.Height);
+            }
+        }
+
         public override int CollisionWidth
         {
             get { return width; }
         }
-        protected int width;
-
         public override int CollisionHeight
         {
             get { return height; }
         }
-        protected int height;
 
         protected Texture2D texture;
         public Texture2D Texture
@@ -28,7 +47,7 @@ namespace Demeter
             set { texture = value; }
         }
 
-        Point tileFrame;
+        Point tileFrame = new Point();
 
         public override Rectangle CollisionRect
         {
@@ -37,6 +56,11 @@ namespace Demeter
                 return new Rectangle((int)(position.X),
                     (int)(position.Y), CollisionWidth, CollisionHeight);
             }
+        }
+
+        public Tile(Game1 game)
+            : base(game)
+        {
         }
 
         public Tile(Game1 game, Vector2 position, Point tileFrame)
@@ -48,21 +72,15 @@ namespace Demeter
         public Tile(Game1 game, Vector2 position, int width)
             : base(game, position)
         {
-            this.width = width;
-            this.height = 0;
-            int frameX = (int)Math.Ceiling((double)width / texture.Width);
-            int frameY = 1;
-            tileFrame = new Point(frameX, frameY);
+            this.Width = width;
+            this.Height = texture.Height;
         }
 
         public Tile(Game1 game, Vector2 position, int width, int height)
             : base(game, position)
         {
-            this.width = width;
-            this.height = height;
-            int frameX = (int)Math.Ceiling((double)width / texture.Width);
-            int frameY = (int)Math.Ceiling((double)height / texture.Height);
-            tileFrame = new Point(frameX, frameY);
+            this.Width = width;
+            this.Height = height;
         }
 
         public override void Draw(GameTime gameTime)

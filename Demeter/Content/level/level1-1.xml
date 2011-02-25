@@ -5,11 +5,11 @@
   <background texture="texture/Background.Background6"></background>
   <cameraoffset px="0" py="0"></cameraoffset>
   <player px="100" py="470"></player>
-  <switch name="switch1" px="300" py="480" one_off="true" moveable="false">
-    <light name="light1" px="400" py="300"></light>
+  <shiftstick name="switch1" px="300" py="480">
+    <lightsource name="light1" px="400" py="300"></lightsource>
     <mirror name="mirror1" px="400" py="480"></mirror>
-  </switch>
-  <switch name="switch2" px="200" py="360" one_off="false" moveable="true">
+  </shiftstick>
+  <switch name="switch2" px="200" py="360">
     <platform name="platform2" px="200" py="430" width="200" height="48"></platform>
   </switch>
   <ladder name="ladder1" px="150" py="150" height="400"></ladder>

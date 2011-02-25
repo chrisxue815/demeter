@@ -45,6 +45,11 @@ namespace Demeter
             }
         }
 
+        public StaticObject(Game1 game)
+            : base(game)
+        {
+        }
+
         public StaticObject(Game1 game, Vector2 position)
             : base(game, position)
         {

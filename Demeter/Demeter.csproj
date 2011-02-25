@@ -86,6 +86,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Source\Object.StaticObject.ShiftStick.cs" />
     <Compile Include="Source\Helper\LineSegment.cs" />
     <Compile Include="Source\Helper\Ray.cs" />
     <Compile Include="Source\Helper\Line.cs" />

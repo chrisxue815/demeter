@@ -35,6 +35,11 @@ namespace Demeter
             }
         }
 
+        public Sprite(Game1 game)
+            : base(game)
+        {
+        }
+
         public Sprite(Game1 game, Vector2 position)
             : base(game, position)
         {

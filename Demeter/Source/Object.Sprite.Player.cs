@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
+using System.Xml;
 
 namespace Demeter
 {
@@ -104,18 +105,17 @@ namespace Demeter
         {
             get { return canGoDown; }
         }
-        public bool OnGround
+        public bool OnTheGround
         {
             get { return !canGoDown; }
-	}
-	
-        Vector2 prePosition;
-        public Vector2 PrePosition
-        {
-            get { return prePosition; }
-            set { prePosition = value; }
         }
-
+	
+        Vector2 lastPosition;
+        public Vector2 LastPosition
+        {
+            get { return lastPosition; }
+            set { lastPosition = value; }
+        }
 
         #region movement
         bool canGoUp = true;
@@ -181,6 +181,17 @@ namespace Demeter
         public Player(Game1 game, Vector2 position)
             : base(game, position)
         {
+        }
+
+        public Player(Game1 game, XmlTextReader reader)
+            : base(game)
+        {
+            string pxStr = reader.GetAttribute("px");
+            string pyStr = reader.GetAttribute("py");
+            float px = float.Parse(pxStr);
+            float py = float.Parse(pyStr);
+            this.game = game;
+            this.position = new Vector2(px, py);
         }
 
         /// <summary>
@@ -281,7 +292,7 @@ namespace Demeter
                 tryJumping = true;
             }
 
-            if (tryJumping && OnGround && canGoUp)
+            if (tryJumping && OnTheGround && canGoUp)
             {
                 isJumping = true;
             }
@@ -294,7 +305,7 @@ namespace Demeter
                     this.X += offset;
                     isLadderUsed = true;
                 }
-                else if (OnGround && (facingRight == offset >= 0))
+                else if (OnTheGround && (facingRight == offset >= 0))
                 {
                     horizontalMovement = facingRight ? 1 : -1;
                 }

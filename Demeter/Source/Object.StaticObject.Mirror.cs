@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
+using System.Xml;
 
 namespace Demeter
 {
@@ -35,7 +36,18 @@ namespace Demeter
             : base(game, pos)
         {
             position = pos;
-            LoadContent();
+        }
+
+        public Mirror(Game1 game, XmlTextReader reader)
+            : base(game)
+        {
+            string pxStr2 = reader.GetAttribute("px");
+            string pyStr2 = reader.GetAttribute("py");
+            float px2 = float.Parse(pxStr2);
+            float py2 = float.Parse(pyStr2);
+
+            this.game = game;
+            this.position = new Vector2(px2, py2);
         }
 
         public override void LoadContent()

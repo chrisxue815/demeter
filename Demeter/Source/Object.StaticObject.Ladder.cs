@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Xml;
 
 namespace Demeter
 {
@@ -18,20 +19,43 @@ namespace Demeter
         {
             get { return height; }
         }
+
         private int height;
+        public int Height
+        {
+            get { return height; }
+            set
+            {
+                height = value;
+                frame = (int)Math.Ceiling((double)height / texture.Height);
+            }
+        }
 
         private int frame;
 
         public Ladder(Game1 game, Vector2 position, int height)
             :base(game, position)
         {
-            this.height = height;
-            frame = (int)Math.Ceiling((double)height / texture.Height);
+            this.Height = height;
+        }
+
+        public Ladder(Game1 game, XmlTextReader reader)
+            : base(game)
+        {
+            string pxStr = reader.GetAttribute("px");
+            string pyStr = reader.GetAttribute("py");
+            string heightStr = reader.GetAttribute("height");
+            float px = float.Parse(pxStr);
+            float py = float.Parse(pyStr);
+            int height = int.Parse(heightStr);
+
+            this.position = new Vector2(px, py);
+            this.Height = height;
         }
 
         public override void LoadContent()
         {
-            texture = Game.Content.Load<Texture2D>(@"texture/Object.StaticObject.Ladder.Ladder1");
+            texture = Game.Content.Load<Texture2D>("texture/Object.StaticObject.Ladder.Ladder1");
         }
 
         public override void Update(GameTime gameTime)
