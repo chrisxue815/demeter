@@ -1,18 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <level>
   <size width="1000" height="600"></size>
-  <ground py="570"></ground>
   <background texture="texture/Background.Background6"></background>
-  <cameraoffset px="0" py="0"></cameraoffset>
-  <player px="100" py="470"></player>
-  <shiftstick name="switch1" px="300" py="480">
-    <lightsource name="light1" px="400" py="300"></lightsource>
-    <mirror name="mirror1" px="400" py="480"></mirror>
-  </shiftstick>
-  <switch name="switch2" px="200" py="360">
-    <block name="block2" px="200" py="430" width="256" height="48"></block>
+  <cameraOffset px="0" py="0"></cameraOffset>
+
+  <ground id="ground1" py="570"></ground>
+  <player id="player1" px="100" py="470" movable="true"></player>
+  <ladder id="ladder1" px="400" py="165" height="270" movable="true"></ladder>
+  <switch id="switch1" px="200" py="370" movable="true">
+    <controlled objId="block1"></controlled>
   </switch>
-  <ladder name="ladder1" px="150" py="150" height="400"></ladder>
-  <platform name="platform1" px="200" py="500" width="256" height="48"></platform>
-  <door name="door1" px="500" py="522" levelFileName="level1-2.xml"></door>
+  <switch id="switch2" px="400" py="370" movable="true">
+    <controlled objId="block1"></controlled>
+  </switch>
+  <block id="block1" px="200" py="430" width="256" height="48" movable="true">
+    <bound left="200" right="300" top="430" bottom="430"></bound>
+  </block>
+  <platform id="platform1" px="200" py="500" width="256" height="48"></platform>
+  <shiftStick id="shiftStick1" px="300" py="480">
+    <controlled objId="light1"></controlled>
+    <controlled objId="mirror1"></controlled>
+  </shiftStick>
+  <lightsource id="light1" px="400" py="300"></lightsource>
+  <mirror id="mirror1" px="400" py="480"></mirror>
+  <door id="door1" px="500" py="522" levelFileName="level1-2.xml"></door>
 </level>

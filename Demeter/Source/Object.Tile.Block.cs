@@ -10,6 +10,13 @@ namespace Demeter
 {
     public class Block : Tile, IControlledObject
     {
+        BlockInfo blockInfo = null;
+        public BlockInfo BlockInfo
+        {
+            get { return blockInfo; }
+            set { blockInfo = value; }
+        }
+
         public Block(Game1 game, Vector2 position, Point tileFrame)
             : base(game, position, tileFrame)
         {
@@ -26,12 +33,13 @@ namespace Demeter
         }
 
         public Block(Game1 game, XmlTextReader reader)
-            : base(game)
+            : base(game, reader)
         {
             string pxStr = reader.GetAttribute("px");
             string pyStr = reader.GetAttribute("py");
             string widthStr = reader.GetAttribute("width");
             string heightStr = reader.GetAttribute("height");
+
             float px = float.Parse(pxStr);
             float py = float.Parse(pyStr);
             int width = int.Parse(widthStr);
@@ -41,6 +49,26 @@ namespace Demeter
             this.position = new Vector2(px, py);
             this.Width = width;
             this.Height = height;
+
+            XmlReader subtree = reader.ReadSubtree();
+            while (subtree.Read())
+            {
+                if (subtree.NodeType == XmlNodeType.Element)
+                {
+                    if (subtree.Name == "bound")
+                    {
+                        string leftStr = reader.GetAttribute("left");
+                        string rightStr = reader.GetAttribute("right");
+                        string topStr = reader.GetAttribute("top");
+                        string bottomStr = reader.GetAttribute("bottom");
+                        float left = float.Parse(leftStr);
+                        float right = float.Parse(rightStr);
+                        float top = float.Parse(topStr);
+                        float bottom = float.Parse(bottomStr);
+                        this.blockInfo = new BlockInfo(left, right, top, bottom);
+                    }
+                }
+            }
         }
 
         public override void LoadContent()
@@ -50,40 +78,86 @@ namespace Demeter
 
         public override void Update(GameTime gameTime)
         {
+            if (blockInfo != null && blockInfo.Moving == true)
+            {
+                List<Object> collided = Level.CollidedWith(this);
+                List<Object> above = new List<Object>();
+                foreach (Object obj in collided)
+                {
+                    Location location = LocationOf(obj);
+                    if (location == Location.ABOVE)
+                    {
+                        above.Add(obj);
+                    }
+                }
+
+                if (blockInfo.Positive)
+                {
+                    position += blockInfo.Speed;
+                    foreach (Object obj in above)
+                    {
+                        obj.Position += blockInfo.Speed;
+                    }
+                }
+                else
+                {
+                    position -= blockInfo.Speed;
+                    foreach (Object obj in above)
+                    {
+                        obj.Position -= blockInfo.Speed;
+                    }
+                }
+
+                // out of bound
+                if (position.X < blockInfo.LeftBound ||
+                    position.X > blockInfo.RightBound ||
+                    position.Y < blockInfo.TopBound ||
+                    position.Y > blockInfo.BottomBound)
+                {
+                    blockInfo.Moving = false;
+                }
+
+                CollisionDetection();
+            }
         }
 
         public override void CollisionResponse(Object obj)
         {
+            Location location = LocationOf(obj);
+
+            switch (location)
+            {
+                case Location.BELOW:
+                    obj.Y = this.Y + this.CollisionHeight - 1;
+                    break;
+                case Location.ABOVE:
+                    obj.Y = this.Y - obj.CollisionHeight + 1;
+                    break;
+                case Location.RIGHT:
+                    obj.X = this.X + this.CollisionWidth - 1;
+                    break;
+                case Location.LEFT:
+                    obj.X = this.X - obj.CollisionWidth + 1;
+                    break;
+            }
+
             if (obj is Player)
             {
-                Player player = Level.Player;
-
-                float horizontalDistance1 = Math.Abs(player.X + player.CollisionWidth - this.X);
-                float horizontalDistance2 = Math.Abs(this.X + this.CollisionWidth - player.X);
-                float verticalDistance1 = Math.Abs(player.Y + player.CollisionHeight - this.Y);
-                float verticalDistance2 = Math.Abs(this.Y + this.CollisionHeight - player.Y);
-
-                float horizontalDistance = Math.Min(horizontalDistance1, horizontalDistance2);
-                float verticalDistance = Math.Min(verticalDistance1, verticalDistance2);
-
-                if (horizontalDistance < verticalDistance)
+                Player player = (Player)obj;
+                switch (location)
                 {
-                    if (player.X < this.X)
-                    {
-                        player.CanGoRight = false;
-                    }
-                    else
-                        player.CanGoLeft = false;
-                }
-                else
-                {
-                    if (player.Y < this.Y)
-                    {
-                        player.CanGoDown = false;
-                        player.Y = this.Y - player.CollisionHeight + 1;
-                    }
-                    else
+                    case Location.BELOW:
                         player.CanGoUp = false;
+                        break;
+                    case Location.ABOVE:
+                        player.CanGoDown = false;
+                        break;
+                    case Location.RIGHT:
+                        player.CanGoLeft = false;
+                        break;
+                    case Location.LEFT:
+                        player.CanGoRight = false;
+                        break;
                 }
             }
         }
@@ -92,9 +166,85 @@ namespace Demeter
 
         void IControlledObject.Control()
         {
-            //throw new NotImplementedException();
+            blockInfo.Positive = !blockInfo.Positive;
+            blockInfo.Moving = true;
         }
 
         #endregion
+    }
+
+    public class BlockInfo
+    {
+        const float MaxSpeed = 1.0f;
+
+        readonly Vector2 speed;
+        public Vector2 Speed
+        {
+            get { return speed; }
+        }
+
+        bool positive = false;
+        public bool Positive
+        {
+            get { return positive; }
+            set { positive = value; }
+        }
+
+        bool moving = false;
+        public bool Moving
+        {
+            get { return moving; }
+            set { moving = value; }
+        }
+
+        float leftBound;
+        public float LeftBound
+        {
+            get { return leftBound; }
+            set { leftBound = value; }
+        }
+
+        float rightBound;
+        public float RightBound
+        {
+            get { return rightBound; }
+            set { rightBound = value; }
+        }
+
+        float topBound;
+        public float TopBound
+        {
+            get { return topBound; }
+            set { topBound = value; }
+        }
+
+        float bottomBound;
+        public float BottomBound
+        {
+            get { return bottomBound; }
+            set { bottomBound = value; }
+        }
+
+        public BlockInfo(float leftBound, float rightBound, float topBound, float bottomBound)
+        {
+            this.leftBound = leftBound;
+            this.rightBound = rightBound;
+            this.topBound = topBound;
+            this.bottomBound = bottomBound;
+
+            speed = new Vector2();
+            float offsetX = Math.Abs(leftBound - rightBound);
+            float offsetY = Math.Abs(topBound - bottomBound);
+            if (offsetX > offsetY)
+            {
+                speed.X = MaxSpeed;
+                speed.Y = MaxSpeed / offsetX * offsetY;
+            }
+            else
+            {
+                speed.Y = MaxSpeed;
+                speed.X = MaxSpeed / offsetY * offsetX;
+            }
+        }
     }
 }

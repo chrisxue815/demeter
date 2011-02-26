@@ -27,12 +27,13 @@ namespace Demeter
         }
 
         public Platform(Game1 game, XmlTextReader reader)
-            : base(game)
+            : base(game, reader)
         {
             string pxStr = reader.GetAttribute("px");
             string pyStr = reader.GetAttribute("py");
             string widthStr = reader.GetAttribute("width");
             string heightStr = reader.GetAttribute("height");
+
             float px = float.Parse(pxStr);
             float py = float.Parse(pyStr);
             int width = int.Parse(widthStr);
