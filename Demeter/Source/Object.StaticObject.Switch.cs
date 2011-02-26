@@ -10,7 +10,7 @@ using System.Xml;
 
 namespace Demeter
 {
-    class Switch : StaticObject
+    class Switch : StaticObject, IController
     {
         public override int CollisionWidth
         {
@@ -37,7 +37,7 @@ namespace Demeter
         }
 
         public Switch(Game1 game, XmlTextReader reader)
-            : base(game)
+            : base(game, reader)
         {
             string pxStr = reader.GetAttribute("px");
             string pyStr = reader.GetAttribute("py");
@@ -66,34 +66,41 @@ namespace Demeter
 
         public override void CollisionResponse(Object obj)
         {
-            KeyboardState keyboardState = Keyboard.GetState();
-
-            if (keyboardState.IsKeyDown(Keys.Up))
+            if (obj is Player)
             {
-                if (!wasKeyDown)
+                KeyboardState keyboardState = Keyboard.GetState();
+
+                if (keyboardState.IsKeyDown(Keys.Up))
                 {
-                    foreach (IControlledObject controlledObj in controlled)
+                    if (!wasKeyDown)
                     {
-                        controlledObj.Control();
+                        foreach (IControlledObject controlledObj in controlled)
+                        {
+                            controlledObj.Control();
+                        }
+                        switchOn = !switchOn;
                     }
-                    switchOn = !switchOn;
+                    wasKeyDown = true;
                 }
-                wasKeyDown = true;
-            }
-            else
-            {
-                wasKeyDown = false;
-            }
+                else
+                {
+                    wasKeyDown = false;
+                }
 
-            if (switchOn)
-                texture = switchOnTexture;
-            else
-                texture = switchOffTexture;
+                if (switchOn)
+                    texture = switchOnTexture;
+                else
+                    texture = switchOffTexture;
+            }
         }
 
-        public void Add(IControlledObject obj)
+        #region IController Members
+
+        void IController.Add(IControlledObject obj)
         {
             this.controlled.Add(obj);
         }
+
+        #endregion
     }
 }

@@ -32,11 +32,12 @@ namespace Demeter
         }
 
         public Door(Game1 game, XmlTextReader reader)
-            : base(game)
+            : base(game, reader)
         {
             string pxStr = reader.GetAttribute("px");
             string pyStr = reader.GetAttribute("py");
             string levelFileNameStr = reader.GetAttribute("levelFileName");
+
             float px = float.Parse(pxStr);
             float py = float.Parse(pyStr);
 

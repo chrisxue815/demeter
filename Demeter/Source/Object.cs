@@ -5,11 +5,19 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using System.Xml;
 
 namespace Demeter
 {
     public abstract class Object
     {
+        protected string id;
+        public string Id
+        {
+            get { return id; }
+            set { id = value; }
+        }
+
         protected Game1 game;
         public Game1 Game
         {
@@ -24,7 +32,8 @@ namespace Demeter
         protected Vector2 position = Vector2.Zero;
         public Vector2 Position
         {
-            get { return this.position; }
+            get { return position; }
+            set { position = value; }
         }
 
         public float X
@@ -46,6 +55,13 @@ namespace Demeter
                 return new Vector2(position.X - Level.CameraOffset.X + TopCollisionOffset,
                     position.Y - Level.CameraOffset.Y + LeftCollisionOffset);
             }
+        }
+
+        protected bool movable;
+        public bool Movable
+        {
+            get { return movable; }
+            set { movable = value; }
         }
 
         protected float layerDepth = 0.5f;
@@ -71,19 +87,34 @@ namespace Demeter
             LoadContent();
         }
 
-        public Object(Game1 game, Vector2 position)
+        public Object(Game1 game, XmlTextReader reader)
+            : this(game)
         {
-            this.game = game;
+            this.Id = reader.GetAttribute("id");
+            string movable = reader.GetAttribute("movable");
+            if (movable != null && movable == "true")
+            {
+                this.movable = true;
+                Level.MovableObjects.Add(this);
+            }
+            else
+            {
+                this.movable = false;
+                Level.Objects.Add(this);
+            }
+        }
+
+        public Object(Game1 game, Vector2 position)
+            : this(game)
+        {
             this.position = position;
-            LoadContent();
         }
 
         public Object(Game1 game, Vector2 position, float scale)
+            : this(game)
         {
-            this.game = game;
             this.position = position;
             this.scale = scale;
-            LoadContent();
         }
 
         public abstract void LoadContent();
@@ -93,5 +124,46 @@ namespace Demeter
         public abstract void Draw(GameTime gameTime);
 
         public abstract void CollisionResponse(Object obj);
+
+        protected virtual void CollisionDetection()
+        {
+            List<Object> collided = Level.CollidedWith(this);
+            foreach (Object obj in collided)
+            {
+                this.CollisionResponse(obj);
+                obj.CollisionResponse(this);
+            }
+        }
+
+        protected virtual Location LocationOf(Object obj)
+        {
+            Location location;
+            float horizontalDistance1 = Math.Abs(obj.X + obj.CollisionWidth - this.X);
+            float horizontalDistance2 = Math.Abs(this.X + this.CollisionWidth - obj.X);
+            float verticalDistance1 = Math.Abs(obj.Y + obj.CollisionHeight - this.Y);
+            float verticalDistance2 = Math.Abs(this.Y + this.CollisionHeight - obj.Y);
+
+            float horizontalDistance = Math.Min(horizontalDistance1, horizontalDistance2);
+            float verticalDistance = Math.Min(verticalDistance1, verticalDistance2);
+
+            if (verticalDistance < horizontalDistance)
+            {
+                if (obj.Y > this.Y)
+                    location = Location.BELOW;
+                else
+                    location = Location.ABOVE;
+            }
+            else
+            {
+                if (obj.X > this.X)
+                    location = Location.RIGHT;
+                else
+                    location = Location.LEFT;
+            }
+
+            return location;
+        }
     }
+
+    public enum Location { NONE, ABOVE, BELOW, LEFT, RIGHT }
 }

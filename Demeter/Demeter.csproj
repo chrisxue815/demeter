@@ -86,12 +86,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Source\Helper\IController.cs" />
     <Compile Include="Source\Object.StaticObject.ShiftStick.cs" />
     <Compile Include="Source\Helper\LineSegment.cs" />
     <Compile Include="Source\Helper\Ray.cs" />
     <Compile Include="Source\Helper\Line.cs" />
     <Compile Include="Source\Object.Sprite.Animation.cs" />
-    <Compile Include="Source\Object.StaticObject.IControlledObject.cs" />
+    <Compile Include="Source\Helper\IControlledObject.cs" />
     <Compile Include="Source\Object.StaticObject.Door.cs" />
     <Compile Include="Source\Level.cs" />
     <Compile Include="Source\Object.cs" />

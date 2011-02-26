@@ -38,7 +38,7 @@ namespace Demeter
         }
 
         public LightSource(Game1 game, XmlTextReader reader)
-            : base(game)
+            : base(game, reader)
         {
             string pxStr2 = reader.GetAttribute("px");
             string pyStr2 = reader.GetAttribute("py");

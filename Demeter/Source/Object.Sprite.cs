@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Xml;
 
 namespace Demeter
 {
@@ -37,6 +38,11 @@ namespace Demeter
 
         public Sprite(Game1 game)
             : base(game)
+        {
+        }
+
+        public Sprite(Game1 game, XmlTextReader reader)
+            : base(game, reader)
         {
         }
 

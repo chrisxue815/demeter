@@ -10,7 +10,7 @@ using System.Xml;
 
 namespace Demeter
 {
-    class ShiftStick : StaticObject
+    class ShiftStick : StaticObject, IController
     {
         public override int CollisionWidth
         {
@@ -26,14 +26,6 @@ namespace Demeter
         Texture2D switchOnTexture;
         Texture2D switchOffTexture;
 
-        public int MoveSpeed
-        {
-            get { return 2; }
-        }
-
-        private bool canBePressed;
-        private int pressCD = 0;
-
         public ShiftStick(Game1 game, Vector2 pos, bool one_off, bool moveable)
             : base(game, pos)
         {
@@ -41,7 +33,7 @@ namespace Demeter
         }
 
         public ShiftStick(Game1 game, XmlTextReader reader)
-            : base(game)
+            : base(game, reader)
         {
             string pxStr = reader.GetAttribute("px");
             string pyStr = reader.GetAttribute("py");
@@ -86,9 +78,13 @@ namespace Demeter
             }
         }
 
-        public void Add(IControlledObject obj)
+        #region IController Members
+
+        void IController.Add(IControlledObject obj)
         {
             this.controlled.Add(obj);
         }
+
+        #endregion
     }
 }

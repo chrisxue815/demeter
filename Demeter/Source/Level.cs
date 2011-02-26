@@ -35,6 +35,13 @@ namespace Demeter
           set { objects = value; }
         }
 
+        List<Object> movableObjects = new List<Object>();
+        public List<Object> MovableObjects
+        {
+            get { return movableObjects; }
+            set { movableObjects = value; }
+        }
+
         string backgroundTextureAssetName;
         Texture2D backgroundTexture;
 
@@ -66,7 +73,6 @@ namespace Demeter
 
         const int gridSize = 50;
         GridManager gridManager;
-        List<Object> objectsDetecting = new List<Object>();
 
         #endregion
 
@@ -76,10 +82,12 @@ namespace Demeter
         }
 
         #region xml
-        public Level(Game1 game, string levelFileName)
-            : this(game)
+        public void Load(string levelFileName)
         {
             this.levelFileName = levelFileName;
+
+            List<string> controllerId = new List<string>();
+            List<string> controlledId = new List<string>();
 
             XmlTextReader reader = new XmlTextReader("Content/level/" + levelFileName);
             while (reader.Read())
@@ -93,105 +101,109 @@ namespace Demeter
                         this.width = int.Parse(width);
                         this.height = int.Parse(height);
                     }
-                    else if (reader.Name == "ground")
-                    {
-                        string groundPositionY = reader.GetAttribute("py");
-                        this.groundPositionY = int.Parse(groundPositionY);
-                        this.objects.Add(
-                            new Block(game, new Vector2(0, this.groundPositionY), this.width));
-                    }
                     else if (reader.Name == "background")
                     {
-                        this.backgroundTextureAssetName = reader.GetAttribute("texture");
+                        backgroundTextureAssetName = reader.GetAttribute("texture");
                     }
-                    else if (reader.Name == "cameraoffset")
+                    else if (reader.Name == "cameraOffset")
                     {
                         string pxStr = reader.GetAttribute("px");
                         string pyStr = reader.GetAttribute("py");
                         float px = float.Parse(pxStr);
                         float py = float.Parse(pyStr);
-                        this.cameraOffset = new Vector2(px, py);
+                        cameraOffset = new Vector2(px, py);
+                    }
+                    else if (reader.Name == "ground")
+                    {
+                        string groundPositionY = reader.GetAttribute("py");
+                        this.groundPositionY = int.Parse(groundPositionY);
+                        Block ground = new Block(game, new Vector2(0, this.groundPositionY), width);
+                        objects.Add(ground);
                     }
                     else if (reader.Name == "player")
                     {
                         player = new Player(game, reader);
-                        objectsDetecting.Add(player);
+                        player.Id = reader.GetAttribute("id");
                     }
-                    else if (reader.Name == "shiftstick")
+                    else if (reader.Name == "shiftStick")
                     {
                         ShiftStick stick = new ShiftStick(game, reader);
-                        objects.Add(stick);
+                        stick.Id = reader.GetAttribute("id");
 
                         XmlReader subtree = reader.ReadSubtree();
                         while (subtree.Read())
                         {
-                            if (subtree.NodeType == XmlNodeType.Element)
+                            if (subtree.NodeType == XmlNodeType.Element &&
+                                subtree.Name == "controlled")
                             {
-                                if (subtree.Name == "lightsource")
-                                {
-                                    LightSource light1 = new LightSource(game, reader);
-                                    stick.Add(light1);
-                                    objects.Add(light1);
-                                }
-                                else if (subtree.Name == "mirror")
-                                {
-                                    Mirror mirror1 = new Mirror(game, reader);
-                                    stick.Add(mirror1);
-                                    objects.Add(mirror1);
-                                }
+                                controllerId.Add(stick.Id);
+                                controlledId.Add(subtree.GetAttribute("objId"));
                             }
                         }
+                    }
+                    else if (reader.Name == "lightsource")
+                    {
+                        LightSource light1 = new LightSource(game, reader);
+                        light1.Id = reader.GetAttribute("id");
+                    }
+                    else if (reader.Name == "mirror")
+                    {
+                        Mirror mirror1 = new Mirror(game, reader);
+                        mirror1.Id = reader.GetAttribute("id");
                     }
                     else if (reader.Name == "switch")
                     {
                         Switch switch1 = new Switch(game, reader);
-                        objects.Add(switch1);
 
                         XmlReader subtree = reader.ReadSubtree();
                         while (subtree.Read())
                         {
-                            if (subtree.NodeType == XmlNodeType.Element)
+                            if (subtree.NodeType == XmlNodeType.Element &&
+                                subtree.Name == "controlled")
                             {
-                                if (subtree.Name == "block")
-                                {
-                                    Block block = new Block(game, reader);
-                                    switch1.Add(block);
-                                    objects.Add(block);
-                                }
+                                controllerId.Add(switch1.Id);
+                                controlledId.Add(subtree.GetAttribute("objId"));
                             }
                         }
                     }
                     else if (reader.Name == "ladder")
                     {
                         Ladder ladder = new Ladder(game, reader);
-                        objects.Add(ladder);
                     }
                     else if (reader.Name == "door")
                     {
                         Door door = new Door(game, reader);
-                        objects.Add(door);
                     }
                     else if (reader.Name == "platform")
                     {
                         Platform platform = new Platform(game, reader);
-                        objects.Add(platform);
                     }
                     else if (reader.Name == "block")
                     {
                         Block block = new Block(game, reader);
-                        objects.Add(block);
                     }
                 }
             }
 
-            this.Initialize();
-            this.LoadContent();
+            List<string>.Enumerator controllerEnum = controllerId.GetEnumerator();
+            List<string>.Enumerator controlledEnum = controlledId.GetEnumerator();
+            while (controllerEnum.MoveNext() && controlledEnum.MoveNext())
+            {
+                string controllerStr = controllerEnum.Current;
+                string controlledStr = controlledEnum.Current;
+                IController controller = (IController)GetObjectById(controllerStr);
+                IControlledObject controlled = (IControlledObject)GetObjectById(controlledStr);
+                controller.Add(controlled);
+            }
+
+            Initialize();
+            LoadContent();
         }
         #endregion
 
         public void Initialize()
         {
-            SetGridManager();
+            InitializeGridManager();
         }
 
         public void LoadContent()
@@ -201,8 +213,21 @@ namespace Demeter
 
         public void Update(GameTime gameTime)
         {
-            player.Update(gameTime);
+            foreach (Object obj in movableObjects)
+            {
+                obj.Update(gameTime);
+            }
 
+            foreach (Object obj in objects)
+            {
+                obj.Update(gameTime);
+            }
+
+            SetCamera();
+        }
+
+        private void SetCamera()
+        {
             if (player.Position.X > Game.HalfWidth
                 && player.Position.X < width - Game.HalfWidth)
             {
@@ -213,18 +238,6 @@ namespace Demeter
             {
                 cameraOffset.Y = player.Position.Y - Game.HalfHeight;
             }
-
-            foreach (Object obj in objects)
-            {
-                obj.Update(gameTime);
-            }
-
-            CollisionDetection();
-
-            if (player.CanGoDown)
-            {
-                player.LastPosition = player.Position;
-            }
         }
 
         public void Draw(GameTime gameTime)
@@ -232,27 +245,34 @@ namespace Demeter
             /*Game.SpriteBatch.Draw(backgroundTexture,
                 new Rectangle(0, 0, Game.Width, Game.Height), null,
                 Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.1f);*/
+
+            foreach (Object obj in movableObjects)
+            {
+                obj.Draw(gameTime);
+            }
+
             foreach (Object obj in objects)
             {
                 obj.Draw(gameTime);
             }
-            player.Draw(gameTime);
         }
 
         #region collision detection
 
-        public void SetGridManager()
+        public void InitializeGridManager()
         {
             gridManager = new GridManager(width / gridSize + 1, height / gridSize + 1);
             foreach (Object obj in objects)
             {
                 Rectangle rect = obj.CollisionRect;
-                Point topLeftIndex = new Point(rect.Left / gridSize, rect.Top / gridSize);
-                Point bottomRightIndex = new Point(rect.Right / gridSize, rect.Bottom / gridSize);
+                int leftIndex = rect.Left / gridSize;
+                int rightIndex = rect.Right / gridSize;
+                int topIndex = rect.Top / gridSize;
+                int bottomIndex = rect.Bottom / gridSize;
 
-                for (int i = topLeftIndex.X; i <= bottomRightIndex.X; i++)
+                for (int i = leftIndex; i <= rightIndex; i++)
                 {
-                    for (int j = topLeftIndex.Y; j <= bottomRightIndex.Y; j++)
+                    for (int j = topIndex; j <= bottomIndex; j++)
                     {
                         gridManager.Add(obj, i, j);
                     }
@@ -260,37 +280,47 @@ namespace Demeter
             }
         }
 
-        public void CollisionDetection()
+        public List<Object> CollidedWith(Object obj)
         {
-            foreach (Object objDetecting in objectsDetecting)
-            {
-                Rectangle rect = objDetecting.CollisionRect;
-                Point topLeftIndex = new Point(rect.Left / gridSize, rect.Top / gridSize);
-                Point bottomRightIndex = new Point(rect.Right / gridSize, rect.Bottom / gridSize);
+            List<Object> collided = new List<Object>();
 
-                for (int i = topLeftIndex.X; i <= bottomRightIndex.X; i++)
+            Rectangle rect = obj.CollisionRect;
+            int leftIndex = rect.Left / gridSize;
+            int rightIndex = rect.Right / gridSize;
+            int topIndex = rect.Top / gridSize;
+            int bottomIndex = rect.Bottom / gridSize;
+
+            for (int i = leftIndex; i <= rightIndex; i++)
+            {
+                for (int j = topIndex; j <= bottomIndex; j++)
                 {
-                    for (int j = topLeftIndex.Y; j <= bottomRightIndex.Y; j++)
+                    try
                     {
-                        try
+                        List<Object> objectsInside = gridManager[i, j];
+                        foreach (Object objectInside in objectsInside)
                         {
-                            List<Object> objectInside = gridManager[i, j];
-                            foreach (Object obj in objectInside)
+                            if (obj != objectInside && rect.Intersects(objectInside.CollisionRect))
                             {
-                                if (player.CollisionRect.Intersects(obj.CollisionRect))
-                                {
-                                    obj.CollisionResponse(player);
-                                    player.CollisionResponse(obj);
-                                }
+                                collided.Add(objectInside);
                             }
                         }
-                        catch (Exception ex)
-                        {
-                            player.IsAlive = false;
-                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        player.IsAlive = false;//todo
                     }
                 }
             }
+
+            foreach (Object movableObject in movableObjects)
+            {
+                if(obj!=movableObject && rect.Intersects(movableObject.CollisionRect))
+                {
+                    collided.Add(movableObject);
+                }
+            }
+
+            return collided;
         }
 
         public Object FindObject(Vector2 pos, float direction)
@@ -356,6 +386,21 @@ namespace Demeter
         }
 
         #endregion
+
+        public Object GetObjectById(string id)
+        {
+            foreach (Object obj in objects)
+            {
+                if (obj.Id == id)
+                    return obj;
+            }
+            foreach (Object obj in movableObjects)
+            {
+                if (obj.Id == id)
+                    return obj;
+            }
+            return null;
+        }
     }
 
     public class Grid

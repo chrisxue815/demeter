@@ -96,7 +96,8 @@ namespace Demeter
 
             font = Content.Load<SpriteFont>("font/Hud");
 
-            level = new Level(this, "level1-1.xml");
+            level = new Level(this);
+            level.Load("level1-1.xml");
         }
 
         /// <summary>
@@ -127,7 +128,8 @@ namespace Demeter
             if (level.Player.IsLeaving)
             {
                 string commingLevel = Level.Player.ComingLevel;
-                level = new Level(this, commingLevel);
+                level = new Level(this);
+                level.Load(commingLevel);
             }
 
             base.Update(gameTime);

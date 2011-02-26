@@ -184,7 +184,7 @@ namespace Demeter
         }
 
         public Player(Game1 game, XmlTextReader reader)
-            : base(game)
+            : base(game, reader)
         {
             string pxStr = reader.GetAttribute("px");
             string pyStr = reader.GetAttribute("py");
@@ -225,22 +225,7 @@ namespace Demeter
 
             ApplyPhysics(gameTime);
 
-            if (!isAlive)
-            {
-                this.currentAnimation = dieAnimation;
-            }
-            else if (speed.Y != 0 && !isLadderUsed)
-            {
-                this.currentAnimation = jumpAnimation;
-            }
-            else if (speed.X != 0)
-            {
-                this.currentAnimation = runAnimation;
-            }
-            else
-            {
-                this.currentAnimation = idleAnimation;
-            }
+            SetAnimation();
 
             // Clear input.
             horizontalMovement = 0;
@@ -253,7 +238,12 @@ namespace Demeter
             collidedWithDoor = false;
             isJumping = false;
 
-            base.Update(gameTime);
+            CollisionDetection();
+
+            if (canGoDown)
+            {
+                lastPosition = position;
+            }
         }
 
         /// <summary>
@@ -303,7 +293,7 @@ namespace Demeter
                     this.X += offset;
                     isLadderUsed = true;
                 }
-                else if (OnTheGround)
+                else if (horizontalMovement == 0)
                 {
                     horizontalMovement = offset >= 0 ? 1 : -1;
                 }
@@ -412,6 +402,26 @@ namespace Demeter
 
             // Apply speed.
             position += speed;
+        }
+
+        private void SetAnimation()
+        {
+            if (!isAlive)
+            {
+                this.currentAnimation = dieAnimation;
+            }
+            else if (speed.Y != 0 && !isLadderUsed)
+            {
+                this.currentAnimation = jumpAnimation;
+            }
+            else if (speed.X != 0)
+            {
+                this.currentAnimation = runAnimation;
+            }
+            else
+            {
+                this.currentAnimation = idleAnimation;
+            }
         }
 
         public override void Draw(GameTime gameTime)
