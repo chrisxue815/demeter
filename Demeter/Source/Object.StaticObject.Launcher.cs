@@ -27,6 +27,8 @@ namespace Demeter
         int generateTime;
         string generateType;
 
+        Vector2 powerSpeed;
+
         public Launcher(Game1 game, Vector2 position)
             : base(game, position)
         {
@@ -38,10 +40,16 @@ namespace Demeter
             string pxStr = reader.GetAttribute("px");
             string pyStr = reader.GetAttribute("py");
             string generateTimeStr = reader.GetAttribute("generate_time");
+            string speedXStr = reader.GetAttribute("speed_x");
+            string speedYStr = reader.GetAttribute("speed_y");
 
             this.generateType = reader.GetAttribute("generate_type");
             this.generateTime = int.Parse(generateTimeStr);
             this.game = game;
+
+            float speedX = float.Parse(speedXStr);
+            float speedY = float.Parse(speedYStr);
+            this.powerSpeed = new Vector2(speedX, speedY);
 
             float px = float.Parse(pxStr);
             float py = float.Parse(pyStr);
@@ -72,7 +80,7 @@ namespace Demeter
         {
             if (generateType == "enemy")
             {
-                Enemy enemy = new Enemy(game, this.position, new Vector2(-10, -5));
+                Enemy enemy = new Enemy(game, this.position, powerSpeed);
                 Level.MovableObjects.Add(enemy);
             }
         }

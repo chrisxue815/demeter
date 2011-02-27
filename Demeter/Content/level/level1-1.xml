@@ -27,6 +27,6 @@
   <lightsource id="light1" px="400" py="300"></lightsource>
   <mirror id="mirror1" px="400" py="480"></mirror>
   <door id="door1" px="700" py="522" levelFileName="level1-2.xml"></door>
-  <!--<launcher id="launcher1" px="600" py="200"
-            generate_time="3000" generate_type="enemy"></launcher>-->
+  <launcher id="launcher1" px="600" py="200" speed_x="-8" speed_y="-5"
+            generate_time="3000" generate_type="enemy"></launcher>
 </level>
