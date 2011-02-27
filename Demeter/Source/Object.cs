@@ -15,7 +15,6 @@ namespace Demeter
         public string Id
         {
             get { return id; }
-            set { id = value; }
         }
 
         protected Game1 game;
@@ -90,7 +89,7 @@ namespace Demeter
         public Object(Game1 game, XmlTextReader reader)
             : this(game)
         {
-            this.Id = reader.GetAttribute("id");
+            this.id = reader.GetAttribute("id");
             string movable = reader.GetAttribute("movable");
             if (movable != null && movable == "true")
             {

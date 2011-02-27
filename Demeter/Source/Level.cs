@@ -15,6 +15,10 @@ namespace Demeter
         #region fields
 
         string levelFileName;
+        public string LevelFileName
+        {
+            get { return levelFileName; }
+        }
 
         Game1 game;
         public Game1 Game
@@ -81,7 +85,7 @@ namespace Demeter
             this.game = game;
         }
 
-        #region xml
+        #region xml_Load
         public void Load(string levelFileName)
         {
             this.levelFileName = levelFileName;
@@ -123,12 +127,14 @@ namespace Demeter
                     else if (reader.Name == "player")
                     {
                         player = new Player(game, reader);
-                        player.Id = reader.GetAttribute("id");
+                    }
+                    else if (reader.Name == "enemy")
+                    {
+                        Enemy enemy = new Enemy(game, reader);
                     }
                     else if (reader.Name == "shiftStick")
                     {
                         ShiftStick stick = new ShiftStick(game, reader);
-                        stick.Id = reader.GetAttribute("id");
 
                         XmlReader subtree = reader.ReadSubtree();
                         while (subtree.Read())
@@ -144,12 +150,10 @@ namespace Demeter
                     else if (reader.Name == "lightsource")
                     {
                         LightSource light1 = new LightSource(game, reader);
-                        light1.Id = reader.GetAttribute("id");
                     }
                     else if (reader.Name == "mirror")
                     {
                         Mirror mirror1 = new Mirror(game, reader);
-                        mirror1.Id = reader.GetAttribute("id");
                     }
                     else if (reader.Name == "switch")
                     {
@@ -182,6 +186,10 @@ namespace Demeter
                     {
                         Block block = new Block(game, reader);
                     }
+                    else if (reader.Name == "launcher")
+                    {
+                        Launcher launcher = new Launcher(game, reader);
+                    }
                 }
             }
 
@@ -213,10 +221,11 @@ namespace Demeter
 
         public void Update(GameTime gameTime)
         {
-            foreach (Object obj in movableObjects)
+            for (int i = 0; i < movableObjects.Count; i++)
             {
-                obj.Update(gameTime);
+                movableObjects[i].Update(gameTime);
             }
+            
 
             foreach (Object obj in objects)
             {

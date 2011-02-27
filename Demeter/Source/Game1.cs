@@ -60,6 +60,8 @@ namespace Demeter
 
         public SpriteFont font;
 
+        private int dieTime;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -130,6 +132,18 @@ namespace Demeter
                 string commingLevel = Level.Player.ComingLevel;
                 level = new Level(this);
                 level.Load(commingLevel);
+            }
+
+            if (!level.Player.IsAlive)
+            {
+                dieTime += gameTime.ElapsedGameTime.Milliseconds;
+                if (dieTime > level.Player.DieTime)
+                {
+                    string current_levelFileName = level.LevelFileName;
+                    level = new Level(this);
+                    level.Load(current_levelFileName);
+                    dieTime = 0;
+                }
             }
 
             base.Update(gameTime);

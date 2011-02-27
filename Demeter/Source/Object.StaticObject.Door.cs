@@ -12,11 +12,11 @@ namespace Demeter
     {
         public override int CollisionWidth
         {
-            get { return 64; }
+            get { return 51; }
         }
         public override int CollisionHeight
         {
-            get { return 48; }
+            get { return 89; }
         }
         string LevelFileName
         {
@@ -57,8 +57,11 @@ namespace Demeter
 
         public override void CollisionResponse(Object obj)
         {
-            Level.Player.CollidedWithDoor = true;
-            Level.Player.ComingLevel = levelFileName;
+            if (obj is Player)
+            {
+                Level.Player.CollidedWithDoor = true;
+                Level.Player.ComingLevel = levelFileName;
+            }
         }
     }
 }

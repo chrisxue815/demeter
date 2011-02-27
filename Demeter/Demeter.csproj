@@ -87,6 +87,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Source\Helper\IController.cs" />
+    <Compile Include="Source\Object.StaticObject.Launcher.cs" />
+    <Compile Include="Source\Object.Sprite.Enemy.cs" />
     <Compile Include="Source\Object.StaticObject.ShiftStick.cs" />
     <Compile Include="Source\Helper\LineSegment.cs" />
     <Compile Include="Source\Helper\Ray.cs" />
