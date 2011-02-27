@@ -14,7 +14,7 @@ namespace Demeter
     {
         public override int CollisionWidth
         {
-            get { return 128; }
+            get { return 90; }
         }
         public override int CollisionHeight
         {

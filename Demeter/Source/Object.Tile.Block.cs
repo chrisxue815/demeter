@@ -160,6 +160,22 @@ namespace Demeter
                         break;
                 }
             }
+            else if (obj is Enemy)
+            {
+                Enemy enemy = (Enemy)obj;
+                switch (location)
+                {
+                    case Location.ABOVE:
+                        enemy.CanGoDown = false;
+                        break;
+                    case Location.RIGHT:
+                        enemy.CanGoLeft = false;
+                        break;
+                    case Location.LEFT:
+                        enemy.CanGoRight = false;
+                        break;
+                }
+            }
         }
 
         #region IControlledObject Members
