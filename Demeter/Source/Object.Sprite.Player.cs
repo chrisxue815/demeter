@@ -20,7 +20,7 @@ namespace Demeter
         }
         public override int CollisionHeight
         {
-            get { return 90; }
+            get { return 70; }
         }
         #endregion
 
@@ -36,7 +36,7 @@ namespace Demeter
             get { return 0; }
         }
 
-        static readonly Point DEFAULT_FRAME_SIZE = new Point(45, 90);
+        static readonly Point DEFAULT_FRAME_SIZE = new Point(45, 70);
 
         // animations
         Animation idleAnimation;
@@ -247,6 +247,8 @@ namespace Demeter
             {
                 lastPosition = position;
             }
+
+            base.Update(gameTime);
         }
 
         /// <summary>
