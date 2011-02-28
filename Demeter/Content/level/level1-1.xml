@@ -19,7 +19,7 @@
   <block id="block1" px="300" py="430" width="256" height="48" movable="true">
     <bound left="250" right="360" top="430" bottom="430"></bound>
   </block>
-  <platform id="platform1" px="200" py="500" width="256" height="48"></platform>
+  <platform id="platform1" px="150" py="500" width="256" height="48"></platform>
   <shiftStick id="shiftStick1" px="300" py="480">
     <controlled objId="light1"></controlled>
     <controlled objId="mirror1"></controlled>
@@ -27,6 +27,6 @@
   <lightsource id="light1" px="400" py="300"></lightsource>
   <mirror id="mirror1" px="400" py="480"></mirror>
   <door id="door1" px="700" py="522" levelFileName="level1-2.xml"></door>
-  <launcher id="launcher1" px="600" py="200" speed_x="-8" speed_y="-5"
+  <launcher id="launcher1" px="200" py="500" speed_x="-8" speed_y="0"
             generate_time="3000" generate_type="enemy"></launcher>
 </level>
