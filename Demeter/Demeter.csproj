@@ -87,6 +87,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Source\Helper\IController.cs" />
+    <Compile Include="Source\Helper\TreasureManager.cs" />
+    <Compile Include="Source\Object.StaticObject.DeadlyObject.cs" />
     <Compile Include="Source\Object.StaticObject.Launcher.cs" />
     <Compile Include="Source\Object.Sprite.Enemy.cs" />
     <Compile Include="Source\Object.StaticObject.ShiftStick.cs" />
@@ -104,6 +106,7 @@
     <Compile Include="Source\Object.StaticObject.LightSource.cs" />
     <Compile Include="Source\Object.StaticObject.Mirror.cs" />
     <Compile Include="Source\Object.StaticObject.Switch.cs" />
+    <Compile Include="Source\Object.StaticObject.Treasure.cs" />
     <Compile Include="Source\Object.Tile.Block.cs" />
     <Compile Include="Source\Object.Tile.cs" />
     <Compile Include="Source\Object.Tile.Platform.cs" />

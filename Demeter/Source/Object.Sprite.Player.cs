@@ -53,7 +53,7 @@ namespace Demeter
 
         // Constants for controlling vertical movement
         private const float GravityAcceleration = 25.0f;
-        private const float MaxFallSpeed = 8.0f;
+        private const float MaxFallSpeed = 16.0f;
         private const float jumpStartSpeed = -8f;
         private const float speedOnLadder = 2f;
 
@@ -116,6 +116,24 @@ namespace Demeter
             get { return lastPosition; }
             set { lastPosition = value; }
         }
+
+        #region two_step jumping
+        bool killFirstEnemy;
+        public bool KillFirstEnemy
+        {
+            get { return killFirstEnemy; }
+            set { killFirstEnemy = value; }
+        }
+
+        bool killsecondEnemy;
+        public bool KillsecondEnemy
+        {
+            get { return killsecondEnemy; }
+            set { killsecondEnemy = value; }
+        }
+
+        float addSpeed = -4;
+        #endregion
 
         #region movement
         bool canGoUp = true;
@@ -225,6 +243,11 @@ namespace Demeter
             {
                 GetInput();
 
+                if (!canGoDown)
+                {
+                    killFirstEnemy = false;
+                    killsecondEnemy = false;
+                }
                 ApplyPhysics(gameTime);
             }
 
@@ -367,6 +390,10 @@ namespace Demeter
                 if (isJumping)
                 {
                     speed.Y = jumpStartSpeed;
+                    if (killsecondEnemy)
+                    {
+                        speed.Y += addSpeed;
+                    }
                 }
                 else
                 {

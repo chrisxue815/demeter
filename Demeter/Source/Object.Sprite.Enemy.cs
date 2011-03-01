@@ -328,10 +328,16 @@ namespace Demeter
                 {
                     this.isAlive = false;
                     player.IsJumping = true;
+                    if (player.KillFirstEnemy)
+                    {
+                        player.KillsecondEnemy = true;
+                    }
+                    player.KillFirstEnemy = true;
                 }
                 else
                 {
                     player.IsAlive = false;
+                    player.KillFirstEnemy = false;
                 }
             }
         }

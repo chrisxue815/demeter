@@ -20,6 +20,12 @@ namespace Demeter
             get { return levelFileName; }
         }
 
+        TreasureManager treasureMgr;
+        public TreasureManager TreasureMgr
+        {
+            get { return this.treasureMgr; }
+        }
+
         Game1 game;
         public Game1 Game
         {
@@ -102,8 +108,13 @@ namespace Demeter
                     {
                         string width = reader.GetAttribute("width");
                         string height = reader.GetAttribute("height");
+                        string treasureCountStr = reader.GetAttribute("treasureCount");
+
+                        int treasureCount = int.Parse(treasureCountStr);
                         this.width = int.Parse(width);
                         this.height = int.Parse(height);
+
+                        this.treasureMgr = new TreasureManager(this.levelFileName, treasureCount);
                     }
                     else if (reader.Name == "background")
                     {
@@ -190,8 +201,33 @@ namespace Demeter
                     {
                         Launcher launcher = new Launcher(game, reader);
                     }
+                    else if (reader.Name == "treasure")
+                    {
+                        Treasure treasure;
+                        bool flag = false;
+                        List<String> ids = this.treasureMgr.AreGotten();
+                        foreach (String id in ids)
+                        {
+                            if (reader.GetAttribute("id") == id)
+                            {
+                                treasure = new Treasure(game, reader, true);
+                                flag = true;
+                                break;
+                            }
+                        }
+                        if (!flag)
+                        {
+                            treasure = new Treasure(game, reader, false);
+                        }
+                    }
+                    else if (reader.Name == "deadlyobj")
+                    {
+                        DeadlyObject deadlyobj = new DeadlyObject(game, reader);
+                    }
                 }
             }
+
+            reader.Close();
 
             List<string>.Enumerator controllerEnum = controllerId.GetEnumerator();
             List<string>.Enumerator controlledEnum = controlledId.GetEnumerator();
