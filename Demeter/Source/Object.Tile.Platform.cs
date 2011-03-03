@@ -57,12 +57,22 @@ namespace Demeter
         {
             if (obj is Player)
             {
-                Player player = Level.Player;
+                Player player = (Player)obj;
 
                 if ((int)player.LastPosition.Y + player.CollisionHeight <= this.Y)
                 {
                     player.CanGoDown = false;
                     player.Y = this.Y - player.CollisionHeight + 1;
+                }
+            }
+            else if (obj is Enemy)
+            {
+                Enemy enemy = (Enemy)obj;
+
+                if ((int)enemy.LastPosition.Y + enemy.CollisionHeight <= this.Y)
+                {
+                    enemy.CanGoDown = false;
+                    enemy.Y = this.Y - enemy.CollisionHeight + 1;
                 }
             }
         }

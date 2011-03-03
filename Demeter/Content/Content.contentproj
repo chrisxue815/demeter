@@ -149,6 +149,58 @@
   <ItemGroup>
     <Compile Include="texture\Object.StaticObject.Mirror.Mirror2.png">
       <Name>Object.StaticObject.Mirror.Mirror2</Name>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="texture\Object.Sprite.Enemy.Die.png">
+      <Name>Object.Sprite.Enemy.Die</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="texture\Object.Sprite.Enemy.Run.png">
+      <Name>Object.Sprite.Enemy.Run</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="texture\Object.StaticObject.Launcher.png">
+      <Name>Object.StaticObject.Launcher</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="texture\Object.StaticObject.Treasure.Treasure1-Off.png">
+      <Name>Object.StaticObject.Treasure.Treasure1-Off</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="texture\Object.StaticObject.Treasure.Treasure1-On.png">
+      <Name>Object.StaticObject.Treasure.Treasure1-On</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="texture\Object.StaticObject.DeadlyObject.png">
+      <Name>Object.StaticObject.DeadlyObject</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="texture\Object.StaticObject.Ogre.Base.png">
+      <Name>Object.StaticObject.Ogre.Base</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="texture\Object.StaticObject.Ogre.Core.png">
+      <Name>Object.StaticObject.Ogre.Core</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

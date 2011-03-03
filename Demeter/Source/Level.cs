@@ -15,6 +15,16 @@ namespace Demeter
         #region fields
 
         string levelFileName;
+        public string LevelFileName
+        {
+            get { return levelFileName; }
+        }
+
+        TreasureManager treasureMgr;
+        public TreasureManager TreasureMgr
+        {
+            get { return this.treasureMgr; }
+        }
 
         Game1 game;
         public Game1 Game
@@ -84,7 +94,7 @@ namespace Demeter
             this.game = game;
         }
 
-        #region xml
+        #region xml_Load
         public void Load(string levelFileName)
         {
             this.levelFileName = levelFileName;
@@ -101,9 +111,14 @@ namespace Demeter
                     {
                         string width = reader.GetAttribute("width");
                         string height = reader.GetAttribute("height");
+                        string treasureCountStr = reader.GetAttribute("treasureCount");
+
+                        int treasureCount = int.Parse(treasureCountStr);
                         this.width = int.Parse(width);
                         this.height = int.Parse(height);
                         this.bound = new Rectangle(0, 0, this.width, this.height);
+
+                        this.treasureMgr = new TreasureManager(this.levelFileName, treasureCount);
                     }
                     else if (reader.Name == "background")
                     {
@@ -139,12 +154,14 @@ namespace Demeter
                     else if (reader.Name == "player")
                     {
                         player = new Player(game, reader);
-                        player.Id = reader.GetAttribute("id");
+                    }
+                    else if (reader.Name == "enemy")
+                    {
+                        Enemy enemy = new Enemy(game, reader);
                     }
                     else if (reader.Name == "shiftStick")
                     {
                         ShiftStick stick = new ShiftStick(game, reader);
-                        stick.Id = reader.GetAttribute("id");
 
                         XmlReader subtree = reader.ReadSubtree();
                         while (subtree.Read())
@@ -160,12 +177,10 @@ namespace Demeter
                     else if (reader.Name == "lightsource")
                     {
                         LightSource light1 = new LightSource(game, reader);
-                        light1.Id = reader.GetAttribute("id");
                     }
                     else if (reader.Name == "mirror")
                     {
                         Mirror mirror1 = new Mirror(game, reader);
-                        mirror1.Id = reader.GetAttribute("id");
                     }
                     else if (reader.Name == "switch")
                     {
@@ -198,8 +213,41 @@ namespace Demeter
                     {
                         Block block = new Block(game, reader);
                     }
+                    else if (reader.Name == "launcher")
+                    {
+                        Launcher launcher = new Launcher(game, reader);
+                    }
+                    else if (reader.Name == "treasure")
+                    {
+                        Treasure treasure;
+                        bool flag = false;
+                        List<String> ids = this.treasureMgr.AreGotten();
+                        foreach (String id in ids)
+                        {
+                            if (reader.GetAttribute("id") == id)
+                            {
+                                treasure = new Treasure(game, reader, true);
+                                flag = true;
+                                break;
+                            }
+                        }
+                        if (!flag)
+                        {
+                            treasure = new Treasure(game, reader, false);
+                        }
+                    }
+                    else if (reader.Name == "deadlyobj")
+                    {
+                        DeadlyObject deadlyobj = new DeadlyObject(game, reader);
+                    }
+                    else if (reader.Name == "ogre")
+                    {
+                        Ogre ogre = new Ogre(game, reader);
+                    }
                 }
             }
+
+            reader.Close();
 
             List<string>.Enumerator controllerEnum = controllerId.GetEnumerator();
             List<string>.Enumerator controlledEnum = controlledId.GetEnumerator();
@@ -229,10 +277,11 @@ namespace Demeter
 
         public void Update(GameTime gameTime)
         {
-            foreach (Object obj in movableObjects)
+            for (int i = 0; i < movableObjects.Count; i++)
             {
-                obj.Update(gameTime);
+                movableObjects[i].Update(gameTime);
             }
+            
 
             foreach (Object obj in objects)
             {

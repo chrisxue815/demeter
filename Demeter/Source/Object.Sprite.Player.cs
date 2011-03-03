@@ -20,7 +20,7 @@ namespace Demeter
         }
         public override int CollisionHeight
         {
-            get { return 90; }
+            get { return 70; }
         }
         #endregion
 
@@ -36,7 +36,7 @@ namespace Demeter
             get { return 0; }
         }
 
-        static readonly Point DEFAULT_FRAME_SIZE = new Point(45, 90);
+        static readonly Point DEFAULT_FRAME_SIZE = new Point(45, 70);
 
         // animations
         Animation idleAnimation;
@@ -52,10 +52,11 @@ namespace Demeter
         private const float MaxMoveSpeed = 5.0f;
 
         // Constants for controlling vertical movement
-        private const float GravityAcceleration = 20.0f;
-        private const float MaxFallSpeed = 8.0f;
+        private const float GravityAcceleration = 25.0f;
+        private const float MaxFallSpeed = 12.0f;
         private const float jumpStartSpeed = -8f;
         private const float speedOnLadder = 2f;
+        float addSpeed = -4;
 
         public Vector2 Speed
         {
@@ -116,6 +117,22 @@ namespace Demeter
             get { return lastPosition; }
             set { lastPosition = value; }
         }
+
+        #region two_step jumping
+        bool killFirstEnemy;
+        public bool KillFirstEnemy
+        {
+            get { return killFirstEnemy; }
+            set { killFirstEnemy = value; }
+        }
+
+        bool killsecondEnemy;
+        public bool KillsecondEnemy
+        {
+            get { return killsecondEnemy; }
+            set { killsecondEnemy = value; }
+        }
+        #endregion
 
         #region movement
         bool canGoUp = true;
@@ -221,9 +238,17 @@ namespace Demeter
         /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
-            GetInput();
+            if (this.IsAlive)
+            {
+                GetInput();
 
-            ApplyPhysics(gameTime);
+                if (!canGoDown)
+                {
+                    killFirstEnemy = false;
+                    killsecondEnemy = false;
+                }
+                ApplyPhysics(gameTime);
+            }
 
             SetAnimation();
 
@@ -244,6 +269,8 @@ namespace Demeter
             {
                 lastPosition = position;
             }
+
+            base.Update(gameTime);
         }
 
         /// <summary>
@@ -362,14 +389,14 @@ namespace Demeter
                 if (isJumping)
                 {
                     speed.Y = jumpStartSpeed;
+                    if (killsecondEnemy)
+                    {
+                        speed.Y += addSpeed;
+                    }
                 }
                 else
                 {
                     speed.Y += (GravityAcceleration * elapsed) / 1000f;
-                }
-                if (!canGoDown && speed.Y > 0 || !canGoUp && speed.Y < 0)
-                {
-                    speed.Y = 0;
                 }
             }
 
