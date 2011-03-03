@@ -17,7 +17,7 @@
     <controlled objId="block1"></controlled>
   </switch>
   <block id="block1" px="300" py="430" width="256" height="48" movable="true">
-    <bound left="250" right="360" top="430" bottom="430"></bound>
+    <bound left="250" right="360" top="330" bottom="430"></bound>
   </block>
   <platform id="platform1" px="150" py="500" width="256" height="48"></platform>
   <shiftStick id="shiftStick1" px="300" py="480">
@@ -31,5 +31,6 @@
   <treasure id="treasure2" px="400" py="370"></treasure>
   <launcher id="launcher1" px="500" py="200" speed_x="-8" speed_y="-1"
             generate_time="3000" generate_type="enemy"></launcher>
-  <deadlyobj id="deadlyobj1" px="700" py="570"></deadlyobj>
+  <deadlyobj id="deadlyobj1" px="850" py="570"></deadlyobj>
+  <ogre id="ogre1" px="600" py="572" offset="-80"></ogre>
 </level>

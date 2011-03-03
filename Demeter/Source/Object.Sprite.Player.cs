@@ -53,9 +53,10 @@ namespace Demeter
 
         // Constants for controlling vertical movement
         private const float GravityAcceleration = 25.0f;
-        private const float MaxFallSpeed = 16.0f;
+        private const float MaxFallSpeed = 12.0f;
         private const float jumpStartSpeed = -8f;
         private const float speedOnLadder = 2f;
+        float addSpeed = -4;
 
         public Vector2 Speed
         {
@@ -131,8 +132,6 @@ namespace Demeter
             get { return killsecondEnemy; }
             set { killsecondEnemy = value; }
         }
-
-        float addSpeed = -4;
         #endregion
 
         #region movement

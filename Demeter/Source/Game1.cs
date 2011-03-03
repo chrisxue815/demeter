@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Storage;
+using System.Collections;
 
 namespace Demeter
 {
@@ -62,6 +63,17 @@ namespace Demeter
 
         private int dieTime;
 
+        #region menu relative
+        bool gotoMenu = false;
+        bool wasUpKeydown = false;
+        bool wasDownKeydown = false;
+
+        int currentSelection = 1;
+        const int maxItemsCount = 3;
+
+        Vector2[] menuPos = new Vector2[maxItemsCount];
+        #endregion
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -83,7 +95,11 @@ namespace Demeter
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            for (int i = 0; i < maxItemsCount; i++)
+            {
+                menuPos[i] = new Vector2(200 , i*50 + 200);
+            }
+                // TODO: Add your initialization logic here
             base.Initialize();
         }
 
@@ -121,29 +137,35 @@ namespace Demeter
             // Allows the game to exit
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
-                this.Exit();
+                gotoMenu = true;
             }
 
-            // TODO: Add your update logic here
-            level.Update(gameTime);
-
-            if (level.Player.IsLeaving)
+            if (!gotoMenu)
             {
-                string commingLevel = Level.Player.ComingLevel;
-                level = new Level(this);
-                level.Load(commingLevel);
-            }
+                level.Update(gameTime);
 
-            if (!level.Player.IsAlive)
-            {
-                dieTime += gameTime.ElapsedGameTime.Milliseconds;
-                if (dieTime > level.Player.DieTime)
+                if (level.Player.IsLeaving)
                 {
-                    string current_levelFileName = level.LevelFileName;
+                    string commingLevel = Level.Player.ComingLevel;
                     level = new Level(this);
-                    level.Load(current_levelFileName);
-                    dieTime = 0;
+                    level.Load(commingLevel);
                 }
+
+                if (!level.Player.IsAlive)
+                {
+                    dieTime += gameTime.ElapsedGameTime.Milliseconds;
+                    if (dieTime > level.Player.DieTime)
+                    {
+                        string current_levelFileName = level.LevelFileName;
+                        level = new Level(this);
+                        level.Load(current_levelFileName);
+                        dieTime = 0;
+                    }
+                }
+            }
+            else
+            {
+                MenuUpdate();
             }
 
             base.Update(gameTime);
@@ -159,10 +181,95 @@ namespace Demeter
 
             // TODO: Add your drawing code here
             SpriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.FrontToBack, SaveStateMode.SaveState);
-            level.Draw(gameTime);
+            if (!gotoMenu)
+            {
+                level.Draw(gameTime);
+            }
+            else
+            {
+                MenuDraw();
+            }
             SpriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        public void MenuUpdate()
+        {
+            // select options
+            KeyboardState keystate = Keyboard.GetState();
+            if (keystate.IsKeyDown(Keys.Down))
+            {
+                if (!wasDownKeydown)
+                {
+                    currentSelection++;
+                    if (currentSelection > maxItemsCount)
+                    {
+                        currentSelection = 1;
+                    }
+                }
+                wasDownKeydown = true;
+            }
+            else
+            {
+                wasDownKeydown = false;
+            }
+
+            if (keystate.IsKeyDown(Keys.Up))
+            {
+                if (!wasUpKeydown)
+                {
+                    currentSelection--;
+                    if (currentSelection < 1)
+                    {
+                        currentSelection = maxItemsCount;
+                    }
+                }
+                wasUpKeydown = true;
+            }
+            else
+            {
+                wasUpKeydown = false;
+            }
+
+            // execute the selectioon
+            if (currentSelection == 1 && keystate.IsKeyDown(Keys.Enter))
+            {
+                gotoMenu = false;
+            }
+            else if (currentSelection == 2 && keystate.IsKeyDown(Keys.Enter))
+            {
+                Level.TreasureMgr.ResetLevel();
+                gotoMenu = false;
+                LoadContent();
+            }
+            else if (currentSelection == 3 && keystate.IsKeyDown(Keys.Enter))
+            {
+                this.Exit();
+            }
+        }
+
+        public void MenuDraw()
+        {
+            if (currentSelection != 1)
+                spriteBatch.DrawString(font, "Resume Game", menuPos[0], Color.White);
+            if (currentSelection != 2)
+                spriteBatch.DrawString(font, "Restart Game", menuPos[1], Color.White);
+            if (currentSelection != 3)
+                spriteBatch.DrawString(font, "Leave", menuPos[2], Color.White);
+
+            switch (currentSelection)
+            {
+                case 1:
+                    spriteBatch.DrawString(font, "Resume Game", menuPos[0], Color.Red);
+                    break;
+                case 2:
+                    spriteBatch.DrawString(font, "Restart Game", menuPos[1], Color.Red);
+                    break;
+                case 3:
+                    spriteBatch.DrawString(font, "Leave", menuPos[2], Color.Red);
+                    break;
+            }
         }
     }
 }
