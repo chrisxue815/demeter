@@ -89,6 +89,7 @@
     <Compile Include="Source\Helper\IController.cs" />
     <Compile Include="Source\Helper\OgreBase.cs" />
     <Compile Include="Source\Helper\OgreCore.cs" />
+    <Compile Include="Source\Helper\Ray.cs" />
     <Compile Include="Source\Helper\TreasureManager.cs" />
     <Compile Include="Source\Object.StaticObject.DeadlyObject.cs" />
     <Compile Include="Source\Object.StaticObject.Launcher.cs" />
