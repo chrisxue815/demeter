@@ -26,7 +26,6 @@ namespace Demeter
         bool isGotten;
         Texture2D textureOn;
         Texture2D textureOff;
-        string id;
 
         public Treasure(Game1 game,string id, bool isGotten)
             : base(game)
