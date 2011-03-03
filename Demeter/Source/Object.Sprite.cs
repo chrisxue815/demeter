@@ -24,6 +24,12 @@ namespace Demeter
         /// </summary>
         protected float time;
 
+        // time used to playing the die animation
+        public int DieTime
+        {
+            get { return 1000; }
+        }
+
         /// <summary>
         /// Gets the collision rectangle.
         /// </summary>
