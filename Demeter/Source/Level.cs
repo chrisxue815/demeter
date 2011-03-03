@@ -224,6 +224,10 @@ namespace Demeter
                     {
                         DeadlyObject deadlyobj = new DeadlyObject(game, reader);
                     }
+                    else if (reader.Name == "ogre")
+                    {
+                        Ogre ogre = new Ogre(game, reader);
+                    }
                 }
             }
 
