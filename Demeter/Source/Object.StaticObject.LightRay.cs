@@ -18,46 +18,83 @@ namespace Demeter
             get { return 0; }
         }
 
-        public float Direction
+        public float Rotation
         {
-            get { return direction; }
-            set { direction = value; }
+            get { return rotation; }
+            set { rotation = value; }
         }
-        float direction;
+        float rotation;
 
-        List<ReflectionPoint> reflectionPoint;
+        LightSource lightSource;
+        public LightSource LightSource
+        {
+            get { return lightSource; }
+            set { lightSource = value; }
+        }
 
-        public LightRay(Game1 game, Vector2 position, float direction)
+        List<ReflectionPosition> reflectionPosition = new List<ReflectionPosition>();
+
+        public LightRay(Game1 game, Vector2 position, float rotation)
             : base(game, position)
         {
-            this.direction = direction;
-            LoadContent();
+            this.rotation = rotation;
         }
 
         public override void LoadContent()
         {
-            Line line = new Line(position, direction);
-            texture = new Texture2D(Game.GraphicsDevice, 200, 100);
-            Color[] color = new Color[200 * 100];
-            for (int i = 0; i < 200 * 100; i++)
+            texture = new Texture2D(Game.GraphicsDevice, 1, 1);
+            Color[] color = new Color[1];
+            for (int i = 0; i < 1; i++)
                 color[i] = new Color(0, 0, 0, 100);
             texture.SetData(color);
         }
 
         public override void Update(GameTime gameTime)
         {
-            Object obj = Level.FindObject(position, direction);
-            if (obj != null)
+            rotation = lightSource.Rotation;
+
+            reflectionPosition.Clear();
+            reflectionPosition.Add(new ReflectionPosition(position, rotation));
+
+            Vector2? collidingPosition;
+            Object obj = Level.FindObject(position, rotation, out collidingPosition, lightSource);
+            while (obj != null)
             {
                 if (obj is Mirror)
                 {
+                    Mirror mirror = (Mirror)obj;
+                    reflectionPosition.Add(new ReflectionPosition(collidingPosition.Value, mirror.NormalRotation));
+                    obj = Level.FindObject(collidingPosition.Value,
+                        2 * mirror.NormalRotation - rotation - (float)Math.PI, out collidingPosition, mirror);
+                }
+                else
+                {
+                    reflectionPosition.Add(new ReflectionPosition(collidingPosition.Value, 0));
+                    break;
                 }
             }
         }
 
         public override void Draw(GameTime gameTime)
         {
-            base.Draw(gameTime);
+            List<ReflectionPosition>.Enumerator currentEnum = reflectionPosition.GetEnumerator();
+            List<ReflectionPosition>.Enumerator nextEnum = reflectionPosition.GetEnumerator();
+            nextEnum.MoveNext();
+            while(nextEnum.MoveNext() && currentEnum.MoveNext())
+            {
+                ReflectionPosition current = currentEnum.Current;
+                ReflectionPosition next = nextEnum.Current;
+                Vector2 currentPoint = Level.ScreenPosition(current.Position);
+                Vector2 nextPoint = Level.ScreenPosition(next.Position);
+                LineSegment lineSegment = new LineSegment(currentPoint, nextPoint);
+                lineSegment.Retrieve(DrawPoint);
+            }
+        }
+
+        public void DrawPoint(Point point)
+        {
+            Game.SpriteBatch.Draw(texture, new Rectangle(point.X, point.Y, 1, 1),
+                null, Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth);
         }
 
         public override void CollisionResponse(Object obj)
@@ -65,15 +102,26 @@ namespace Demeter
         }
     }
 
-    public class ReflectionPoint
+    public class ReflectionPosition
     {
-        Point point;
-        float normalDirection;
-
-        public ReflectionPoint(Point point, float normalDirection)
+        Vector2 position;
+        public Vector2 Position
         {
-            this.point = point;
-            this.normalDirection = normalDirection;
+            get { return position; }
+            set { position = value; }
+        }
+
+        float normalRotation;
+        public float NormalRotation
+        {
+            get { return normalRotation; }
+            set { normalRotation = value; }
+        }
+
+        public ReflectionPosition(Vector2 position, float normalRotation)
+        {
+            this.position = position;
+            this.normalRotation = normalRotation;
         }
     }
 }

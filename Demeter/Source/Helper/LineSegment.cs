@@ -8,67 +8,110 @@ namespace Demeter
 {
     public class LineSegment
     {
-        private Point p1;
-        private Point p2;
+        Vector2 p1;
+        Vector2 p2;
 
-        public LineSegment(Point p1, Point p2)
+        public LineSegment(Vector2 p1, Vector2 p2)
         {
             this.p1 = p1;
             this.p2 = p2;
         }
 
-        public LineSegment(Point p1, float direction)
+        public LineSegment(Vector2 p1, float rotation, Rectangle rect)
         {
-            if (direction == Math.PI / 2 || direction == Math.PI / 2 * 3)
-            {
-                p2.X = p1.X;
-                p2.Y = 0;
-            }
-            else
-            {
-                float k = (float)Math.Tan((double)direction);
-                float b = p1.Y - k * p1.X;
-                p2.X = 0;
-                p2.Y = (int)b;
-            }
+            this.p1 = p1;
+            Ray helperRay = new Ray(p1, rotation);
+            List<Vector2> intersection = helperRay.Intersects(rect, true);
+            this.p2 = intersection.First();
         }
 
-        public LineSegment(Vector2 p1, float direction)
-            : this(new Point((int)p1.X, (int)p1.Y), direction)
+        public List<Vector2> Intersects(Rectangle rect)
         {
+            if (p1.X > p2.X)
+            {
+                Vector2 temp = p1;
+                p1 = p2;
+                p2 = temp;
+            }
+
+            Line helperLine = new Line(p1, p2);
+            List<Vector2> intersection1 = helperLine.Intersects(rect);
+            List<Vector2> intersection = new List<Vector2>();
+
+            foreach (Vector2 point in intersection1)
+            {
+                Vector2 p = point;
+                if (p.X >= p1.X && p.X <= p2.X)
+                {
+                    intersection.Add(point);
+                }
+            }
+
+            return intersection;
         }
 
-        public bool Intersects(Rectangle rect)
+        public void Retrieve(Retrieve retrieve)
         {
             if (p1.X == p2.X)
             {
-                if (p1.X >= rect.Left && p1.X <= rect.Right)
-                    return true;
+                if (p1.Y < p2.Y)
+                {
+                    for (int i = (int)p1.Y; i <= (int)p2.Y; i++)
+                    {
+                        retrieve(new Point((int)p1.X, i));
+                    }
+                }
+                else
+                {
+                    for (int i = (int)p2.Y; i <= (int)p1.Y; i++)
+                    {
+                        retrieve(new Point((int)p1.X, i));
+                    }
+                }
             }
             else
             {
-                float k = (float)(p1.Y - p2.Y) / (p1.X - p2.X);
+                float k = (p1.Y - p2.Y) / (p1.X - p2.X);
                 float b = p1.Y - k * p1.X;
+                float rotation = (float)Math.Atan((double)k);
 
-                float intercept;
-
-                intercept = (rect.Top - b) / k;
-                if (intercept >= rect.Left && intercept < rect.Right)
-                    return true;
-
-                intercept = (rect.Bottom - b) / k;
-                if (intercept >= rect.Left && intercept < rect.Right)
-                    return true;
-
-                intercept = k * rect.Left + b;
-                if (intercept >= rect.Top && intercept < rect.Bottom)
-                    return true;
-
-                intercept = k * rect.Right + b;
-                if (intercept >= rect.Top && intercept < rect.Bottom)
-                    return true;
+                if (rotation >= -Math.PI / 4 && rotation < Math.PI / 4)
+                {
+                    if (p1.X < p2.X)
+                    {
+                        for (int i = (int)p1.X; i <= (int)p2.X; i++)
+                        {
+                            retrieve(new Point(i, (int)(k * i + b)));
+                        }
+                    }
+                    else
+                    {
+                        for (int i = (int)p2.X; i <= (int)p1.X; i++)
+                        {
+                            retrieve(new Point(i, (int)(k * i + b)));
+                        }
+                    }
+                }
+                else
+                {
+                    if (p1.Y < p2.Y)
+                    {
+                        for (int i = (int)p1.Y; i <= (int)p2.Y; i++)
+                        {
+                            retrieve(new Point((int)((i - b) / k), i));
+                        }
+                    }
+                    else
+                    {
+                        for (int i = (int)p2.Y; i <= (int)p1.Y; i++)
+                        {
+                            retrieve(new Point((int)((i - b) / k), i));
+                        }
+                    }
+                }
             }
-            return false;
         }
     }
+
+    public delegate void Retrieve(Point point);
 }

@@ -48,6 +48,27 @@ namespace Demeter
             set { position.Y = value; }
         }
 
+        public float Top
+        {
+            get { return position.Y; }
+            set { position.Y = value; }
+        }
+        public float Bottom
+        {
+            get { return position.Y + CollisionHeight; }
+            set { position.X = value - CollisionHeight; }
+        }
+        public float Left
+        {
+            get { return position.X; }
+            set { position.X = value; }
+        }
+        public float Right
+        {
+            get { return position.X + CollisionWidth; }
+            set { position.X = value - CollisionWidth; }
+        }
+
         public Vector2 ScreenPosition
         {
             get
@@ -135,7 +156,7 @@ namespace Demeter
             }
         }
 
-        protected virtual Location LocationOf(Object obj)
+        protected Location LocationOf(Object obj)
         {
             Location location;
             float horizontalDistance1 = Math.Abs(obj.X + obj.CollisionWidth - this.X);
@@ -148,14 +169,18 @@ namespace Demeter
 
             if (verticalDistance < horizontalDistance)
             {
-                if (obj.Y > this.Y)
+                float offsetTop = this.Y + this.CollisionHeight - obj.Y;
+                float offsetBottom = offsetTop - obj.CollisionHeight;
+                if (Math.Abs(offsetTop) < Math.Abs(offsetBottom))
                     location = Location.BELOW;
                 else
                     location = Location.ABOVE;
             }
             else
             {
-                if (obj.X > this.X)
+                float offsetLeft = this.X + this.CollisionWidth - obj.X;
+                float offsetRight = offsetLeft - obj.CollisionWidth;
+                if (Math.Abs(offsetLeft) < Math.Abs(offsetRight))
                     location = Location.RIGHT;
                 else
                     location = Location.LEFT;

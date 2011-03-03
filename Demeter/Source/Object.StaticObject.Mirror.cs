@@ -14,23 +14,23 @@ namespace Demeter
     {
         public override int CollisionWidth
         {
-            get { return 128; }
+            get { return 400; }
         }
         public override int CollisionHeight
         {
-            get { return 0; }
+            get { return 400; }
         }
         /// <summary>
         /// The angle between the normal and the x-axis
         /// </summary>
-        public float Rotation
+        public float NormalRotation
         {
-            get { return rotation; }
-            set { rotation = value; }
+            get { return normalRotation; }
+            set { normalRotation = value; }
         }
-        float rotation = 0;
+        float normalRotation = 0;
 
-        private const float RotationSpeed = 0.03f;
+        private const float RotationSpeed = 0.003f;
 
         public Mirror(Game1 game, Vector2 pos)
             : base(game, pos)
@@ -43,8 +43,12 @@ namespace Demeter
         {
             string pxStr2 = reader.GetAttribute("px");
             string pyStr2 = reader.GetAttribute("py");
+            string normalRotationStr = reader.GetAttribute("normalRotation");
+
             float px2 = float.Parse(pxStr2);
             float py2 = float.Parse(pyStr2);
+            if (normalRotationStr != null)
+                this.normalRotation = float.Parse(normalRotationStr);
 
             this.game = game;
             this.position = new Vector2(px2, py2);
@@ -52,7 +56,7 @@ namespace Demeter
 
         public override void LoadContent()
         {
-            texture = Game.Content.Load<Texture2D>("texture/Object.StaticObject.Mirror.Mirror1");
+            texture = Game.Content.Load<Texture2D>("texture/Object.StaticObject.Mirror.Mirror2");
         }
 
         public override void Update(GameTime gameTime)
@@ -63,7 +67,7 @@ namespace Demeter
         {
             Game.SpriteBatch.Draw(texture,
                 new Vector2((int)ScreenPosition.X + HalfWidth, (int)ScreenPosition.Y + HalfHeight),
-                null, Color.White, rotation,
+                null, Color.White, normalRotation,
                 new Vector2(HalfWidth, HalfHeight),
                 scale, SpriteEffects.None, layerDepth);
         }
@@ -81,11 +85,11 @@ namespace Demeter
 
             if (keyboardState.IsKeyDown(Keys.Up))
             {
-                this.rotation += RotationSpeed;
+                this.normalRotation += RotationSpeed;
             }
             else if (keyboardState.IsKeyDown(Keys.Down))
             {
-                this.rotation -= RotationSpeed;
+                this.normalRotation -= RotationSpeed;
             }
         }
 

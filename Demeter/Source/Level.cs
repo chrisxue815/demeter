@@ -27,7 +27,7 @@ namespace Demeter
         {
             get { return this.player; }
         }
-       
+
         List<Object> objects = new List<Object>();
         public List<Object> Objects
         {
@@ -57,7 +57,11 @@ namespace Demeter
             get { return height; }
         }
 
-        int groundPositionY;
+        Rectangle bound;
+        public Rectangle Bound
+        {
+            get { return bound; }
+        }
 
         Vector2 cameraOffset;
         public Vector2 CameraOffset
@@ -71,7 +75,6 @@ namespace Demeter
                pos.Y - CameraOffset.Y);
         }
 
-        const int gridSize = 50;
         GridManager gridManager;
 
         #endregion
@@ -100,6 +103,7 @@ namespace Demeter
                         string height = reader.GetAttribute("height");
                         this.width = int.Parse(width);
                         this.height = int.Parse(height);
+                        this.bound = new Rectangle(0, 0, this.width, this.height);
                     }
                     else if (reader.Name == "background")
                     {
@@ -113,12 +117,24 @@ namespace Demeter
                         float py = float.Parse(pyStr);
                         cameraOffset = new Vector2(px, py);
                     }
-                    else if (reader.Name == "ground")
+                    else if (reader.Name == "bound")
                     {
-                        string groundPositionY = reader.GetAttribute("py");
-                        this.groundPositionY = int.Parse(groundPositionY);
-                        Block ground = new Block(game, new Vector2(0, this.groundPositionY), width);
-                        objects.Add(ground);
+                        string leftStr = reader.GetAttribute("left");
+                        string rightStr = reader.GetAttribute("right");
+                        string topStr = reader.GetAttribute("top");
+                        string bottomStr = reader.GetAttribute("bottom");
+                        int left = int.Parse(leftStr);
+                        int right = int.Parse(rightStr);
+                        int top = int.Parse(topStr);
+                        int bottom = int.Parse(bottomStr);
+                        Block leftBound = new Block(game, new Vector2(left, 0), 0, height);
+                        Block rightBound = new Block(game, new Vector2(right, 0), 0, height);
+                        Block topBound = new Block(game, new Vector2(0, top), width, 0);
+                        Block bottomBound = new Block(game, new Vector2(0, bottom), width, 0);
+                        objects.Add(leftBound);
+                        objects.Add(rightBound);
+                        objects.Add(topBound);
+                        objects.Add(bottomBound);
                     }
                     else if (reader.Name == "player")
                     {
@@ -261,20 +277,26 @@ namespace Demeter
 
         public void InitializeGridManager()
         {
-            gridManager = new GridManager(width / gridSize + 1, height / gridSize + 1);
+            gridManager = new GridManager(width / GridManager.GridSize + 1, height / GridManager.GridSize + 1);
             foreach (Object obj in objects)
             {
                 Rectangle rect = obj.CollisionRect;
-                int leftIndex = rect.Left / gridSize;
-                int rightIndex = rect.Right / gridSize;
-                int topIndex = rect.Top / gridSize;
-                int bottomIndex = rect.Bottom / gridSize;
+                int leftIndex = rect.Left / GridManager.GridSize;
+                int rightIndex = rect.Right / GridManager.GridSize;
+                int topIndex = rect.Top / GridManager.GridSize;
+                int bottomIndex = rect.Bottom / GridManager.GridSize;
 
                 for (int i = leftIndex; i <= rightIndex; i++)
                 {
                     for (int j = topIndex; j <= bottomIndex; j++)
                     {
-                        gridManager.Add(obj, i, j);
+                        try
+                        {
+                            gridManager.Add(obj, i, j);
+                        }
+                        catch (Exception ex)
+                        {
+                        }
                     }
                 }
             }
@@ -285,10 +307,10 @@ namespace Demeter
             List<Object> collided = new List<Object>();
 
             Rectangle rect = obj.CollisionRect;
-            int leftIndex = rect.Left / gridSize;
-            int rightIndex = rect.Right / gridSize;
-            int topIndex = rect.Top / gridSize;
-            int bottomIndex = rect.Bottom / gridSize;
+            int leftIndex = rect.Left / GridManager.GridSize;
+            int rightIndex = rect.Right / GridManager.GridSize;
+            int topIndex = rect.Top / GridManager.GridSize;
+            int bottomIndex = rect.Bottom / GridManager.GridSize;
 
             for (int i = leftIndex; i <= rightIndex; i++)
             {
@@ -307,7 +329,7 @@ namespace Demeter
                     }
                     catch (Exception ex)
                     {
-                        player.IsAlive = false;//todo
+                        throw new NotSupportedException("Player is out of bound");//todo
                     }
                 }
             }
@@ -323,66 +345,57 @@ namespace Demeter
             return collided;
         }
 
-        public Object FindObject(Vector2 pos, float direction)
+        public Object FindObject(Vector2 pos, float rotation, out Vector2? collidingPosition, Object exclusion)
         {
-            Point position = new Point((int)pos.X, (int)pos.Y);
-            Line line = new Line(position, direction);
+            Ray ray = new Ray(pos, rotation);
 
-            int x = position.X / gridSize;
-            int y = position.Y / gridSize;
+            int x = (int)(pos.X / GridManager.GridSize);
+            int y = (int)(pos.Y / GridManager.GridSize);
 
-            int xIncrement;
-            int yIncrement;
-            bool isXIncrement;
+            List<Object> objs;
 
-            if (direction < 0)
-                direction = -direction;
-            direction = (float)(direction % Math.PI);
-
-            if (direction >= Math.PI / 4 * 7 && direction < Math.PI / 4
-                || direction >= Math.PI / 4 * 3 && direction < Math.PI / 4 * 5)
+            while ((objs = gridManager[x, y]) != null)
             {
-                isXIncrement = true;
-            }
-            else
-                isXIncrement = false;
-
-            if (direction >= Math.PI / 2 * 3 && direction < Math.PI / 2)
-            {
-                xIncrement = 1;
-            }
-            else
-                xIncrement = -1;
-
-            if (direction >= 0 && direction < Math.PI)
-            {
-                yIncrement = 1;
-            }
-            else
-                yIncrement = -1;
-
-            while (true)
-            {
-                List<Object> objs = gridManager[x, y];
-                if (objs == null)
-                    return null;
-                else
+                foreach (Object obj in objs)
                 {
-                    foreach (Object obj in objs)
+                    if (obj != exclusion)
                     {
-                        if (line.Intersects(obj.CollisionRect))
+                        List<Vector2> intersection = ray.Intersects(obj.CollisionRect, true);
+                        if (intersection != null && intersection.Count > 0)
                         {
+                            collidingPosition = intersection.First();
                             return obj;
                         }
                     }
                 }
 
-                if (isXIncrement)
-                    x += xIncrement;
-                else
-                    y += yIncrement;
-                isXIncrement = !isXIncrement;
+                Point next = NextGrid(ray, gridManager.GetRect(x, y));
+                x += next.X;
+                y += next.Y;
             }
+
+            collidingPosition = null;
+            return null;
+        }
+
+        private Point NextGrid(Ray ray, Rectangle currentGrid)
+        {
+            Point next = new Point();
+
+            List<Vector2> intersections = ray.Intersects(currentGrid, true);
+            Vector2 intersection = (intersections.Count == 1)
+                ? intersections.First() : intersections[1];
+
+            if (intersection.X == currentGrid.Left)
+                next.X = -1;
+            else if (intersection.X == currentGrid.Right)
+                next.X = 1;
+            if (intersection.Y == currentGrid.Top)
+                next.Y = -1;
+            else if (intersection.Y == currentGrid.Bottom)
+                next.Y = 1;
+
+            return next;
         }
 
         #endregion
@@ -425,20 +438,11 @@ namespace Demeter
 
     public class GridManager
     {
+        public static readonly int GridSize = 50;
+
         private Grid[,] manager;
         private int width;
         private int height;
-
-        public List<Object> this[int x, int y]
-        {
-            get
-            {
-                if (x >= 0 && x < width && y >= 0 && y < height)
-                    return manager[x, y].ObjectInside;
-                else
-                    return null;
-            }
-        }
 
         public GridManager(int width, int height)
         {
@@ -453,6 +457,22 @@ namespace Demeter
                     manager[i, j] = new Grid();
                 }
             }
+        }
+
+        public List<Object> this[int x, int y]
+        {
+            get
+            {
+                if (x >= 0 && x < width && y >= 0 && y < height)
+                    return manager[x, y].ObjectInside;
+                else
+                    return null;
+            }
+        }
+
+        public Rectangle GetRect(int x, int y)
+        {
+            return new Rectangle(x * GridSize, y * GridSize, GridSize, GridSize);
         }
 
         public void Add(Object obj, int x, int y)

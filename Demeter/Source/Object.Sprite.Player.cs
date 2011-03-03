@@ -260,7 +260,7 @@ namespace Demeter
 
             if (keyboardState.IsKeyDown(Keys.Left))
             {   // player moves left
-                horizontalMovement -= 1;
+                 horizontalMovement -= 1;
             }
             if (keyboardState.IsKeyDown(Keys.Right))
             {   // player moves right

@@ -29,12 +29,15 @@ namespace Demeter
         }
         float rotation = 0;
 
-        private const float RotationSpeed = 0.03f;
+        private const float RotationSpeed = 0.01f;
+
+        LightRay lightRay;
 
         public LightSource(Game1 game, Vector2 pos)
             : base(game, pos)
         {
-            position = pos;
+            this.lightRay = new LightRay(game, pos, rotation);
+            this.lightRay.LightSource = this;
         }
 
         public LightSource(Game1 game, XmlTextReader reader)
@@ -42,11 +45,17 @@ namespace Demeter
         {
             string pxStr2 = reader.GetAttribute("px");
             string pyStr2 = reader.GetAttribute("py");
+            string rotationStr = reader.GetAttribute("rotation");
+
             float px2 = float.Parse(pxStr2);
             float py2 = float.Parse(pyStr2);
+            if (rotationStr != null)
+                this.rotation = float.Parse(rotationStr);
 
             this.game = game;
             this.position = new Vector2(px2, py2);
+            this.lightRay = new LightRay(game, position, rotation);
+            this.lightRay.LightSource = this;
         }
 
         public override void LoadContent()
@@ -56,6 +65,7 @@ namespace Demeter
 
         public override void Update(GameTime gameTime)
         {
+            lightRay.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime)
@@ -65,16 +75,13 @@ namespace Demeter
                 null, Color.White, rotation,
                 new Vector2(HalfWidth, HalfHeight),
                 scale, SpriteEffects.None, 1);
+            lightRay.Draw(gameTime);
         }
 
         public override void CollisionResponse(Object obj)
         {
             //throw new NotImplementedException();
         }
-
-        #region IControlledObject Members
-
-        #endregion
 
         #region IControlledObject Members
 
