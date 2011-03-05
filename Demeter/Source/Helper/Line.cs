@@ -17,18 +17,18 @@ namespace Demeter
             this.p2 = p2;
         }
 
-        public Line(Vector2 p1, float rotation)
+        public Line(Vector2 p1, float angle)
         {
             this.p1 = p1;
 
-            if (rotation == Math.PI / 2 || rotation == Math.PI / 2 * 3)
+            if (angle == Math.PI / 2 || angle == Math.PI / 2 * 3)
             {
                 p2.X = p1.X;
                 p2.Y = 0;
             }
             else
             {
-                float k = (float)Math.Tan((double)rotation);
+                float k = (float)Math.Tan((double)angle);
                 float b = p1.Y - k * p1.X;
                 p2.X = 0;
                 p2.Y = b;

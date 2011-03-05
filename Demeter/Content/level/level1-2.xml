@@ -11,6 +11,6 @@
   <mirror id="mirror1" px="400" py="500"></mirror>
   <ladder id="ladder1" px="700" py="450" height="89"></ladder>
   <block id="block1" px="200" py="500" width="200" height="48"></block>
-  <door id="door1" px="500" py="522" levelFileName="level1-1.xml"></door>
+  <door id="door1" px="500" py="522" levelFileName="level0-1.xml"></door>
   <treasure id="treasure3" px="800" py="500"></treasure>
 </level>

@@ -14,21 +14,21 @@ namespace Demeter
     {
         public override int CollisionWidth
         {
-            get { return 400; }
+            get { return 100; }
         }
         public override int CollisionHeight
         {
-            get { return 400; }
+            get { return 100; }
         }
         /// <summary>
         /// The angle between the normal and the x-axis
         /// </summary>
-        public float NormalRotation
+        public float NormalAngle
         {
-            get { return normalRotation; }
-            set { normalRotation = value; }
+            get { return normalAngle; }
+            set { normalAngle = value; }
         }
-        float normalRotation = 0;
+        float normalAngle = 0;
 
         private const float RotationSpeed = 0.003f;
 
@@ -43,12 +43,12 @@ namespace Demeter
         {
             string pxStr2 = reader.GetAttribute("px");
             string pyStr2 = reader.GetAttribute("py");
-            string normalRotationStr = reader.GetAttribute("normalRotation");
+            string normalAngleStr = reader.GetAttribute("normalAngle");
 
             float px2 = float.Parse(pxStr2);
             float py2 = float.Parse(pyStr2);
-            if (normalRotationStr != null)
-                this.normalRotation = float.Parse(normalRotationStr);
+            if (normalAngleStr != null)
+                this.normalAngle = float.Parse(normalAngleStr);
 
             this.game = game;
             this.position = new Vector2(px2, py2);
@@ -67,7 +67,7 @@ namespace Demeter
         {
             Game.SpriteBatch.Draw(texture,
                 new Vector2((int)ScreenPosition.X + HalfWidth, (int)ScreenPosition.Y + HalfHeight),
-                null, Color.White, normalRotation,
+                null, Color.White, normalAngle,
                 new Vector2(HalfWidth, HalfHeight),
                 scale, SpriteEffects.None, layerDepth);
         }
@@ -85,11 +85,11 @@ namespace Demeter
 
             if (keyboardState.IsKeyDown(Keys.Up))
             {
-                this.normalRotation += RotationSpeed;
+                this.normalAngle += RotationSpeed;
             }
             else if (keyboardState.IsKeyDown(Keys.Down))
             {
-                this.normalRotation -= RotationSpeed;
+                this.normalAngle -= RotationSpeed;
             }
         }
 

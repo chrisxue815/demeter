@@ -100,8 +100,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="level\level1-1.xml">
-      <Name>level1-1</Name>
+    <None Include="level\level0-1.xml">
+      <Name>level0-1</Name>
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

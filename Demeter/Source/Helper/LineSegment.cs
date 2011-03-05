@@ -17,10 +17,10 @@ namespace Demeter
             this.p2 = p2;
         }
 
-        public LineSegment(Vector2 p1, float rotation, Rectangle rect)
+        public LineSegment(Vector2 p1, float angle, Rectangle rect)
         {
             this.p1 = p1;
-            Ray helperRay = new Ray(p1, rotation);
+            Ray helperRay = new Ray(p1, angle);
             List<Vector2> intersection = helperRay.Intersects(rect, true);
             this.p2 = intersection.First();
         }
@@ -73,9 +73,9 @@ namespace Demeter
             {
                 float k = (p1.Y - p2.Y) / (p1.X - p2.X);
                 float b = p1.Y - k * p1.X;
-                float rotation = (float)Math.Atan((double)k);
+                float angle = (float)Math.Atan((double)k);
 
-                if (rotation >= -Math.PI / 4 && rotation < Math.PI / 4)
+                if (angle >= -Math.PI / 4 && angle < Math.PI / 4)
                 {
                     if (p1.X < p2.X)
                     {

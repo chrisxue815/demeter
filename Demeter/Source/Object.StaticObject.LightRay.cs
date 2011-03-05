@@ -18,12 +18,12 @@ namespace Demeter
             get { return 0; }
         }
 
-        public float Rotation
+        public float Angle
         {
-            get { return rotation; }
-            set { rotation = value; }
+            get { return angle; }
+            set { angle = value; }
         }
-        float rotation;
+        float angle;
 
         LightSource lightSource;
         public LightSource LightSource
@@ -32,44 +32,53 @@ namespace Demeter
             set { lightSource = value; }
         }
 
-        List<ReflectionPosition> reflectionPosition = new List<ReflectionPosition>();
+        List<Vector2> reflectionPosition = new List<Vector2>();
 
-        public LightRay(Game1 game, Vector2 position, float rotation)
+        public LightRay(Game1 game, Vector2 position, float angle)
             : base(game, position)
         {
-            this.rotation = rotation;
+            this.angle = angle;
         }
 
         public override void LoadContent()
         {
-            texture = new Texture2D(Game.GraphicsDevice, 1, 1);
-            Color[] color = new Color[1];
-            for (int i = 0; i < 1; i++)
-                color[i] = new Color(0, 0, 0, 100);
+            texture = new Texture2D(Game.GraphicsDevice, 10, 10);
+            Color[] color = new Color[100];
+            for (int i = 0; i < 100; i++)
+                color[i] = new Color(250, 250, 250, 10);
             texture.SetData(color);
         }
 
         public override void Update(GameTime gameTime)
         {
-            rotation = lightSource.Rotation;
+            angle = lightSource.Angle;
 
             reflectionPosition.Clear();
-            reflectionPosition.Add(new ReflectionPosition(position, rotation));
+            reflectionPosition.Add(position);
+
+            float incidenceAngle = angle;
 
             Vector2? collidingPosition;
-            Object obj = Level.FindObject(position, rotation, out collidingPosition, lightSource);
+            Object obj = Level.FindObject(position, angle, out collidingPosition, lightSource);
             while (obj != null)
             {
                 if (obj is Mirror)
                 {
                     Mirror mirror = (Mirror)obj;
-                    reflectionPosition.Add(new ReflectionPosition(collidingPosition.Value, mirror.NormalRotation));
-                    obj = Level.FindObject(collidingPosition.Value,
-                        2 * mirror.NormalRotation - rotation - (float)Math.PI, out collidingPosition, mirror);
+                    reflectionPosition.Add(collidingPosition.Value);
+                    float reflectAngle = 2 * mirror.NormalAngle - incidenceAngle - (float)Math.PI;
+                    obj = Level.FindObject(collidingPosition.Value, reflectAngle,
+                        out collidingPosition, mirror);
+
+                    incidenceAngle = reflectAngle;
                 }
                 else
                 {
-                    reflectionPosition.Add(new ReflectionPosition(collidingPosition.Value, 0));
+                    reflectionPosition.Add(collidingPosition.Value);
+                    if (obj is Gate)
+                    {
+                        ((IControlledObject)obj).Control();
+                    }
                     break;
                 }
             }
@@ -77,15 +86,15 @@ namespace Demeter
 
         public override void Draw(GameTime gameTime)
         {
-            List<ReflectionPosition>.Enumerator currentEnum = reflectionPosition.GetEnumerator();
-            List<ReflectionPosition>.Enumerator nextEnum = reflectionPosition.GetEnumerator();
+            List<Vector2>.Enumerator currentEnum = reflectionPosition.GetEnumerator();
+            List<Vector2>.Enumerator nextEnum = reflectionPosition.GetEnumerator();
             nextEnum.MoveNext();
             while(nextEnum.MoveNext() && currentEnum.MoveNext())
             {
-                ReflectionPosition current = currentEnum.Current;
-                ReflectionPosition next = nextEnum.Current;
-                Vector2 currentPoint = Level.ScreenPosition(current.Position);
-                Vector2 nextPoint = Level.ScreenPosition(next.Position);
+                Vector2 current = currentEnum.Current;
+                Vector2 next = nextEnum.Current;
+                Vector2 currentPoint = Level.ScreenPosition(current);
+                Vector2 nextPoint = Level.ScreenPosition(next);
                 LineSegment lineSegment = new LineSegment(currentPoint, nextPoint);
                 lineSegment.Retrieve(DrawPoint);
             }
@@ -93,35 +102,12 @@ namespace Demeter
 
         public void DrawPoint(Point point)
         {
-            Game.SpriteBatch.Draw(texture, new Rectangle(point.X, point.Y, 1, 1),
+            Game.SpriteBatch.Draw(texture, new Rectangle(point.X, point.Y, 10, 10),
                 null, Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth);
         }
 
         public override void CollisionResponse(Object obj)
         {
-        }
-    }
-
-    public class ReflectionPosition
-    {
-        Vector2 position;
-        public Vector2 Position
-        {
-            get { return position; }
-            set { position = value; }
-        }
-
-        float normalRotation;
-        public float NormalRotation
-        {
-            get { return normalRotation; }
-            set { normalRotation = value; }
-        }
-
-        public ReflectionPosition(Vector2 position, float normalRotation)
-        {
-            this.position = position;
-            this.normalRotation = normalRotation;
         }
     }
 }

@@ -86,12 +86,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Source\Helper\Helper.cs" />
     <Compile Include="Source\Helper\IController.cs" />
     <Compile Include="Source\Helper\OgreBase.cs" />
     <Compile Include="Source\Helper\OgreCore.cs" />
     <Compile Include="Source\Helper\Ray.cs" />
     <Compile Include="Source\Helper\TreasureManager.cs" />
     <Compile Include="Source\Object.StaticObject.DeadlyObject.cs" />
+    <Compile Include="Source\Object.StaticObject.Gate.cs" />
     <Compile Include="Source\Object.StaticObject.Launcher.cs" />
     <Compile Include="Source\Object.Sprite.Enemy.cs" />
     <Compile Include="Source\Object.StaticObject.Ogre.cs" />

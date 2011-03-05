@@ -97,8 +97,14 @@ namespace Demeter
             get { return 0; }
         }
 
-        public abstract int CollisionWidth { get; }
-        public abstract int CollisionHeight { get; }
+        public virtual int CollisionWidth
+        {
+            get { return 0; }
+        }
+        public virtual int CollisionHeight
+        {
+            get { return 0; }
+        }
         public abstract Rectangle CollisionRect { get; }
 
         public Object(Game1 game)

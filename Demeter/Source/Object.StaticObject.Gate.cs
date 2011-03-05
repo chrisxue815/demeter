@@ -8,7 +8,7 @@ using System.Xml;
 
 namespace Demeter
 {
-    public class Block : Tile, IControlledObject
+    public class Gate : Tile, IControlledObject
     {
         protected BlockInfo blockInfo = null;
         public BlockInfo BlockInfo
@@ -17,22 +17,22 @@ namespace Demeter
             set { blockInfo = value; }
         }
 
-        public Block(Game1 game, Vector2 position, Point tileFrame)
+        public Gate(Game1 game, Vector2 position, Point tileFrame)
             : base(game, position, tileFrame)
         {
         }
 
-        public Block(Game1 game, Vector2 position, int width)
+        public Gate(Game1 game, Vector2 position, int width)
             : base(game, position, width)
         {
         }
 
-        public Block(Game1 game, Vector2 position, int width, int height)
+        public Gate(Game1 game, Vector2 position, int width, int height)
             : base(game, position, width, height)
         {
         }
 
-        public Block(Game1 game, XmlTextReader reader)
+        public Gate(Game1 game, XmlTextReader reader)
             : base(game, reader)
         {
             string pxStr = reader.GetAttribute("px");
@@ -179,12 +179,92 @@ namespace Demeter
 
         #region IControlledObject Members
 
+        bool haveControlled = false;
         void IControlledObject.Control()
         {
-            blockInfo.Positive = !blockInfo.Positive;
-            blockInfo.Moving = true;
+            if (!haveControlled)
+            {
+                blockInfo.Positive = !blockInfo.Positive;
+                blockInfo.Moving = true;
+                haveControlled = true;
+            }
         }
 
         #endregion
+    }
+
+    public class BlockInfo
+    {
+        const float MaxSpeed = 1.0f;
+
+        readonly Vector2 speed;
+        public Vector2 Speed
+        {
+            get { return speed; }
+        }
+
+        bool positive = false;
+        public bool Positive
+        {
+            get { return positive; }
+            set { positive = value; }
+        }
+
+        bool moving = false;
+        public bool Moving
+        {
+            get { return moving; }
+            set { moving = value; }
+        }
+
+        float leftBound;
+        public float LeftBound
+        {
+            get { return leftBound; }
+            set { leftBound = value; }
+        }
+
+        float rightBound;
+        public float RightBound
+        {
+            get { return rightBound; }
+            set { rightBound = value; }
+        }
+
+        float topBound;
+        public float TopBound
+        {
+            get { return topBound; }
+            set { topBound = value; }
+        }
+
+        float bottomBound;
+        public float BottomBound
+        {
+            get { return bottomBound; }
+            set { bottomBound = value; }
+        }
+
+        public BlockInfo(float leftBound, float rightBound, float topBound, float bottomBound)
+        {
+            this.leftBound = leftBound;
+            this.rightBound = rightBound;
+            this.topBound = topBound;
+            this.bottomBound = bottomBound;
+
+            speed = new Vector2();
+            float offsetX = Math.Abs(leftBound - rightBound);
+            float offsetY = Math.Abs(topBound - bottomBound);
+            if (offsetX > offsetY)
+            {
+                speed.X = MaxSpeed;
+                speed.Y = MaxSpeed / offsetX * offsetY;
+            }
+            else
+            {
+                speed.Y = MaxSpeed;
+                speed.X = MaxSpeed / offsetY * offsetX;
+            }
+        }
     }
 }

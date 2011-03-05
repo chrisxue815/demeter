@@ -9,25 +9,25 @@ namespace Demeter
     public class Ray
     {
         Vector2 p1;
-        float rotation;
+        float angle;
 
-        public Ray(Vector2 p1, float rotation)
+        public Ray(Vector2 p1, float angle)
         {
             this.p1 = p1;
-            rotation %= (float)(Math.PI * 2);
-            if (rotation < 0)
-                rotation += (float)(Math.PI * 2);
-            this.rotation = rotation;
+            angle %= (float)(Math.PI * 2);
+            if (angle < 0)
+                angle += (float)(Math.PI * 2);
+            this.angle = angle;
         }
 
         public List<Vector2> Intersects(Rectangle rect)
         {
-            Line helperLine = new Line(p1, rotation);
+            Line helperLine = new Line(p1, angle);
             List<Vector2> intersection1 = helperLine.Intersects(rect);
             List<Vector2> intersection = new List<Vector2>();
 
-            if (rotation >= 0 && rotation < Math.PI / 2 ||
-                rotation >= Math.PI / 2 * 3)
+            if (angle >= 0 && angle < Math.PI / 2 ||
+                angle >= Math.PI / 2 * 3)
             {
                 foreach (Vector2 p in intersection1)
                 {
@@ -49,16 +49,12 @@ namespace Demeter
 
         public List<Vector2> Intersects(Rectangle rect, bool sorted)
         {
+            List<Vector2> intersection = Intersects(rect);
             if (sorted)
             {
-                List<Vector2> intersection = Intersects(rect);
                 intersection.Sort(VectorComparison);
-                return intersection;
             }
-            else
-            {
-                return Intersects(rect);
-            }
+            return intersection;
         }
 
         public int VectorComparison(Vector2 v1, Vector2 v2)
@@ -66,8 +62,8 @@ namespace Demeter
             if (v1.X == v2.X)
                     return 0;
 
-            if (rotation >= 0 && rotation < Math.PI / 2 ||
-                rotation >= Math.PI / 2 * 3)
+            if (angle >= 0 && angle < Math.PI / 2 ||
+                angle >= Math.PI / 2 * 3)
             {
                 if (v1.X < v2.X)
                     return -1;

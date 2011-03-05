@@ -244,6 +244,10 @@ namespace Demeter
                     {
                         Ogre ogre = new Ogre(game, reader);
                     }
+                    else if (reader.Name == "gate")
+                    {
+                        Gate gate = new Gate(game, reader);
+                    }
                 }
             }
 
@@ -394,9 +398,28 @@ namespace Demeter
             return collided;
         }
 
-        public Object FindObject(Vector2 pos, float rotation, out Vector2? collidingPosition, Object exclusion)
+        public Object FindObject(Vector2 pos, float angle, out Vector2? collidingPosition, Object exclusion)
         {
-            Ray ray = new Ray(pos, rotation);
+            Ray ray = new Ray(pos, angle);
+
+            Object nearestMovableObj = null;
+            Vector2? nearestMovablePoint = null;
+            Object nearestObj = null;
+            Vector2? nearestPoint = null;
+
+            foreach (Object obj in movableObjects)
+            {
+                List<Vector2> intersection = ray.Intersects(obj.CollisionRect, true);
+                if (intersection != null && intersection.Count > 0)
+                {
+                    Vector2 point = intersection.First();
+                    if (nearestMovableObj == null || (pos - point).Length() < (pos - nearestMovablePoint.Value).Length())
+                    {
+                        nearestMovableObj = obj;
+                        nearestMovablePoint = point;
+                    }
+                }
+            }
 
             int x = (int)(pos.X / GridManager.GridSize);
             int y = (int)(pos.Y / GridManager.GridSize);
@@ -405,26 +428,51 @@ namespace Demeter
 
             while ((objs = gridManager[x, y]) != null)
             {
+                Rectangle currentGrid = gridManager.GetRect(x, y);
+
                 foreach (Object obj in objs)
                 {
                     if (obj != exclusion)
                     {
                         List<Vector2> intersection = ray.Intersects(obj.CollisionRect, true);
-                        if (intersection != null && intersection.Count > 0)
+
+                        if (intersection == null || intersection.Count == 0)
                         {
-                            collidingPosition = intersection.First();
-                            return obj;
+                            continue;
+                        }
+
+                        Vector2 point = intersection.First();
+
+                        if (Helper.Contains(currentGrid, point) &&
+                            (nearestObj == null || (pos - point).Length() < (pos - nearestPoint.Value).Length()))
+                        {
+                            nearestObj = obj;
+                            nearestPoint = point;
                         }
                     }
                 }
 
-                Point next = NextGrid(ray, gridManager.GetRect(x, y));
+                if (nearestObj != null)
+                {
+                    break;
+                }
+
+                Point next = NextGrid(ray, currentGrid);
                 x += next.X;
                 y += next.Y;
             }
 
-            collidingPosition = null;
-            return null;
+            if (nearestMovableObj != null &&
+                (pos - nearestMovablePoint.Value).Length() < (pos - nearestPoint.Value).Length())
+            {
+                collidingPosition = nearestMovablePoint;
+                return nearestMovableObj;
+            }
+            else
+            {
+                collidingPosition = nearestPoint;
+                return nearestObj;
+            }
         }
 
         private Point NextGrid(Ray ray, Rectangle currentGrid)

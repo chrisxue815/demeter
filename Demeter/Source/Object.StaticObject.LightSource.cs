@@ -22,12 +22,12 @@ namespace Demeter
         /// <summary>
         /// The angle between the normal and the x-axis
         /// </summary>
-        public float Rotation
+        public float Angle
         {
-            get { return rotation; }
-            set { rotation = value; }
+            get { return angle; }
+            set { angle = value; }
         }
-        float rotation = 0;
+        float angle = 0;
 
         private const float RotationSpeed = 0.01f;
 
@@ -36,7 +36,7 @@ namespace Demeter
         public LightSource(Game1 game, Vector2 pos)
             : base(game, pos)
         {
-            this.lightRay = new LightRay(game, pos, rotation);
+            this.lightRay = new LightRay(game, Helper.ToVector2(CollisionRect.Center), angle);
             this.lightRay.LightSource = this;
         }
 
@@ -45,16 +45,16 @@ namespace Demeter
         {
             string pxStr2 = reader.GetAttribute("px");
             string pyStr2 = reader.GetAttribute("py");
-            string rotationStr = reader.GetAttribute("rotation");
+            string angleStr = reader.GetAttribute("angle");
 
             float px2 = float.Parse(pxStr2);
             float py2 = float.Parse(pyStr2);
-            if (rotationStr != null)
-                this.rotation = float.Parse(rotationStr);
+            if (angleStr != null)
+                this.angle = float.Parse(angleStr);
 
             this.game = game;
             this.position = new Vector2(px2, py2);
-            this.lightRay = new LightRay(game, position, rotation);
+            this.lightRay = new LightRay(game, Helper.ToVector2(CollisionRect.Center), angle);
             this.lightRay.LightSource = this;
         }
 
@@ -72,7 +72,7 @@ namespace Demeter
         {
             Game.SpriteBatch.Draw(texture,
                 new Vector2((int)ScreenPosition.X + HalfWidth, (int)ScreenPosition.Y + HalfHeight),
-                null, Color.White, rotation,
+                null, Color.White, angle,
                 new Vector2(HalfWidth, HalfHeight),
                 scale, SpriteEffects.None, 1);
             lightRay.Draw(gameTime);
@@ -91,11 +91,11 @@ namespace Demeter
 
             if (keyboardState.IsKeyDown(Keys.Up))
             {
-                this.rotation += RotationSpeed;
+                this.angle += RotationSpeed;
             }
             else if (keyboardState.IsKeyDown(Keys.Down))
             {
-                this.rotation -= RotationSpeed;
+                this.angle -= RotationSpeed;
             }
         }
 
