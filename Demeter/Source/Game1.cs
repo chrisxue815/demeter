@@ -37,13 +37,13 @@ namespace Demeter
             get { return level; }
         }
 
-        int width = 800;
+        int width = 1366;
         public int Width
         {
             get { return this.width; }
         }
 
-        int height = 600;
+        int height = 768;
         public int Height
         {
             get { return this.height; }
@@ -81,8 +81,8 @@ namespace Demeter
             graphics.PreferredBackBufferWidth = width;
             graphics.PreferredBackBufferHeight = height;
 
-            /*if (!graphics.IsFullScreen)
-                graphics.ToggleFullScreen();*/
+            if (!graphics.IsFullScreen)
+                graphics.ToggleFullScreen();
 
             Content.RootDirectory = "Content";
         }
@@ -147,8 +147,12 @@ namespace Demeter
                 if (level.Player.IsLeaving)
                 {
                     string commingLevel = Level.Player.ComingLevel;
-                    level = new Level(this);
-                    level.Load(commingLevel);
+                    if (commingLevel != "null")
+                    {
+                        level = new Level(this);
+                        level.Load(commingLevel);
+                    }
+                    level.Player.IsLeaving = false;
                 }
 
                 if (!level.Player.IsAlive)
@@ -177,7 +181,7 @@ namespace Demeter
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Gray);
 
             // TODO: Add your drawing code here
             SpriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.FrontToBack, SaveStateMode.SaveState);

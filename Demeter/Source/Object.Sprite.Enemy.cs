@@ -18,7 +18,7 @@ namespace Demeter
 
         public override int CollisionHeight
         {
-            get { return 45; }
+            get { return 39; }
         }
         #endregion
 
@@ -34,7 +34,7 @@ namespace Demeter
             get { return 0; }
         }
 
-        static readonly Point DEFAULT_FRAME_SIZE = new Point(45, 45);
+        static readonly Point DEFAULT_FRAME_SIZE = new Point(45, 39);
 
         // animations
 
@@ -77,7 +77,7 @@ namespace Demeter
         }
 
         bool isPowered;
-        int poweredTime = 1000;
+        int poweredTime = 500;
 
         #region movement
         public bool InTheAir
@@ -214,6 +214,7 @@ namespace Demeter
             }
 
             SetAnimation();
+            base.Update(gameTime);
         }
 
         public void ApplyPhysics(GameTime gameTime)
