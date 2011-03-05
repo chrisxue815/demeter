@@ -64,7 +64,7 @@ namespace Demeter
                         float right = float.Parse(rightStr);
                         float top = float.Parse(topStr);
                         float bottom = float.Parse(bottomStr);
-                        this.blockInfo = new BlockInfo(left, right, top, bottom);
+                        this.blockInfo = new BlockInfo(left, right, top, bottom, true);
                     }
                 }
             }
@@ -245,12 +245,13 @@ namespace Demeter
             set { bottomBound = value; }
         }
 
-        public BlockInfo(float leftBound, float rightBound, float topBound, float bottomBound)
+        public BlockInfo(float leftBound, float rightBound, float topBound, float bottomBound, bool positive)
         {
             this.leftBound = leftBound;
             this.rightBound = rightBound;
             this.topBound = topBound;
             this.bottomBound = bottomBound;
+            this.positive = positive;
 
             speed = new Vector2();
             float offsetX = Math.Abs(leftBound - rightBound);

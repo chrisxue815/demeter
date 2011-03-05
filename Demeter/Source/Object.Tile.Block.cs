@@ -189,6 +189,4 @@ namespace Demeter
 
         #endregion
     }
-        public BlockInfo(float leftBound, float rightBound, float topBound, float bottomBound, bool positive)
-            this.positive = positive;
 }

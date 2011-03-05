@@ -324,20 +324,21 @@ namespace Demeter
 
         public void Draw(GameTime gameTime)
         {
-            Vector2 p = ScreenPosition(Vector2.Zero);
-
-            if (backgroundTexture != null)
+            if (backgroundTexture != null && foregroundTexture != null)
             {
-                Game.SpriteBatch.Draw(backgroundTexture,
-                    new Rectangle((int)(p.X * 0.5), (int)(p.Y * 0.5), 1430, height), null,
-                    Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.1f);
-            }
-
-            if (foregroundTexture != null)
-            {
-                Game.SpriteBatch.Draw(foregroundTexture,
-                    new Rectangle((int)(p.X), (int)(p.Y) + height / 2, 1430, height / 2), null,
-                    Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.11f);
+                Vector2 p = ScreenPosition(Vector2.Zero);
+                for (int i = 0; i < (int)Math.Ceiling((float)width / backgroundTexture.Width); i++)
+                {
+                    Game.SpriteBatch.Draw(backgroundTexture,
+                        new Rectangle((int)(p.X * 0.5 + backgroundTexture.Width * i), (int)(p.Y), backgroundTexture.Width, height),
+                        null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.1f);
+                }
+                for (int i = 0; i < (int)Math.Ceiling((float)width / foregroundTexture.Width); i++)
+                {
+                    Game.SpriteBatch.Draw(foregroundTexture,
+                        new Rectangle((int)(p.X + foregroundTexture.Width * i), height - foregroundTexture.Height, foregroundTexture.Width, foregroundTexture.Height), null,
+                        Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.11f);
+                }
             }
 
             foreach (Object obj in movableObjects)
