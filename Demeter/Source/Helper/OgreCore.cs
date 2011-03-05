@@ -8,7 +8,7 @@ using System.Xml;
 
 namespace Demeter
 {
-    public class OgreCore : StaticObject
+    public class OgreCore : Sprite
     {
         public override int CollisionWidth
         {
@@ -19,6 +19,22 @@ namespace Demeter
         {
             get { return 70; }
         }
+
+        public override int TopCollisionOffset
+        {
+            get { return 0; }
+        }
+
+        public override int LeftCollisionOffset
+        {
+            get { return 0; }
+        }
+
+
+        Animation animation;
+        static readonly Point DEFAULT_FRAME_SIZE = new Point(45, 70);
+
+
         float maxOffset;
         float offset = 0;
         int bottomTime = 0;
@@ -41,7 +57,9 @@ namespace Demeter
 
         public override void LoadContent()
         {
-            this.texture = Game.Content.Load<Texture2D>("texture/Object.StaticObject.Ogre.Core");
+            this.animation = new Animation(Game.Content.Load<Texture2D>("texture/Object.StaticObject.Ogre.Core"),
+                DEFAULT_FRAME_SIZE, 100, true);
+            this.currentAnimation = animation;
         }
 
         public override void Update(GameTime gameTime)
@@ -87,6 +105,8 @@ namespace Demeter
                 position.Y -= verticalSpeed;
                 offset -= verticalSpeed;
             }
+
+            base.Update(gameTime);
         }
 
         public override void CollisionResponse(Object obj)
@@ -99,6 +119,18 @@ namespace Demeter
             {
                 ((Enemy)obj).IsAlive = false;
             }
+        }
+
+        public override void Draw(GameTime gameTime)
+        {
+            if (currentAnimation == null)
+                throw new NotSupportedException("No animation is currently playing.");
+
+
+            // Draw the current frame.
+            Game.SpriteBatch.Draw(currentAnimation.Texture, ScreenPosition,
+                currentAnimation.CurrentSourceRectangle, Color.White,
+                0.0f, currentAnimation.Origin, 1.0f, SpriteEffects.None, 0.9f);
         }
     }
 }

@@ -60,11 +60,13 @@ namespace Demeter
                         string rightStr = reader.GetAttribute("right");
                         string topStr = reader.GetAttribute("top");
                         string bottomStr = reader.GetAttribute("bottom");
+                        string positiveStr = reader.GetAttribute("positive");
                         float left = float.Parse(leftStr);
                         float right = float.Parse(rightStr);
                         float top = float.Parse(topStr);
                         float bottom = float.Parse(bottomStr);
-                        this.blockInfo = new BlockInfo(left, right, top, bottom);
+                        bool positive = (positiveStr == "true") ? true : false;
+                        this.blockInfo = new BlockInfo(left, right, top, bottom, positive);
                     }
                 }
             }
@@ -187,4 +189,6 @@ namespace Demeter
 
         #endregion
     }
+        public BlockInfo(float leftBound, float rightBound, float topBound, float bottomBound, bool positive)
+            this.positive = positive;
 }

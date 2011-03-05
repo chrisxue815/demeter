@@ -75,54 +75,27 @@ namespace Demeter
         {
             Location location = LocationOf(obj);
 
-            switch (location)
-            {
-                case Location.BELOW:
-                    obj.Y = this.Y + this.CollisionHeight - 1;
-                    break;
-                case Location.ABOVE:
-                    obj.Y = this.Y - obj.CollisionHeight + 1;
-                    break;
-                case Location.RIGHT:
-                    obj.X = this.X + this.CollisionWidth - 1;
-                    break;
-                case Location.LEFT:
-                    obj.X = this.X - obj.CollisionWidth + 1;
-                    break;
-            }
-
             if (obj is Player)
             {
                 Player player = (Player)obj;
+
                 switch (location)
                 {
                     case Location.BELOW:
+                        obj.Y = this.Y + this.CollisionHeight - 1;
                         player.CanGoUp = false;
                         break;
                     case Location.ABOVE:
+                        obj.Y = this.Y - obj.CollisionHeight + 1;
                         player.CanGoDown = false;
                         break;
                     case Location.RIGHT:
+                        obj.X = this.X + this.CollisionWidth - 1;
                         player.CanGoLeft = false;
                         break;
                     case Location.LEFT:
+                        obj.X = this.X - obj.CollisionWidth + 1;
                         player.CanGoRight = false;
-                        break;
-                }
-            }
-            else if (obj is Enemy)
-            {
-                Enemy enemy = (Enemy)obj;
-                switch (location)
-                {
-                    case Location.ABOVE:
-                        enemy.CanGoDown = false;
-                        break;
-                    case Location.RIGHT:
-                        enemy.CanGoLeft = false;
-                        break;
-                    case Location.LEFT:
-                        enemy.CanGoRight = false;
                         break;
                 }
             }
