@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<level1>
+  <size width="1366" height="768" treasureCount="0"></size>
+  <background texture="texture/Background.Background"></background>
+  <foreground texture="null"></foreground>
+  <cameraOffset px="0" py="0"></cameraOffset>
+  <player id="player1" px="200" py="628" movable="true"></player>
+  <bound id="bound1" left="0" right="1330" top="0" bottom="698"></bound>
+  <door id="door" px="130" py="617" levelFileName="totalLevel.xml"></door>
+  <door id="door1" px="600" py="617" levelFileName="level1-1.xml"></door>
+  <door id="door2" px="800" py="617" levelFileName="null"></door>
+  <door id="door3" px="1000" py="617" levelFileName="null"></door>
+</level1>

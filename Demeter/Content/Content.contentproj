@@ -140,13 +140,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="texture\Background.Background6.png">
-      <Name>Background.Background6</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="texture\Object.StaticObject.Mirror.Mirror2.png">
       <Name>Object.StaticObject.Mirror.Mirror2</Name>
     </Compile>
@@ -201,6 +194,36 @@
   <ItemGroup>
     <Compile Include="texture\Object.StaticObject.Ogre.Core.png">
       <Name>Object.StaticObject.Ogre.Core</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="level\TotalLevel.xml">
+      <Name>TotalLevel</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="level\level1.xml">
+      <Name>level1</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="texture\Background.Background.png">
+      <Name>Background.Background</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="texture\Foreground.Foreground.png">
+      <Name>Foreground.Foreground</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
