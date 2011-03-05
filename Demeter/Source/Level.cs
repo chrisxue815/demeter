@@ -54,6 +54,8 @@ namespace Demeter
 
         string backgroundTextureAssetName;
         Texture2D backgroundTexture;
+        string foregroundTextureAssetName;
+        Texture2D foregroundTexture;
 
         int width;
         public int Width
@@ -123,6 +125,10 @@ namespace Demeter
                     else if (reader.Name == "background")
                     {
                         backgroundTextureAssetName = reader.GetAttribute("texture");
+                    }
+                    else if (reader.Name == "foreground")
+                    {
+                        foregroundTextureAssetName = reader.GetAttribute("texture");
                     }
                     else if (reader.Name == "cameraOffset")
                     {
@@ -272,7 +278,14 @@ namespace Demeter
 
         public void LoadContent()
         {
-            backgroundTexture = Game.Content.Load<Texture2D>(backgroundTextureAssetName);
+            if (backgroundTextureAssetName != "null")
+            {
+                backgroundTexture = Game.Content.Load<Texture2D>(backgroundTextureAssetName);
+            }
+            if (foregroundTextureAssetName != "null")
+            {
+                foregroundTexture = Game.Content.Load<Texture2D>(foregroundTextureAssetName);
+            }
         }
 
         public void Update(GameTime gameTime)
@@ -307,9 +320,21 @@ namespace Demeter
 
         public void Draw(GameTime gameTime)
         {
-            /*Game.SpriteBatch.Draw(backgroundTexture,
-                new Rectangle(0, 0, Game.Width, Game.Height), null,
-                Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.1f);*/
+            Vector2 p = ScreenPosition(Vector2.Zero);
+
+            if (backgroundTexture != null)
+            {
+                Game.SpriteBatch.Draw(backgroundTexture,
+                    new Rectangle((int)(p.X * 0.5), (int)(p.Y * 0.5), 1430, height), null,
+                    Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.1f);
+            }
+
+            if (foregroundTexture != null)
+            {
+                Game.SpriteBatch.Draw(foregroundTexture,
+                    new Rectangle((int)(p.X), (int)(p.Y) + height / 2, 1430, height / 2), null,
+                    Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.11f);
+            }
 
             foreach (Object obj in movableObjects)
             {

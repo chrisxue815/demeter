@@ -13,7 +13,7 @@ namespace Demeter
         #region logical
         public override int CollisionWidth
         {
-            get { return 150; }
+            get { return 150 * frameX; }
         }
 
         public override int CollisionHeight
@@ -22,14 +22,18 @@ namespace Demeter
         }
         #endregion
 
+        int frameX = 1;
+
         public DeadlyObject(Game1 game, XmlTextReader reader)
             : base(game,reader)
         {
             string pxStr = reader.GetAttribute("px");
             string pyStr = reader.GetAttribute("py");
+            string widthStr = reader.GetAttribute("width");
 
             float px = float.Parse(pxStr);
             float py = float.Parse(pyStr);
+            frameX = int.Parse(widthStr) / 150;
             this.position = new Vector2(px, py);
         }
         public override void LoadContent()
@@ -50,6 +54,17 @@ namespace Demeter
             else if (obj is Enemy)
             {
                 ((Enemy)obj).IsAlive = false;
+            }
+        }
+
+        public override void Draw(GameTime gameTime)
+        {
+            Vector2 p = new Vector2(ScreenRectangle.Left, ScreenRectangle.Top);
+
+            for (int i = 0; i < frameX; i++)
+            {
+                Game.SpriteBatch.Draw(texture, new Rectangle((int)(p.X + i * 150), (int)p.Y, texture.Width, texture.Height),
+                    null, Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth);
             }
         }
     }

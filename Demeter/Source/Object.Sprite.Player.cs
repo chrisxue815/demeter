@@ -49,7 +49,7 @@ namespace Demeter
 
         // Constants for controling horizontal movement
         private const float MoveAcceleration = 150.0f;
-        private const float MaxMoveSpeed = 5.0f;
+        private const float MaxMoveSpeed = 8.0f;
 
         // Constants for controlling vertical movement
         private const float GravityAcceleration = 25.0f;
@@ -315,7 +315,7 @@ namespace Demeter
             {
                 float offset = (ladderUsed.X + ladderUsed.CollisionWidth / 2) -
                     (this.X + CollisionWidth / 2);
-                if (Math.Abs(offset) < 1f)
+                if (Math.Abs(offset) < 5f)
                 {
                     this.X += offset;
                     isLadderUsed = true;
@@ -466,11 +466,12 @@ namespace Demeter
             Game.SpriteBatch.Draw(currentAnimation.Texture, ScreenPosition,
                 currentAnimation.CurrentSourceRectangle, Color.White,
                 0.0f, currentAnimation.Origin, 1.0f, spriteEffects, 0.9f);
-
+            /*
             Game.SpriteBatch.DrawString(Game.font, collidedWithLadder.ToString(),
                 Vector2.Zero, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 1);
             Game.SpriteBatch.DrawString(Game.font, isLadderUsed.ToString(),
                 new Vector2(0,50), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 1);
+             */
         }
 
         public override void CollisionResponse(Object obj)
