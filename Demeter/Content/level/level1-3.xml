@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<level>
+  <size width="1366" height="768" treasureCount="2"></size>
+  <background texture="texture/Background.Background"></background>
+  <foreground texture="texture/Foreground.Foreground"></foreground>
+  <cameraOffset px="0" py="0"></cameraOffset>
+  <bound id="bound1" left="20" right="1350" top="20" bottom="696"></bound>
+  <player id="player1" px="50" py="400" movable="true"></player>
+
+  <ladder px="532" py="240" height="360"></ladder>
+  <block px="20" py="600" width="640" height="48"></block>
+  <deadlyobj px="660" py="648" width="100"></deadlyobj>
+  <block px="760" py="600" width="64" height="48"></block>
+</level>

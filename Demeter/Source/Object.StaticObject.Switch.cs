@@ -76,7 +76,7 @@ namespace Demeter
                     {
                         foreach (IControlledObject controlledObj in controlled)
                         {
-                            controlledObj.Control();
+                            controlledObj.Control(this);
                         }
                         switchOn = !switchOn;
                     }

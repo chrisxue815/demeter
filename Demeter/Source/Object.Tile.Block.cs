@@ -181,7 +181,7 @@ namespace Demeter
 
         #region IControlledObject Members
 
-        void IControlledObject.Control()
+        void IControlledObject.Control(IController controller)
         {
             blockInfo.Positive = !blockInfo.Positive;
             blockInfo.Moving = true;
