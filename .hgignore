@@ -1,0 +1,6 @@
+glob:Demeter/Content/obj/*
+glob:Demeter/Content/texture2/*
+glob:Demeter/bin/*
+glob:Demeter/obj/*
+glob:Demeter/Demeter.csproj.Debug.cachefile
+glob:Demeter.suo
