@@ -248,6 +248,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="level\level1-4.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Name>level1-4</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="texture\Object.Sprite.Player.Climb.png">
       <Name>Object.Sprite.Player.Climb</Name>
       <Importer>TextureImporter</Importer>

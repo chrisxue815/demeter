@@ -43,12 +43,11 @@ namespace Demeter
         bool goUp = true;
         bool move = true;
 
-        public OgreCore(Game1 game, Vector2 position, float Maxoffset,string id)
+        public OgreCore(Game1 game, Vector2 position, float Maxoffset)
             : base(game)
         {
             this.game = game;
             this.position = new Vector2(position.X + 18, position.Y + 13);
-            this.id = id;
             this.maxOffset = Maxoffset;
 
             Level.MovableObjects.Add(this);
