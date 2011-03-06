@@ -1,46 +1,44 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <level>
-  <size width="2000" height="768" treasureCount="1"></size>
-  <background texture="texture/Background.Background"></background>
-  <foreground texture="texture/Foreground.Foreground"></foreground>
-  <bound id="bound1" left="20" right="1950" top="20" bottom="696"></bound>
-  <player id="player1" px="50" py="400" movable="true"></player>
-
+  <size width="1800" height="768" treasureCount="1"></size>
+  <!--<background texture="texture/Background.Background"></background>
+  <foreground texture="texture/Foreground.Foreground"></foreground>-->
+  <bound id="bound1" left="20" right="1750" top="20" bottom="700"></bound>
+  <player id="player1" px="100" py="600" movable="true"></player>
+  
   <!--<door id="door1" px="40" py="617" levelFileName="level1.xml"></door>-->
   
-  <block px="20" py="600" width="640" height="48"></block>
-  
-  <deadlyobj px="660" py="648" width="100"></deadlyobj>
-  <block px="760" py="600" width="64" height="48"></block>
-  <deadlyobj px="824" py="648" width="100"></deadlyobj>
-  <block px="924" py="600" width="64" height="48"></block>
-  <deadlyobj px="988" py="648" width="600"></deadlyobj>
-  
-  <switch id="switch1" px="924" py="530">
+  <lightsource id="lightsource1" px="1200" py="50" angle="2.3" switchOn="false"></lightsource>
+  <switch id="switch1" px="200" py="630">
+    <controlled objId="lightsource1"></controlled>
+  </switch>
+
+  <ladder px="355" py="340" height="360"></ladder>
+  <block px="400" py="442" width="192" height="48"></block>
+  <block px="464" py="394" width="128" height="48"></block>
+  <block px="528" py="346" width="64" height="48"></block>
+
+  <block id="block1" px="592" py="346" width="256" height="48" movable="true">
+    <bound left="592" right="916" top="346" bottom="346" positive="false"></bound>
+  </block>
+  <switch id="switch2" px="530" py="276">
     <controlled objId="block1"></controlled>
   </switch>
+  <mirror px="755" py="257" normalAngle="-1.5" movable="true"></mirror>
 
-  <ladder px="532" py="150" height="450"></ladder>
-  <block px="577" py="240" width="64" height="48"></block>
-  <block id="block1" px="641" py="144" width="64" height="144" movable="true">
-    <bound left="641" right="641" top="144" bottom="239" positive="false"></bound>
-  </block>
-  <block px="705" py="240" width="64" height="48"></block>
-  <block id="block2" px="769" py="240" width="128" height="48" movable="true">
-    <bound left="769" right="1300" top="240" bottom="240" positive="false"></bound>
-  </block>
-  <switch id="switch2" px="769" py="171" movable="true">
-    <controlled objId="block2"></controlled>
+  <switch id="switch3" px="1180" py="246">
+    <controlled objId="block1"></controlled>
   </switch>
-
-  <block px="1428" py="240" width="64" height="48"></block>
-  <ogre px="1492" py="240" offset="-70"></ogre>
-  <block px="1573" py="240" width="64" height="48"></block>
+  <block px="1172" py="316" width="64" height="192"></block>
+  <block px="1236" py="220" width="64" height="288"></block>
+  <block px="1364" py="220" width="384" height="288"></block>
+  <block px="1684" py="508" width="64" height="240"></block>
   
-  <ladder px="1637" py="150" height="450"></ladder>
-  <block px="1537" py="600" width="448" height="48"></block>
+  <gate px="1300" py="460" width="64" height="240">
+    <bound left="1300" right="1300" top="221" bottom="659"></bound>
+  </gate>
 
-  <treasure id="treasure7" px="1557" py="400"></treasure>
+  <treasure id="treasure6" px="1500" py="520"></treasure>
 
   <!--<door id="door1" px="40" py="617" levelFileName="level1.xml"></door>-->
 </level>

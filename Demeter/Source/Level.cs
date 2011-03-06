@@ -77,7 +77,6 @@ namespace Demeter
         int rightBound;
         int topBound;
         int bottomBound;
-        int foregroundBottom;
 
         Vector2 cameraOffset;
         public Vector2 CameraOffset
@@ -136,7 +135,6 @@ namespace Demeter
                     {
                         foregroundTextureAssetName = reader.GetAttribute("texture");
                         string bottom = reader.GetAttribute("bottom");
-                        foregroundBottom = int.Parse(bottom);
                     }
                     else if (reader.Name == "cameraOffset")
                     {

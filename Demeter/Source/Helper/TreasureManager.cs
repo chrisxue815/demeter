@@ -51,7 +51,7 @@ namespace Demeter
             List<String> ids = new List<string>() ;
             if (!File.Exists(@"Uerprofile\profile.xml"))
             {
-                CreateXmlFile();
+                Xml.CreateXmlFile();
             }
 
             XmlTextReader reader = new XmlTextReader(@"Uerprofile\profile.xml");
@@ -69,25 +69,6 @@ namespace Demeter
             reader.Close();
 
             return ids;
-        }
-        public void CreateXmlFile()
-        {
-            DirectoryInfo dir = new DirectoryInfo("Uerprofile");
-            if (!dir.Exists)
-            {
-                dir.Create();
-            }
-            XmlDocument doc = new XmlDocument();
-
-            XmlDeclaration dec = doc.CreateXmlDeclaration("1.0", "UTF-8", null);
-            doc.AppendChild(dec);
-
-            XmlElement xmlelement;
-            xmlelement = doc.CreateElement("levels");
-            doc.AppendChild(xmlelement);
-
-            doc.Save(@"Uerprofile\profile.xml");
-            doc = null;
         }
     }
 }
