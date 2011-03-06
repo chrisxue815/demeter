@@ -31,7 +31,7 @@ namespace Demeter
 
         bool switchOn = true;
 
-        private const float RotationSpeed = 0.01f;
+        private const float RotationSpeed = 0.005f;
 
         LightRay lightRay;
 
@@ -48,11 +48,14 @@ namespace Demeter
             string pxStr2 = reader.GetAttribute("px");
             string pyStr2 = reader.GetAttribute("py");
             string angleStr = reader.GetAttribute("angle");
+            string switchOnStr = reader.GetAttribute("switchOn");
 
             float px2 = float.Parse(pxStr2);
             float py2 = float.Parse(pyStr2);
             if (angleStr != null)
                 this.angle = float.Parse(angleStr);
+            if (switchOnStr != null && switchOnStr == "false")
+                this.switchOn = false;
 
             this.game = game;
             this.position = new Vector2(px2, py2);

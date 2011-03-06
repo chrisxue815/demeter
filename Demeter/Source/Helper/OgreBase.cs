@@ -20,12 +20,11 @@ namespace Demeter
             get { return 50; }
         }
 
-        public OgreBase(Game1 game, Vector2 position,string id)
+        public OgreBase(Game1 game, Vector2 position)
             : base(game)
         {
             this.game = game;
             this.position = position;
-            this.id = id;
 
             Level.Objects.Add(this);
             LoadContent();

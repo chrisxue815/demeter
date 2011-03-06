@@ -28,7 +28,6 @@ namespace Demeter
             string pxStr = reader.GetAttribute("px");
             string pyStr = reader.GetAttribute("py");
             string offsetStr = reader.GetAttribute("offset");
-            string id = reader.GetAttribute("id");
 
             float px = float.Parse(pxStr);
             float py = float.Parse(pyStr);
@@ -36,8 +35,8 @@ namespace Demeter
 
             Vector2 position = new Vector2(px, py);
 
-            ogreBase = new OgreBase(game, position, id);
-            ogreCore = new OgreCore(game, position, offset, id);
+            ogreBase = new OgreBase(game, position);
+            ogreCore = new OgreCore(game, position, offset);
         }
     }
 }
