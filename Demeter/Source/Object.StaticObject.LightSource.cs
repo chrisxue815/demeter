@@ -29,6 +29,8 @@ namespace Demeter
         }
         float angle = 0;
 
+        bool switchOn = true;
+
         private const float RotationSpeed = 0.01f;
 
         LightRay lightRay;
@@ -65,7 +67,8 @@ namespace Demeter
 
         public override void Update(GameTime gameTime)
         {
-            lightRay.Update(gameTime);
+            if(switchOn)
+                lightRay.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime)
@@ -75,7 +78,8 @@ namespace Demeter
                 null, Color.White, angle,
                 new Vector2(HalfWidth, HalfHeight),
                 scale, SpriteEffects.None, 1);
-            lightRay.Draw(gameTime);
+            if(switchOn)
+                lightRay.Draw(gameTime);
         }
 
         public override void CollisionResponse(Object obj)
@@ -85,17 +89,24 @@ namespace Demeter
 
         #region IControlledObject Members
 
-        void IControlledObject.Control()
+        void IControlledObject.Control(IController controller)
         {
-            KeyboardState keyboardState = Keyboard.GetState();
+            if (controller is ShiftStick)
+            {
+                KeyboardState keyboardState = Keyboard.GetState();
 
-            if (keyboardState.IsKeyDown(Keys.Up))
-            {
-                this.angle += RotationSpeed;
+                if (keyboardState.IsKeyDown(Keys.Up))
+                {
+                    this.angle += RotationSpeed;
+                }
+                else if (keyboardState.IsKeyDown(Keys.Down))
+                {
+                    this.angle -= RotationSpeed;
+                }
             }
-            else if (keyboardState.IsKeyDown(Keys.Down))
+            else if (controller is Switch)
             {
-                this.angle -= RotationSpeed;
+                switchOn = !switchOn;
             }
         }
 
