@@ -363,6 +363,7 @@ namespace Demeter
         public void Draw(GameTime gameTime)
         {
             if (backgroundColor != null)
+            {
                 Game.GraphicsDevice.Clear(backgroundColor.Value);
             }
 
