@@ -2,7 +2,7 @@
 <level>
   <size width="1000" height="600" treasureCount="1"></size>
   <ground py="570"></ground>
-  <background texture="texture/Background.Background6"></background>
+  <background texture="texture/Background.Background"></background>
   <cameraOffset px="0" py="0"></cameraOffset>
   <player px="100" py="400"></player>
   <shiftStick id="switch1" px="200" py="500" one_off="true" moveable="false">

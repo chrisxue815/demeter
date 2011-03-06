@@ -347,14 +347,28 @@ namespace Demeter
 
         private void SetCamera()
         {
-            if (player.Position.X > Game.HalfWidth
-                && player.Position.X < width - Game.HalfWidth)
+            if (player.Position.X < Game.HalfWidth)
+            {
+                cameraOffset.X = 0;
+            }
+            else if (player.Position.X > width - Game.HalfWidth)
+            {
+                cameraOffset.X = width - game.Width;
+            }
+            else
             {
                 cameraOffset.X = player.Position.X - Game.HalfWidth;
             }
 
-            if (player.Position.Y > Game.HalfHeight
-                && player.Position.Y < height - Game.HalfHeight)
+            if (player.Position.Y < Game.HalfHeight)
+            {
+                cameraOffset.Y = 0;
+            }
+            else if (player.Position.Y > height - Game.HalfHeight)
+            {
+                cameraOffset.Y = height - game.Height;
+            }
+            else
             {
                 cameraOffset.Y = player.Position.Y - Game.HalfHeight;
             }
@@ -488,14 +502,17 @@ namespace Demeter
 
             foreach (Object obj in movableObjects)
             {
-                List<Vector2> intersection = ray.Intersects(obj.CollisionRect, true);
-                if (intersection != null && intersection.Count > 0)
+                if (obj != exclusion)
                 {
-                    Vector2 point = intersection.First();
-                    if (nearestMovableObj == null || (pos - point).Length() < (pos - nearestMovablePoint.Value).Length())
+                    List<Vector2> intersection = ray.Intersects(obj.CollisionRect, true);
+                    if (intersection != null && intersection.Count > 0)
                     {
-                        nearestMovableObj = obj;
-                        nearestMovablePoint = point;
+                        Vector2 point = intersection.First();
+                        if (nearestMovableObj == null || (pos - point).Length() < (pos - nearestMovablePoint.Value).Length())
+                        {
+                            nearestMovableObj = obj;
+                            nearestMovablePoint = point;
+                        }
                     }
                 }
             }

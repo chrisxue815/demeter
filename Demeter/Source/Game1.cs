@@ -132,7 +132,7 @@ namespace Demeter
             font = Content.Load<SpriteFont>("font/Hud");
 
             level = new Level(this);
-            level.Load("TotalLevel.xml");
+            level.Load("level1-3.xml");
         }
 
         /// <summary>
