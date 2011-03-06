@@ -16,7 +16,7 @@ namespace Demeter
         #region Logical
         public override int CollisionWidth
         {
-            get { return 25; }
+            get { return 45; }
         }
         public override int CollisionHeight
         {
@@ -33,7 +33,7 @@ namespace Demeter
 
         public override int LeftCollisionOffset
         {
-            get { return 5; }
+            get { return 0; }
         }
 
         static readonly Point DEFAULT_FRAME_SIZE = new Point(45, 70);
@@ -43,7 +43,7 @@ namespace Demeter
         Animation runAnimation;
         Animation jumpAnimation;
         Animation dieAnimation;
-        Animation celebrateAnimation;
+        Animation climbAnimation;
 
         #endregion
 
@@ -135,6 +135,9 @@ namespace Demeter
         #endregion
 
         #region movement
+
+        bool tryClimbing = false;
+
         bool canGoUp = true;
         public bool CanGoUp
         {
@@ -231,8 +234,9 @@ namespace Demeter
                 DEFAULT_FRAME_SIZE, 100, false);
             dieAnimation = new Animation(Game.Content.Load<Texture2D>("texture/Object.Sprite.Player.Die"),
                 DEFAULT_FRAME_SIZE, 100, false);
-            celebrateAnimation = new Animation(Game.Content.Load<Texture2D>("texture/Object.Sprite.Player.Celebrate"),
-                DEFAULT_FRAME_SIZE, 100, false);
+            climbAnimation = new Animation(Game.Content.Load<Texture2D>("texture/Object.Sprite.Player.Climb"),
+                DEFAULT_FRAME_SIZE, 100, true);
+
 
             this.currentAnimation = idleAnimation;
             isAlive = true;
@@ -276,13 +280,18 @@ namespace Demeter
             {
                 lastPosition = position;
             }
-            
+
             if (Game.BindingPoint != null)
             {
                 Game.BindingPoint.PassBindingPoint(Level.LevelFileName, this.position);
             }
 
-            base.Update(gameTime);
+            if (!(this.currentAnimation == climbAnimation && !tryClimbing))
+            {
+                base.Update(gameTime);
+            }
+
+            tryClimbing = false;
         }
 
         /// <summary>
@@ -308,11 +317,13 @@ namespace Demeter
             if (keyboardState.IsKeyDown(Keys.Up))
             {   //player moves up
                 verticalMovement -= 1;
+                tryClimbing = true;
                 tryLeaving = true;
             }
             if (keyboardState.IsKeyDown(Keys.Down))
             {   //player moves down
                 verticalMovement += 1;
+                tryClimbing = true;
             }
             if (keyboardState.IsKeyDown(Keys.Space))
             {   // player jump
@@ -452,6 +463,10 @@ namespace Demeter
             else if (speed.Y != 0 && !isLadderUsed)
             {
                 this.currentAnimation = jumpAnimation;
+            }
+            else if (isLadderUsed)
+            {
+                this.currentAnimation = climbAnimation;
             }
             else if (speed.X != 0)
             {

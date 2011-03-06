@@ -73,11 +73,11 @@ namespace Demeter
             get { return height; }
         }
 
-        Rectangle bound;
-        public Rectangle Bound
-        {
-            get { return bound; }
-        }
+        int leftBound;
+        int rightBound;
+        int topBound;
+        int bottomBound;
+        int foregroundBottom;
 
         Vector2 cameraOffset;
         public Vector2 CameraOffset
@@ -122,7 +122,6 @@ namespace Demeter
                         int treasureCount = int.Parse(treasureCountStr);
                         this.width = int.Parse(width);
                         this.height = int.Parse(height);
-                        this.bound = new Rectangle(0, 0, this.width, this.height);
 
                         this.treasureMgr = new TreasureManager(this.levelFileName, treasureCount);
                     }
@@ -136,6 +135,8 @@ namespace Demeter
                     else if (reader.Name == "foreground")
                     {
                         foregroundTextureAssetName = reader.GetAttribute("texture");
+                        string bottom = reader.GetAttribute("bottom");
+                        foregroundBottom = int.Parse(bottom);
                     }
                     else if (reader.Name == "cameraOffset")
                     {
@@ -151,18 +152,18 @@ namespace Demeter
                         string rightStr = reader.GetAttribute("right");
                         string topStr = reader.GetAttribute("top");
                         string bottomStr = reader.GetAttribute("bottom");
-                        int left = int.Parse(leftStr);
-                        int right = int.Parse(rightStr);
-                        int top = int.Parse(topStr);
-                        int bottom = int.Parse(bottomStr);
-                        Block leftBound = new Block(game, new Vector2(left, 0), 0, height);
-                        Block rightBound = new Block(game, new Vector2(right, 0), 0, height);
-                        Block topBound = new Block(game, new Vector2(0, top), width, 0);
-                        Block bottomBound = new Block(game, new Vector2(0, bottom), width, 0);
-                        objects.Add(leftBound);
-                        objects.Add(rightBound);
-                        objects.Add(topBound);
-                        objects.Add(bottomBound);
+                        leftBound = int.Parse(leftStr);
+                        rightBound = int.Parse(rightStr);
+                        topBound = int.Parse(topStr);
+                        bottomBound = int.Parse(bottomStr);
+                        Block leftBoundBlock = new Block(game, new Vector2(leftBound, 0), 0, height);
+                        Block rightBoundBlock = new Block(game, new Vector2(rightBound, 0), 0, height);
+                        Block topBoundBlock = new Block(game, new Vector2(0, topBound), width, 0);
+                        Block bottomBoundBlock = new Block(game, new Vector2(0, bottomBound), width, 0);
+                        objects.Add(leftBoundBlock);
+                        objects.Add(rightBoundBlock);
+                        objects.Add(topBoundBlock);
+                        objects.Add(bottomBoundBlock);
                     }
                     else if (reader.Name == "player")
                     {
@@ -391,7 +392,7 @@ namespace Demeter
 
             if (topic != null)
             {
-                Game.SpriteBatch.DrawString(Game.font, topic, topicPos, Color.Red, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.12f);
+                Game.SpriteBatch.DrawString(Game.font, topic, topicPos, Color.Red, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.9f);
             }
 
             foreach (Object obj in movableObjects)

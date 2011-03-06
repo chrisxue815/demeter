@@ -45,11 +45,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="texture\Object.Sprite.Player.Celebrate.png">
-      <Name>Object.Sprite.Player.Celebrate</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
     <Compile Include="texture\Object.Sprite.Player.Die.png">
       <Name>Object.Sprite.Player.Die</Name>
       <Importer>TextureImporter</Importer>
@@ -128,8 +123,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="texture\Object.Tile.Block.Block1.png">
-      <Name>Object.Tile.Block.Block1</Name>
+    <Compile Include="texture\Object.Tile.Block.Floor.png">
+      <Name>Object.Tile.Block.Floor</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -251,6 +246,27 @@
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="texture\Object.Sprite.Player.Climb.png">
+      <Name>Object.Sprite.Player.Climb</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="texture\Object.Sprite.Hint.DoorHint.png">
+      <Name>Object.Sprite.Hint.DoorHint</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="texture\Object.Tile.Block.Ground.png">
+      <Name>Object.Tile.Block.Ground</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -30,6 +30,10 @@ namespace Demeter
         float angle = 0;
 
         bool switchOn = true;
+        public bool SwitchOn
+        {
+            get { return switchOn; }
+        }
 
         private const float RotationSpeed = 0.01f;
 

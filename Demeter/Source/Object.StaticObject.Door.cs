@@ -24,11 +24,14 @@ namespace Demeter
         }
         string levelFileName;
 
+        KeyUpHint keyUpHint;
 
         public Door(Game1 game, Vector2 position, string levelFileName)
             : base(game, position)
         {
             this.levelFileName = levelFileName;
+            this.keyUpHint = new KeyUpHint(game, new Vector2(position.X + 7, position.Y - 35),
+                "Door_hint");
         }
 
         public Door(Game1 game, XmlTextReader reader)
@@ -44,6 +47,8 @@ namespace Demeter
             this.game = game;
             this.position = new Vector2(px, py);
             this.levelFileName = levelFileNameStr;
+            this.keyUpHint = new KeyUpHint(game, new Vector2(px + 7, py - 35),
+                this.id + "hint");
         }
 
         public override void LoadContent()
@@ -61,6 +66,7 @@ namespace Demeter
             {
                 Level.Player.CollidedWithDoor = true;
                 Level.Player.ComingLevel = levelFileName;
+                this.keyUpHint.IsDisplay = true;
             }
         }
     }

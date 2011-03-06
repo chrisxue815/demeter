@@ -47,7 +47,7 @@ namespace Demeter
         // Constants for controling horizontal movement
         private const float horizontalMoveSpeed = 1.5f;
         // Constants for controlling vertical movement
-        private const float MaxFallSpeed = 8.0f;
+        private const float MaxFallSpeed = 18.0f;
         private const float GravityAcceleration = 20.0f;
 
         public Vector2 Speed

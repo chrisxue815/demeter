@@ -10,6 +10,8 @@ namespace Demeter
 {
     public abstract class Tile : Object
     {
+        public BlockType type = BlockType.None;
+
         private int width;
         protected int Width
         {
@@ -97,11 +99,21 @@ namespace Demeter
                 {
                     Vector2 pos = new Vector2(position.X + texture.Width * i, position.Y + texture.Height * j);
                     Vector2 screenPos = Level.ScreenPosition(pos);
-                    Game.SpriteBatch.Draw(texture,
-                        new Rectangle((int)screenPos.X, (int)screenPos.Y, texture.Width, texture.Height),
-                        null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.2f);
+                    if (type == BlockType.Ground)
+                    {
+                        Game.SpriteBatch.Draw(texture,
+                            new Rectangle((int)screenPos.X, (int)screenPos.Y, texture.Width, (int)(Level.Height - position.Y)),
+                            null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.2f);
+                    }
+                    else
+                    {
+                        Game.SpriteBatch.Draw(texture,
+                            new Rectangle((int)screenPos.X, (int)screenPos.Y, texture.Width, texture.Height),
+                            null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.2f);
+                    }
                 }
             }
         }
     }
+    public enum BlockType { None, Ground, Wall, Floor }
 }

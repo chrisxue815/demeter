@@ -72,7 +72,7 @@ namespace Demeter
 
         public override void LoadContent()
         {
-            texture = Game.Content.Load<Texture2D>("texture/Object.Tile.Block.Block1");
+            texture = Game.Content.Load<Texture2D>("texture/Object.Tile.Block.Floor");
         }
 
         public override void Update(GameTime gameTime)
@@ -182,7 +182,7 @@ namespace Demeter
         bool haveControlled = false;
         void IControlledObject.Control(IController controller)
         {
-            if (!haveControlled)
+            if (!haveControlled && blockInfo != null)
             {
                 blockInfo.Positive = !blockInfo.Positive;
                 blockInfo.Moving = true;

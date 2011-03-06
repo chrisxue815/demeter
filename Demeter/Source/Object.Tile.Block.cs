@@ -39,6 +39,7 @@ namespace Demeter
             string pyStr = reader.GetAttribute("py");
             string widthStr = reader.GetAttribute("width");
             string heightStr = reader.GetAttribute("height");
+            string typeStr = reader.GetAttribute("type");
 
             float px = float.Parse(pxStr);
             float py = float.Parse(pyStr);
@@ -48,6 +49,20 @@ namespace Demeter
             this.position = new Vector2(px, py);
             this.Width = width;
             this.Height = height;
+
+            if (typeStr == "ground")
+            {
+                type = BlockType.Ground;
+            }
+            else if (typeStr == "floor")
+            {
+                type = BlockType.Floor;
+            }
+            else if (typeStr == "wall")
+            {
+                type = BlockType.Wall;
+            }
+
 
             XmlReader subtree = reader.ReadSubtree();
             while (subtree.Read())
@@ -61,20 +76,38 @@ namespace Demeter
                         string topStr = reader.GetAttribute("top");
                         string bottomStr = reader.GetAttribute("bottom");
                         string positiveStr = reader.GetAttribute("positive");
+                        
                         float left = float.Parse(leftStr);
                         float right = float.Parse(rightStr);
                         float top = float.Parse(topStr);
-                        float bottom = float.Parse(bottomStr);
+                        float bottom = float.Parse(bottomStr);                        
+
                         bool positive = (positiveStr == "true") ? true : false;
                         this.blockInfo = new BlockInfo(left, right, top, bottom, positive);
                     }
                 }
             }
+
+            LoadContent();
         }
 
         public override void LoadContent()
         {
-            texture = Game.Content.Load<Texture2D>("texture/Object.Tile.Block.Block1");
+            switch (type)
+            {
+                case BlockType.Floor:
+                    texture = Game.Content.Load<Texture2D>("texture/Object.Tile.Block.Floor");
+                    break;
+                case BlockType.Ground:
+                    texture = Game.Content.Load<Texture2D>("texture/Object.Tile.Block.Ground");
+                    break;
+                case BlockType.Wall:
+                    texture = Game.Content.Load<Texture2D>("texture/Object.Tile.Block.Wall");
+                    break;
+                default:
+                    texture = Game.Content.Load<Texture2D>("texture/Object.Tile.Block.Floor");
+                    break;
+            }
         }
 
         public override void Update(GameTime gameTime)

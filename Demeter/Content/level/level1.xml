@@ -10,4 +10,11 @@
   <door id="door1" px="600" py="617" levelFileName="level1-1.xml"></door>
   <door id="door2" px="800" py="617" levelFileName="null"></door>
   <door id="door3" px="1000" py="617" levelFileName="null"></door>
+  <door id="door4" px="1200" py="617" levelFileName="null"></door>
+  <topic id="topic1" px="400" py="100">
+                In this world
+    you need to achieve 7 light color through difficulties.
+        Finally, they will compose the sunshine element.
+                Good luck!
+  </topic>
 </level1>

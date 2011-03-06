@@ -26,10 +26,14 @@ namespace Demeter
         Texture2D switchOnTexture;
         Texture2D switchOffTexture;
 
+        KeyUpHint keyUpHint;
+
         public ShiftStick(Game1 game, Vector2 pos, bool one_off, bool moveable)
             : base(game, pos)
         {
             position = pos;
+            this.keyUpHint = new KeyUpHint(game, new Vector2(position.X + 7, position.Y - 35),
+                "ShiftStick_hint");
         }
 
         public ShiftStick(Game1 game, XmlTextReader reader)
@@ -42,6 +46,8 @@ namespace Demeter
 
             this.game = game;
             this.position = new Vector2(px, py);
+            this.keyUpHint = new KeyUpHint(game, new Vector2(px + 7, py - 35), 
+                this.id + "hint");
         }
 
         public override void LoadContent()
@@ -78,6 +84,7 @@ namespace Demeter
                 {
                     texture = switchOffTexture;
                 }
+                this.keyUpHint.IsDisplay = true;
             }
         }
 
