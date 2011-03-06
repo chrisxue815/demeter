@@ -10,15 +10,15 @@ using System.Xml;
 
 namespace Demeter
 {
-    class Mirror : StaticObject, IControlledObject
+    class Mirror : StaticObject, IControlledObject, IController
     {
         public override int CollisionWidth
         {
-            get { return 100; }
+            get { return 90; }
         }
         public override int CollisionHeight
         {
-            get { return 100; }
+            get { return 90; }
         }
         /// <summary>
         /// The angle between the normal and the x-axis
@@ -30,7 +30,7 @@ namespace Demeter
         }
         float normalAngle = 0;
 
-        private const float RotationSpeed = 0.003f;
+        private const float RotationSpeed = 0.01f;
 
         public Mirror(Game1 game, Vector2 pos)
             : base(game, pos)
@@ -56,7 +56,7 @@ namespace Demeter
 
         public override void LoadContent()
         {
-            texture = Game.Content.Load<Texture2D>("texture/Object.StaticObject.Mirror.Mirror2");
+            texture = Game.Content.Load<Texture2D>("texture/Object.StaticObject.Mirror.Mirror1");
         }
 
         public override void Update(GameTime gameTime)
@@ -74,7 +74,10 @@ namespace Demeter
 
         public override void CollisionResponse(Object obj)
         {
-            //throw new NotImplementedException();
+            if (obj is Player)
+            {
+                ((IControlledObject)this).Control(this);
+            }
         }
 
         #region IControlledObject Members
@@ -91,6 +94,15 @@ namespace Demeter
             {
                 this.normalAngle -= RotationSpeed;
             }
+        }
+
+        #endregion
+
+        #region IController Members
+
+        void IController.Add(IControlledObject obj)
+        {
+            //throw new NotImplementedException();
         }
 
         #endregion
