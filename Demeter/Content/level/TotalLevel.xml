@@ -12,4 +12,9 @@
   <door id="door1" px="300" py="617" levelFileName="level1.xml"></door>
   <door id="door2" px="657" py="617" levelFileName="null"></door>
   <door id="door3" px="1015" py="617" levelFileName="null"></door>
+  <topic id="topic1" px="400" py="100">
+      Get the three basic things for lives!
+        Each level you can get one of those things
+          If the seed begins to sprout and finally grow up,
+            you save the world</topic>
 </totalLevel>

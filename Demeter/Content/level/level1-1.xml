@@ -1,11 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <level>
-  <size width="3200" height="768" treasureCount="2"></size>
+  <size width="3200" height="768" treasureCount="3"></size>
   <background texture="texture/Background.Background"></background>
   <foreground texture="texture/Foreground.Foreground"></foreground>
   <cameraOffset px="0" py="0"></cameraOffset>
   <bound id="bound1" left="0" right="3300" top="0" bottom="698"></bound>
   <player id="player1" px="100" py="628" movable="true"></player>
+  <bindingPoint id="binding1">
+    <p id="p1" px="100" py="628"></p>
+    <p id="p2" px="1200" py="628"></p>
+    <p id="p3" px="2200" py="628"></p>
+  </bindingPoint>
 
   <door id="door1" px="40" py="617" levelFileName="level1.xml"></door>
   <door id="door2" px="3140" py="501" levelFileName="totalLevel.xml"></door>
@@ -32,9 +37,12 @@
   <block id="block10" px="1992" py="357" width="192" height="48"></block>
   <block id="block10" px="2800" py="650" width="192" height="48"></block>
 
+ <!-- <gate id="gate1" px="1992" py="477" width="64" height="128" movable="true">
+  </gate>-->
+  
   <platform id="platform1" px="3000" py="590" width="192" height="48"></platform>
   
-  <deadlyobj id="deadlyobj1" px="330" py="698" width="300"></deadlyobj>
+  <deadlyobj id="deadlyobj1" px="330" py="698" width="100"></deadlyobj>
   <deadlyobj id="deadlyobj2" px="1560" py="698" width="600"></deadlyobj>
 
   <enemy id="enemy1" px="2300" py="659" movable="true" face_right="true"
@@ -69,5 +77,4 @@
   <treasure id="treasure1" px="980" py="400"></treasure>
   <treasure id="treasure2" px="1510" py="550"></treasure>
   <treasure id="treasure3" px="2500" py="430"></treasure>
-  <door id="door1" px="700" py="522" levelFileName="level1-2.xml"></door>
 </level>

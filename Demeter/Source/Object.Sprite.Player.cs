@@ -208,7 +208,14 @@ namespace Demeter
             float px = float.Parse(pxStr);
             float py = float.Parse(pyStr);
             this.game = game;
-            this.position = new Vector2(px, py);
+            if (Game.BindingPoint != null)
+            {
+                this.position = Game.BindingPoint.JudgeBindingPoint(Game.Current_levelFileName, Game.DiePosition);
+            }
+            else
+            {
+                this.position = new Vector2(px, py);
+            }
         }
 
         /// <summary>
@@ -268,6 +275,11 @@ namespace Demeter
             if (canGoDown)
             {
                 lastPosition = position;
+            }
+            
+            if (Game.BindingPoint != null)
+            {
+                Game.BindingPoint.PassBindingPoint(Level.LevelFileName, this.position);
             }
 
             base.Update(gameTime);

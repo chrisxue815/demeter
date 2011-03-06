@@ -20,6 +20,9 @@ namespace Demeter
             get { return levelFileName; }
         }
 
+        string topic;
+        Vector2 topicPos;
+
         TreasureManager treasureMgr;
         public TreasureManager TreasureMgr
         {
@@ -254,6 +257,36 @@ namespace Demeter
                     {
                         Gate gate = new Gate(game, reader);
                     }
+                    else if (reader.Name == "topic")
+                    {
+                        string pxStr = reader.GetAttribute("px");
+                        string pyStr = reader.GetAttribute("py");
+
+                        topic = reader.ReadElementString();
+
+                        float px = float.Parse(pxStr);
+                        float py = float.Parse(pyStr);
+                        topicPos = new Vector2(px, py);
+                    }
+                    else if (reader.Name == "bindingPoint")
+                    {
+                        if (Game.BindingPoint == null)
+                        {
+                            Game.BindingPoint = new BindingPoint();
+                            XmlReader subtree = reader.ReadSubtree();
+                            while (subtree.Read())
+                            {
+                                if (subtree.NodeType == XmlNodeType.Element &&
+                                subtree.Name == "p")
+                                {
+                                    String pxStr = subtree.GetAttribute("px");
+                                    String pyStr = subtree.GetAttribute("py");
+                                    Vector2 pos = new Vector2(int.Parse(pxStr), int.Parse(pyStr));
+                                    Game.BindingPoint.Add(pos, levelFileName);
+                                }
+                            }
+                        }
+                    }
                 }
             }
 
@@ -324,21 +357,30 @@ namespace Demeter
 
         public void Draw(GameTime gameTime)
         {
-            if (backgroundTexture != null && foregroundTexture != null)
+            Vector2 p = ScreenPosition(Vector2.Zero);
+
+            if (backgroundTexture != null)
             {
-                Vector2 p = ScreenPosition(Vector2.Zero);
                 for (int i = 0; i < (int)Math.Ceiling((float)width / backgroundTexture.Width); i++)
                 {
                     Game.SpriteBatch.Draw(backgroundTexture,
                         new Rectangle((int)(p.X * 0.5 + backgroundTexture.Width * i), (int)(p.Y), backgroundTexture.Width, height),
                         null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.1f);
                 }
+            }
+            if (foregroundTexture != null)
+            {
                 for (int i = 0; i < (int)Math.Ceiling((float)width / foregroundTexture.Width); i++)
                 {
                     Game.SpriteBatch.Draw(foregroundTexture,
                         new Rectangle((int)(p.X + foregroundTexture.Width * i), height - foregroundTexture.Height, foregroundTexture.Width, foregroundTexture.Height), null,
                         Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.11f);
                 }
+            }
+
+            if (topic != null)
+            {
+                Game.SpriteBatch.DrawString(Game.font, topic, topicPos, Color.Red, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.12f);
             }
 
             foreach (Object obj in movableObjects)

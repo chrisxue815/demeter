@@ -37,6 +37,13 @@ namespace Demeter
             get { return level; }
         }
 
+        BindingPoint bindingPoint;
+        public BindingPoint BindingPoint
+        {
+            get { return bindingPoint; }
+            set { bindingPoint = value; }
+        }
+
         int width = 1366;
         public int Width
         {
@@ -62,6 +69,16 @@ namespace Demeter
         public SpriteFont font;
 
         private int dieTime;
+        string current_levelFileName;
+        public string Current_levelFileName
+        {
+            get { return current_levelFileName; }
+        }
+        Vector2 diePosition;
+        public Vector2 DiePosition
+        {
+            get { return diePosition; }
+        }
 
         #region menu relative
         bool gotoMenu = false;
@@ -69,7 +86,7 @@ namespace Demeter
         bool wasDownKeydown = false;
 
         int currentSelection = 1;
-        const int maxItemsCount = 3;
+        const int maxItemsCount = 4;
 
         Vector2[] menuPos = new Vector2[maxItemsCount];
         #endregion
@@ -81,8 +98,8 @@ namespace Demeter
             graphics.PreferredBackBufferWidth = width;
             graphics.PreferredBackBufferHeight = height;
 
-            if (!graphics.IsFullScreen)
-                graphics.ToggleFullScreen();
+            /*if (!graphics.IsFullScreen)
+                graphics.ToggleFullScreen();*/
 
             Content.RootDirectory = "Content";
         }
@@ -115,7 +132,7 @@ namespace Demeter
             font = Content.Load<SpriteFont>("font/Hud");
 
             level = new Level(this);
-            level.Load("level1-1.xml");
+            level.Load("TotalLevel.xml");
         }
 
         /// <summary>
@@ -160,7 +177,9 @@ namespace Demeter
                     dieTime += gameTime.ElapsedGameTime.Milliseconds;
                     if (dieTime > level.Player.DieTime)
                     {
-                        string current_levelFileName = level.LevelFileName;
+                        current_levelFileName = level.LevelFileName;
+                        diePosition = new Vector2(level.Player.Position.X,
+                            level.Player.Position.Y);
                         level = new Level(this);
                         level.Load(current_levelFileName);
                         dieTime = 0;
@@ -187,6 +206,7 @@ namespace Demeter
             SpriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.FrontToBack, SaveStateMode.SaveState);
             if (!gotoMenu)
             {
+                currentSelection = 1;
                 level.Draw(gameTime);
             }
             else
@@ -207,6 +227,10 @@ namespace Demeter
                 if (!wasDownKeydown)
                 {
                     currentSelection++;
+                    if (Level.LevelFileName.IndexOf("-") < 0 && currentSelection == 2)
+                    {
+                        currentSelection++;
+                    }
                     if (currentSelection > maxItemsCount)
                     {
                         currentSelection = 1;
@@ -224,6 +248,10 @@ namespace Demeter
                 if (!wasUpKeydown)
                 {
                     currentSelection--;
+                    if (Level.LevelFileName.IndexOf("-") < 0 && currentSelection == 2)
+                    {
+                        currentSelection--;
+                    }
                     if (currentSelection < 1)
                     {
                         currentSelection = maxItemsCount;
@@ -243,11 +271,24 @@ namespace Demeter
             }
             else if (currentSelection == 2 && keystate.IsKeyDown(Keys.Enter))
             {
+                if (Level.LevelFileName.IndexOf("-") > 0)
+                {
+                    bindingPoint = null;
+                    gotoMenu = false;
+                    String general_level = Level.LevelFileName.Substring(0, 6);
+                    general_level += ".xml";
+                    level = new Level(this);
+                    level.Load(general_level);
+                }
+            }
+            else if (currentSelection == 3 && keystate.IsKeyDown(Keys.Enter))
+            {
+                bindingPoint = null;
                 Level.TreasureMgr.ResetLevel();
                 gotoMenu = false;
                 LoadContent();
             }
-            else if (currentSelection == 3 && keystate.IsKeyDown(Keys.Enter))
+            else if (currentSelection == 4 && keystate.IsKeyDown(Keys.Enter))
             {
                 this.Exit();
             }
@@ -258,9 +299,11 @@ namespace Demeter
             if (currentSelection != 1)
                 spriteBatch.DrawString(font, "Resume Game", menuPos[0], Color.White);
             if (currentSelection != 2)
-                spriteBatch.DrawString(font, "Restart Game", menuPos[1], Color.White);
+                spriteBatch.DrawString(font, "Leave Current Level", menuPos[1], Color.White);
             if (currentSelection != 3)
-                spriteBatch.DrawString(font, "Leave", menuPos[2], Color.White);
+                spriteBatch.DrawString(font, "Restart Game", menuPos[2], Color.White);
+            if (currentSelection != 4)
+                spriteBatch.DrawString(font, "Quit Game", menuPos[3], Color.White);
 
             switch (currentSelection)
             {
@@ -268,10 +311,13 @@ namespace Demeter
                     spriteBatch.DrawString(font, "Resume Game", menuPos[0], Color.Red);
                     break;
                 case 2:
-                    spriteBatch.DrawString(font, "Restart Game", menuPos[1], Color.Red);
+                    spriteBatch.DrawString(font, "Leave Current Level", menuPos[1], Color.Red);
                     break;
                 case 3:
-                    spriteBatch.DrawString(font, "Leave", menuPos[2], Color.Red);
+                    spriteBatch.DrawString(font, "Restart Game", menuPos[2], Color.Red);
+                    break;
+                case 4:
+                    spriteBatch.DrawString(font, "Quit Game", menuPos[3], Color.Red);
                     break;
             }
         }

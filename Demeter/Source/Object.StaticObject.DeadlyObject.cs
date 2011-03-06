@@ -13,12 +13,12 @@ namespace Demeter
         #region logical
         public override int CollisionWidth
         {
-            get { return 150 * frameX; }
+            get { return texture.Width * frameX; }
         }
 
         public override int CollisionHeight
         {
-            get { return 45; ; }
+            get { return texture.Height; ; }
         }
         #endregion
 
@@ -33,7 +33,7 @@ namespace Demeter
 
             float px = float.Parse(pxStr);
             float py = float.Parse(pyStr);
-            frameX = int.Parse(widthStr) / 150;
+            frameX = (int)Math.Ceiling(double.Parse(widthStr) / texture.Width);
             this.position = new Vector2(px, py);
         }
         public override void LoadContent()

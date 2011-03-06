@@ -26,6 +26,7 @@ namespace Demeter
         int passingTime = 0;
         int generateTime;
         string generateType;
+        int generateAmount;
 
         Vector2 powerSpeed;
 
@@ -40,12 +41,22 @@ namespace Demeter
             string pxStr = reader.GetAttribute("px");
             string pyStr = reader.GetAttribute("py");
             string generateTimeStr = reader.GetAttribute("generate_time");
+            string generateAmountStr = reader.GetAttribute("generateAmount");
             string speedXStr = reader.GetAttribute("speed_x");
             string speedYStr = reader.GetAttribute("speed_y");
 
             this.generateType = reader.GetAttribute("generate_type");
             this.generateTime = int.Parse(generateTimeStr);
             this.game = game;
+
+            if (generateAmountStr == null)
+            {
+                this.generateAmount = -1;
+            }
+            else
+            {
+                this.generateAmount = int.Parse(generateAmountStr);
+            }
 
             float speedX = float.Parse(speedXStr);
             float speedY = float.Parse(speedYStr);
@@ -67,7 +78,25 @@ namespace Demeter
             if (passingTime > generateTime)
             {
                 passingTime -= generateTime;
-                Generate();
+                if (generateAmount == -1)
+                {
+                    Generate();
+                }
+                else
+                {
+                    int existAmount = 0;
+                    foreach (Object obj in Level.MovableObjects)
+                    {
+                        if (obj is Enemy && ((Enemy)obj).LauncherId == this.Id) 
+                        {
+                            existAmount++;
+                        }
+                    }
+                    if (existAmount < generateAmount)
+                    {
+                        Generate();
+                    }
+                }
             }
         }
 
@@ -105,7 +134,7 @@ namespace Demeter
         {
             if (generateType == "enemy")
             {
-                Enemy enemy = new Enemy(game, this.position, powerSpeed);
+                Enemy enemy = new Enemy(game, this.position, powerSpeed ,this.Id);
                 Level.MovableObjects.Add(enemy);
             }
         }

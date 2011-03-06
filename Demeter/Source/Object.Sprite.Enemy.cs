@@ -79,6 +79,12 @@ namespace Demeter
         bool isPowered;
         int poweredTime = 500;
 
+        string launcherId;
+        public string LauncherId
+        {
+            get { return launcherId; }
+        }
+
         #region movement
         public bool InTheAir
         {
@@ -118,7 +124,7 @@ namespace Demeter
             get { return this.spriteEffects; }
         }
 
-        public Enemy(Game1 game, Vector2 position, Vector2 speed)
+        public Enemy(Game1 game, Vector2 position, Vector2 speed, string launcherId)
             : base(game, position)
         {
             this.leftBound = 0;
@@ -137,6 +143,7 @@ namespace Demeter
             
                 isPowered = true;
             }
+            this.launcherId = launcherId;
         }
 
         public Enemy(Game1 game, XmlTextReader reader)
@@ -166,6 +173,7 @@ namespace Demeter
                 rightBound = Level.Width;
             }
             this.game = game;
+            this.launcherId = null;
             this.position = new Vector2(px, py);
             if (positiveStr == "true")
             {
@@ -322,10 +330,16 @@ namespace Demeter
         {
             if (obj is Player && this.isAlive)
             {
-                Location location = LocationOf(obj);
                 Player player = (Player)obj;
 
-                if (location == Location.ABOVE && player.IsAlive)
+                bool trample = false;
+
+                if (player.Y + player.CollisionHeight < this.Y + this.CollisionHeight / 2)
+                {
+                    trample = true;
+                }
+
+                if (trample && player.IsAlive)
                 {
                     this.isAlive = false;
                     player.IsJumping = true;
