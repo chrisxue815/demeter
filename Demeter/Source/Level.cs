@@ -56,6 +56,7 @@ namespace Demeter
         Texture2D backgroundTexture;
         string foregroundTextureAssetName;
         Texture2D foregroundTexture;
+        Color? backgroundColor;
 
         int width;
         public int Width
@@ -125,6 +126,9 @@ namespace Demeter
                     else if (reader.Name == "background")
                     {
                         backgroundTextureAssetName = reader.GetAttribute("texture");
+                        string backgroundColorStr = reader.GetAttribute("color");
+                        if (backgroundColorStr == "black")
+                            backgroundColor = Color.Black;
                     }
                     else if (reader.Name == "foreground")
                     {
@@ -282,11 +286,11 @@ namespace Demeter
 
         public void LoadContent()
         {
-            if (backgroundTextureAssetName != "null")
+            if (backgroundTextureAssetName != null && backgroundTextureAssetName != "null")
             {
                 backgroundTexture = Game.Content.Load<Texture2D>(backgroundTextureAssetName);
             }
-            if (foregroundTextureAssetName != "null")
+            if (foregroundTextureAssetName != null && foregroundTextureAssetName != "null")
             {
                 foregroundTexture = Game.Content.Load<Texture2D>(foregroundTextureAssetName);
             }
@@ -315,8 +319,9 @@ namespace Demeter
             {
                 cameraOffset.X = player.Position.X - Game.HalfWidth;
             }
-            if (player.Position.Y < Game.HalfHeight
-                && player.Position.Y > Game.HalfHeight + Game.Height - height)
+
+            if (player.Position.Y > Game.HalfHeight
+                && player.Position.Y < height - Game.HalfHeight)
             {
                 cameraOffset.Y = player.Position.Y - Game.HalfHeight;
             }
@@ -324,15 +329,25 @@ namespace Demeter
 
         public void Draw(GameTime gameTime)
         {
-            if (backgroundTexture != null && foregroundTexture != null)
+            if (backgroundColor != null)
             {
-                Vector2 p = ScreenPosition(Vector2.Zero);
+                Game.GraphicsDevice.Clear(backgroundColor.Value);
+            }
+
+            Vector2 p = ScreenPosition(Vector2.Zero);
+
+            if (backgroundTexture != null)
+            {
                 for (int i = 0; i < (int)Math.Ceiling((float)width / backgroundTexture.Width); i++)
                 {
                     Game.SpriteBatch.Draw(backgroundTexture,
                         new Rectangle((int)(p.X * 0.5 + backgroundTexture.Width * i), (int)(p.Y), backgroundTexture.Width, height),
                         null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.1f);
                 }
+            }
+
+            if (foregroundTexture != null)
+            {
                 for (int i = 0; i < (int)Math.Ceiling((float)width / foregroundTexture.Width); i++)
                 {
                     Game.SpriteBatch.Draw(foregroundTexture,
@@ -600,10 +615,7 @@ namespace Demeter
 
         public void Add(Object obj, int x, int y)
         {
-            if (x < width && y < height)
-            {
-                manager[x, y].Add(obj);
-            }
+            manager[x, y].Add(obj);
         }
     }
 }

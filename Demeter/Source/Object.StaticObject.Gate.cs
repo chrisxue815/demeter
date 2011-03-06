@@ -180,7 +180,7 @@ namespace Demeter
         #region IControlledObject Members
 
         bool haveControlled = false;
-        void IControlledObject.Control()
+        void IControlledObject.Control(IController controller)
         {
             if (!haveControlled)
             {

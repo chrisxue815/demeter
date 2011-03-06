@@ -5,10 +5,11 @@
   <foreground texture="null"></foreground>
   <cameraOffset px="0" py="0"></cameraOffset>
   <bound id="bound1" left="0" right="1366" top="0" bottom="698"></bound>
-  <player id="player1" px="50" py="628" movable="true"></player>
-  <ladder id="ladder1" px="510" py="338" height="360" movable="true"></ladder>
-  <ladder id="ladder2" px="811" py="338" height="360" movable="true"></ladder>
-  <block id="block1" px="555" py="420" width="256" height="48" movable="true"></block>
+  <door id="door4" px="40" py="617" levelFileName="novice1-1.xml"></door>
+  <player id="player1" px="100" py="628" movable="true"></player>
+  <ladder id="ladder1" px="510" py="338" height="360"></ladder>
+  <ladder id="ladder2" px="811" py="338" height="360"></ladder>
+  <block id="block1" px="555" py="420" width="256" height="48"></block>
   <door id="door1" px="300" py="617" levelFileName="level1.xml"></door>
   <door id="door2" px="657" py="617" levelFileName="null"></door>
   <door id="door3" px="1015" py="617" levelFileName="null"></door>
