@@ -16,7 +16,7 @@ namespace Demeter
         #region Logical
         public override int CollisionWidth
         {
-            get { return 45; }
+            get { return 25; }
         }
         public override int CollisionHeight
         {
@@ -33,7 +33,7 @@ namespace Demeter
 
         public override int LeftCollisionOffset
         {
-            get { return 0; }
+            get { return 5; }
         }
 
         static readonly Point DEFAULT_FRAME_SIZE = new Point(45, 70);
