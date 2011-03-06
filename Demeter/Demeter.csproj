@@ -93,6 +93,7 @@
     <Compile Include="Source\Helper\OgreCore.cs" />
     <Compile Include="Source\Helper\Ray.cs" />
     <Compile Include="Source\Helper\TreasureManager.cs" />
+    <Compile Include="Source\Helper\Xml.cs" />
     <Compile Include="Source\Object.Sprite.Hint.KeyUpHint.cs" />
     <Compile Include="Source\Object.StaticObject.DeadlyObject.cs" />
     <Compile Include="Source\Object.StaticObject.Gate.cs" />
