@@ -7,6 +7,6 @@ namespace Demeter
 {
     interface IControlledObject
     {
-        void Control();
+        void Control(IController controller);
     }
 }
