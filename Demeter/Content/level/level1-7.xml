@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<level>
+  <size width="2000" height="768" treasureCount="2"></size>
+  <background texture="texture/Background.Background"></background>
+  <foreground texture="texture/Foreground.Foreground"></foreground>
+  <cameraOffset px="0" py="0"></cameraOffset>
+  <bound id="bound1" left="0" right="2000" top="0" bottom="698"></bound>
+  <player id="player1" px="100" py="628" movable="true"></player>
+  <bindingPoint id="binding1">
+    <p  id="p1" px="100" py="628"></p>
+  </bindingPoint>
+
+  <launcher id="launcher1" px="500" py="500" speed_x="-5" speed_y="5"
+            generate_time="4000" generate_type="enemy" generateAmount="2"></launcher>
+</level>
