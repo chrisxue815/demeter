@@ -81,8 +81,8 @@ namespace Demeter
             graphics.PreferredBackBufferWidth = width;
             graphics.PreferredBackBufferHeight = height;
 
-            if (!graphics.IsFullScreen)
-                graphics.ToggleFullScreen();
+            /*if (!graphics.IsFullScreen)
+                graphics.ToggleFullScreen();*/
 
             Content.RootDirectory = "Content";
         }
@@ -115,7 +115,7 @@ namespace Demeter
             font = Content.Load<SpriteFont>("font/Hud");
 
             level = new Level(this);
-            level.Load("level1-1.xml");
+            level.Load("level1-3.xml");
         }
 
         /// <summary>

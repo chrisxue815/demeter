@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Demeter
 {
-    public class LightRay : StaticObject
+    public class LightRay : StaticObject, IController
     {
         public override int CollisionWidth
         {
@@ -45,8 +45,8 @@ namespace Demeter
             texture = new Texture2D(Game.GraphicsDevice, 10, 10);
             Color[] color = new Color[100];
             for (int i = 0; i < 100; i++)
-                color[i] = new Color(250, 250, 250, 10);
-            texture.SetData(color);
+                color[i] = new Color(200, 200, 200, 120);
+             texture.SetData(color);
         }
 
         public override void Update(GameTime gameTime)
@@ -77,7 +77,7 @@ namespace Demeter
                     reflectionPosition.Add(collidingPosition.Value);
                     if (obj is Gate)
                     {
-                        ((IControlledObject)obj).Control();
+                        ((IControlledObject)obj).Control(this);
                     }
                     break;
                 }
@@ -109,5 +109,14 @@ namespace Demeter
         public override void CollisionResponse(Object obj)
         {
         }
+
+        #region IController Members
+
+        void IController.Add(IControlledObject obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

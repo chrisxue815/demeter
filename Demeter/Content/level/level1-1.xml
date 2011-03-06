@@ -4,8 +4,8 @@
   <background texture="texture/Background.Background"></background>
   <foreground texture="texture/Foreground.Foreground"></foreground>
   <cameraOffset px="0" py="0"></cameraOffset>
-  <bound id="bound1" left="0" right="3300" top="0" bottom="698"></bound>
-  <player id="player1" px="100" py="628" movable="true"></player>
+  <bound id="bound1" left="0" right="3200" top="0" bottom="698"></bound>
+  <player id="player1" px="1000" py="628" movable="true"></player>
 
   <door id="door1" px="40" py="617" levelFileName="level1.xml"></door>
   <door id="door2" px="3140" py="501" levelFileName="totalLevel.xml"></door>
@@ -57,7 +57,7 @@
     <controlled objId="lightsource1"></controlled>
   </shiftStick>
   
-  <lightsource id="lightsource1" px="2000" py="130" rotation="2.355"></lightsource>
+  <lightsource id="lightsource1" px="1900" py="130" angle="2.355"></lightsource>
   
   <mirror id="mirror1" px="1600" py="430"></mirror>
   

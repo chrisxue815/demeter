@@ -79,7 +79,7 @@ namespace Demeter
 
         #region IControlledObject Members
 
-        void IControlledObject.Control()
+        void IControlledObject.Control(IController controller)
         {
             KeyboardState keyboardState = Keyboard.GetState();
 
