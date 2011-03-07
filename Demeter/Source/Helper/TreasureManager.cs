@@ -25,50 +25,30 @@ namespace Demeter
 
         public void ResetLevel()
         {
-            if (File.Exists(@"Uerprofile\profile.xml"))
+            if (File.Exists(@"Profile\profile.xml"))
             {
-                File.Delete(@"Uerprofile\profile.xml");
+                File.Delete(@"Profile\profile.xml");
             }
         }
 
         public void GetTreasure(string id)
         {
             XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.Load(@"Uerprofile\profile.xml");
+            xmlDoc.Load(@"Profile\profile.xml");
 
-            XmlNode node = xmlDoc.SelectSingleNode("levels");
+            XmlNode node = xmlDoc.SelectSingleNode("profile");
 
             XmlElement xe = xmlDoc.CreateElement("treasure");
             xe.SetAttribute("id", id);
 
             node.AppendChild(xe);
 
-            xmlDoc.Save(@"Uerprofile\profile.xml");
+            xmlDoc.Save(@"Profile\profile.xml");
         }
 
         public List<String> AreGotten()
         {
-            List<String> ids = new List<string>() ;
-            if (!File.Exists(@"Uerprofile\profile.xml"))
-            {
-                Xml.CreateXmlFile();
-            }
-
-            XmlTextReader reader = new XmlTextReader(@"Uerprofile\profile.xml");
-            while (reader.Read())
-            {
-                if (reader.NodeType == XmlNodeType.Element)
-                {
-                    if (reader.Name == "treasure")
-                    {
-                        string id = reader.GetAttribute("id");
-                        ids.Add(id);
-                    }
-                }
-            }
-            reader.Close();
-
-            return ids;
+            return Xml.GetValues("treasure", "id");
         }
     }
 }
