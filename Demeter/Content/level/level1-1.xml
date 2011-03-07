@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<level>
+  <size width="2000" height="768" treasureCount="1"></size>
+  <background texture="texture/Background.Background"></background>
+  <foreground texture="texture/Foreground.Foreground"></foreground>
+  <bound id="bound1" left="20" right="1950" top="20" bottom="696"></bound>
+  <player id="player1" px="100" py="400" movable="true"></player>
+
+  <door px="40" py="511" levelFileName="level1.xml"></door>
+  
+  <block px="20" py="600" width="640" height="48"></block>
+  
+  <deadlyobj px="660" py="648" width="100"></deadlyobj>
+  <block px="760" py="600" width="64" height="48"></block>
+  <deadlyobj px="824" py="648" width="100"></deadlyobj>
+  <block px="924" py="600" width="64" height="48"></block>
+  <deadlyobj px="988" py="648" width="600"></deadlyobj>
+  
+  <switch id="switch1" px="924" py="530">
+    <controlled objId="block1"></controlled>
+  </switch>
+
+  <ladder px="532" py="150" height="450"></ladder>
+  <block px="577" py="240" width="64" height="48"></block>
+  <block id="block1" px="641" py="144" width="64" height="144" movable="true">
+    <bound left="641" right="641" top="144" bottom="239" positive="false"></bound>
+  </block>
+  <block px="705" py="240" width="64" height="48"></block>
+  <block id="block2" px="769" py="240" width="128" height="48" movable="true">
+    <bound left="769" right="1300" top="240" bottom="240" positive="false"></bound>
+  </block>
+  <switch id="switch2" px="769" py="171" movable="true">
+    <controlled objId="block2"></controlled>
+  </switch>
+
+  <block px="1428" py="240" width="64" height="48"></block>
+  <ogre px="1492" py="240" offset="-70"></ogre>
+  <block px="1573" py="240" width="64" height="48"></block>
+  
+  <ladder px="1637" py="150" height="450"></ladder>
+  <block px="1537" py="600" width="448" height="48"></block>
+
+  <treasure id="treasure7" px="1557" py="400"></treasure>
+
+  <door px="1800" py="511" levelFileName="level1-2.xml"></door>
+</level>
