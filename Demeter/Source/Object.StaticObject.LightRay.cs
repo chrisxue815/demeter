@@ -34,6 +34,8 @@ namespace Demeter
 
         List<Vector2> reflectionPosition = new List<Vector2>();
 
+        const int RayElementWidth = 10;
+
         public LightRay(Game1 game, Vector2 position, float angle)
             : base(game, position)
         {
@@ -42,11 +44,15 @@ namespace Demeter
 
         public override void LoadContent()
         {
-            texture = new Texture2D(Game.GraphicsDevice, 10, 10);
-            Color[] color = new Color[100];
-            for (int i = 0; i < 100; i++)
+            texture = Game.Content.Load<Texture2D>("texture/Object.StaticObject.LadderRay.LadderRay1");
+            /*texture = new Texture2D(Game.GraphicsDevice, RayElementWidth, RayElementWidth);
+
+            int count = RayElementWidth * RayElementWidth;
+            Color[] color = new Color[count];
+
+            for (int i = 0; i < count; i++)
                 color[i] = new Color(200, 200, 200, 120);
-             texture.SetData(color);
+             texture.SetData(color);*/
         }
 
         public override void Update(GameTime gameTime)
@@ -96,14 +102,14 @@ namespace Demeter
                 Vector2 currentPoint = Level.ScreenPosition(current);
                 Vector2 nextPoint = Level.ScreenPosition(next);
                 LineSegment lineSegment = new LineSegment(currentPoint, nextPoint);
-                lineSegment.Retrieve(DrawPoint);
+                lineSegment.Retrieve(10, DrawPoint);
             }
         }
 
-        public void DrawPoint(Point point)
+        public void DrawPoint(Vector2 point, float angle)
         {
-            Game.SpriteBatch.Draw(texture, new Rectangle(point.X, point.Y, 10, 10),
-                null, Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth);
+            Game.SpriteBatch.Draw(texture, point,
+                null, Color.White, angle, new Vector2((float)RayElementWidth / 2), 1, SpriteEffects.None, layerDepth);
         }
 
         public override void CollisionResponse(Object obj)

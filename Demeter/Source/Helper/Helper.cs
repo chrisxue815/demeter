@@ -17,5 +17,10 @@ namespace Demeter
         {
             return new Vector2((float)p.X, (float)p.Y);
         }
+
+        public static Point ToPoint(Vector2 v)
+        {
+            return new Point((int)v.X, (int)v.Y);
+        }
     }
 }

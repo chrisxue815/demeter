@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <level>
-  <size width="1800" height="768" treasureCount="1"></size>
+  <size width="2000" height="768" treasureCount="1"></size>
   <background texture="texture/Background.Background"></background>
   <foreground texture="texture/Foreground.Foreground"></foreground>
-  <bound id="bound1" left="20" right="1750" top="20" bottom="700"></bound>
+  <bound id="bound1" left="20" right="1950" top="20" bottom="700"></bound>
   <player id="player1" px="100" py="600" movable="true"></player>
 
-  <block type="ground" px="0" py="700" width="1800" height="48"></block>
+  <block type="ground" px="0" py="700" width="2000" height="48"></block>
   
   <door id="door1" px="40" py="617" levelFileName="level1-2.xml" levelName="Level 2"></door>
   
@@ -33,8 +33,8 @@
   </switch>
   <block type="wall" px="1172" py="316" width="64" height="192"></block>
   <block type="wall" px="1236" py="220" width="64" height="288"></block>
-  <block type="wall" px="1364" py="220" width="384" height="288"></block>
-  <block type="wall" px="1684" py="508" width="64" height="240"></block>
+  <block type="wall" px="1364" py="220" width="576" height="288"></block>
+  <block type="wall" px="1876" py="508" width="64" height="192"></block>
   
   <gate px="1300" py="460" width="64" height="240">
     <bound left="1300" right="1300" top="221" bottom="659"></bound>
@@ -43,4 +43,8 @@
   <treasure id="treasure4" px="1500" py="520"></treasure>
 
   <door id="door1" px="1500" py="617" levelFileName="level1-4.xml" levelName="Level 4"></door>
+
+  <switch id="switch4" px="1700" py="630">
+    <controlled objId="lightsource1"></controlled>
+  </switch>
 </level>

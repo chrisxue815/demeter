@@ -50,22 +50,28 @@ namespace Demeter
             return intersection;
         }
 
-        public void Retrieve(Retrieve retrieve)
+        public void Retrieve(int width, Retrieve retrieve)
         {
             if (p1.X == p2.X)
             {
                 if (p1.Y < p2.Y)
                 {
-                    for (int i = (int)p1.Y; i <= (int)p2.Y; i++)
+                    Vector2 increment = new Vector2(0, width);
+                    float angle = (float)Math.PI / 2;
+
+                    for (Vector2 point = p1; point.Y <= p2.Y; point += increment)
                     {
-                        retrieve(new Point((int)p1.X, i));
+                        retrieve(point, angle);
                     }
                 }
                 else
                 {
-                    for (int i = (int)p2.Y; i <= (int)p1.Y; i++)
+                    Vector2 increment = new Vector2(0, -width);
+                    float angle = (float)-Math.PI / 2;
+
+                    for (Vector2 point = p1; point.Y >= p2.Y; point += increment)
                     {
-                        retrieve(new Point((int)p1.X, i));
+                        retrieve(point, angle);
                     }
                 }
             }
@@ -74,44 +80,27 @@ namespace Demeter
                 float k = (p1.Y - p2.Y) / (p1.X - p2.X);
                 float b = p1.Y - k * p1.X;
                 float angle = (float)Math.Atan((double)k);
+                if (p1.X > p2.X)
+                    angle += (float)Math.PI;
+                Vector2 increment = new Vector2(width * (float)Math.Cos(angle), width * (float)Math.Sin(angle));
 
-                if (angle >= -Math.PI / 4 && angle < Math.PI / 4)
+                if (p1.X < p2.X)
                 {
-                    if (p1.X < p2.X)
+                    for (Vector2 point = p1; point.X <= p2.X; point += increment)
                     {
-                        for (int i = (int)p1.X; i <= (int)p2.X; i++)
-                        {
-                            retrieve(new Point(i, (int)(k * i + b)));
-                        }
-                    }
-                    else
-                    {
-                        for (int i = (int)p2.X; i <= (int)p1.X; i++)
-                        {
-                            retrieve(new Point(i, (int)(k * i + b)));
-                        }
+                        retrieve(point, angle);
                     }
                 }
                 else
                 {
-                    if (p1.Y < p2.Y)
+                    for (Vector2 point = p1; point.X >= p2.X; point += increment)
                     {
-                        for (int i = (int)p1.Y; i <= (int)p2.Y; i++)
-                        {
-                            retrieve(new Point((int)((i - b) / k), i));
-                        }
-                    }
-                    else
-                    {
-                        for (int i = (int)p2.Y; i <= (int)p1.Y; i++)
-                        {
-                            retrieve(new Point((int)((i - b) / k), i));
-                        }
+                        retrieve(point, angle);
                     }
                 }
             }
         }
     }
 
-    public delegate void Retrieve(Point point);
+    public delegate void Retrieve(Vector2 point, float angle);
 }

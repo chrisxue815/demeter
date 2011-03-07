@@ -158,7 +158,7 @@ namespace Demeter
             {
                 startLevel = "novice.xml";
             }
-            level.Load(startLevel);
+            level.Load("level1-3.xml");
 
             menuBackground = Content.Load<Texture2D>("texture/Background.MenuBackground");
         }
@@ -199,18 +199,7 @@ namespace Demeter
 
                 if (level.Player.IsLeaving)
                 {
-                    string commingLevel = Level.Player.ComingLevel;
-                    if (commingLevel != "null")
-                    {
-                        if (commingLevel == "TotalLevel.xml")
-                        {
-                            Xml.StartLevel = "TotalLevel.xml";
-                        }
-                        bindingPoint = null;
-                        level = new Level(this);
-                        level.Load(commingLevel);
-                    }
-                    level.Player.IsLeaving = false;
+                    ChangeLevel();
                 }
 
                 if (!level.Player.IsAlive)
@@ -233,6 +222,28 @@ namespace Demeter
             }
 
             base.Update(gameTime);
+        }
+
+        private void ChangeLevel()
+        {
+            string commingLevel = Level.Player.ComingLevel;
+
+            if (commingLevel == "null")
+            {
+                return;
+            }
+
+            if (commingLevel == "TotalLevel.xml")
+            {
+                Xml.StartLevel = "TotalLevel.xml";
+            }
+
+            bindingPoint = null;
+
+            level = new Level(this);
+            level.Load(commingLevel);
+
+            level.Player.IsLeaving = false;
         }
 
         /// <summary>

@@ -55,6 +55,8 @@ namespace Demeter
             set { movableObjects = value; }
         }
 
+        List<LightSource> lightSource = new List<LightSource>();
+
         string backgroundTextureAssetName;
         Texture2D backgroundTexture;
         string foregroundTextureAssetName;
@@ -136,14 +138,6 @@ namespace Demeter
                         foregroundTextureAssetName = reader.GetAttribute("texture");
                         string bottom = reader.GetAttribute("bottom");
                     }
-                    else if (reader.Name == "cameraOffset")
-                    {
-                        string pxStr = reader.GetAttribute("px");
-                        string pyStr = reader.GetAttribute("py");
-                        float px = float.Parse(pxStr);
-                        float py = float.Parse(pyStr);
-                        cameraOffset = new Vector2(px, py);
-                    }
                     else if (reader.Name == "bound")
                     {
                         string leftStr = reader.GetAttribute("left");
@@ -189,6 +183,7 @@ namespace Demeter
                     else if (reader.Name == "lightsource")
                     {
                         LightSource light1 = new LightSource(game, reader);
+                        lightSource.Add(light1);
                     }
                     else if (reader.Name == "mirror")
                     {
@@ -342,6 +337,15 @@ namespace Demeter
             }
 
             SetCamera();
+
+            if (player.IsLeaving)
+            {
+                foreach (LightSource light in lightSource)
+                {
+                    if (light.SwitchOn)
+                        player.IsLeaving = false;
+                }
+            }
         }
 
         private void SetCamera()

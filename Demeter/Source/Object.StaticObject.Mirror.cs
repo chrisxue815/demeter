@@ -71,7 +71,7 @@ namespace Demeter
         public override void Draw(GameTime gameTime)
         {
             Game.SpriteBatch.Draw(texture,
-                new Vector2((int)ScreenPosition.X + HalfWidth, (int)ScreenPosition.Y + HalfHeight),
+                new Vector2((int)ScreenPosition.X + HalfWidth + 60, (int)ScreenPosition.Y + HalfHeight),
                 null, Color.White, normalAngle,
                 new Vector2(HalfWidth, HalfHeight),
                 scale, SpriteEffects.None, layerDepth);
