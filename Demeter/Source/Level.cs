@@ -94,6 +94,32 @@ namespace Demeter
 
         GridManager gridManager;
 
+        bool leavingWithoutTurningOff = false;
+        Vector2 hintWordsOffset = new Vector2(40, 35);
+        Texture2D hint;
+        Texture2D hintWords;
+        int timeEmerging;
+        const int intervalTime = 5000;
+
+        bool isTotalLevel = false;
+        Texture2D plant1;
+        int gottenTreasure;
+        int totalTreasure;
+        public int GottenTreasure
+        {
+            get { return gottenTreasure; }
+            set {
+                gottenTreasure = value;
+                SelectPlantTexture();
+            }
+        }        
+
+        bool showHint = false;
+        Animation leftHint;
+        Animation rightHint;
+        int timeEmerging2;
+        const int intervalTime2 = 5000;
+
         #endregion
 
         public Level(Game1 game)
@@ -311,6 +337,52 @@ namespace Demeter
         public void Initialize()
         {
             InitializeGridManager();
+
+            if (levelFileName == "TotalLevel.xml")
+            {
+                isTotalLevel = true;
+            }
+            treasureMgr.GetTreasureNum("level1.xml", out gottenTreasure, out totalTreasure);
+            SelectPlantTexture();
+
+            if (levelFileName == "novice.xml")
+            {
+                showHint = true;
+                timeEmerging2 = intervalTime2;
+                leftHint = new Animation(Game.Content.Load<Texture2D>("texture/Object.Sprite.Hint.Left"), new Point(35, 32), 100, true);
+                rightHint = new Animation(Game.Content.Load<Texture2D>("texture/Object.Sprite.Hint.Right"), new Point(35, 32), 100, true);
+            }
+        }
+
+        private void SelectPlantTexture()
+        {
+            switch (gottenTreasure)
+            {
+                case 0:
+                    plant1 = Game.Content.Load<Texture2D>("texture/Plant1-0");
+                    break;
+                case 1:
+                    plant1 = Game.Content.Load<Texture2D>("texture/Plant1-1");
+                    break;
+                case 2:
+                    plant1 = Game.Content.Load<Texture2D>("texture/Plant1-2");
+                    break;
+                case 3:
+                    plant1 = Game.Content.Load<Texture2D>("texture/Plant1-3");
+                    break;
+                case 4:
+                    plant1 = Game.Content.Load<Texture2D>("texture/Plant1-4");
+                    break;
+                case 5:
+                    plant1 = Game.Content.Load<Texture2D>("texture/Plant1-5");
+                    break;
+                case 6:
+                    plant1 = Game.Content.Load<Texture2D>("texture/Plant1-6");
+                    break;
+                case 7:
+                    plant1 = Game.Content.Load<Texture2D>("texture/Plant1-7");
+                    break;
+            }
         }
 
         public void LoadContent()
@@ -323,6 +395,8 @@ namespace Demeter
             {
                 foregroundTexture = Game.Content.Load<Texture2D>(foregroundTextureAssetName);
             }
+            hint = Game.Content.Load<Texture2D>("texture/Hint.TurnOff");
+            hintWords = Game.Content.Load<Texture2D>("texture/Hint.TurnOffWords");
         }
 
         public void Update(GameTime gameTime)
@@ -331,7 +405,6 @@ namespace Demeter
             {
                 movableObjects[i].Update(gameTime);
             }
-            
 
             foreach (Object obj in objects)
             {
@@ -340,13 +413,30 @@ namespace Demeter
 
             SetCamera();
 
+            if (timeEmerging > 0)
+            {
+                timeEmerging -= gameTime.ElapsedGameTime.Milliseconds;
+                if (timeEmerging <= 0)
+                    leavingWithoutTurningOff = false;
+            }
+
             if (player.IsLeaving)
             {
                 foreach (LightSource light in lightSource)
                 {
                     if (light.SwitchOn)
+                    {
+                        leavingWithoutTurningOff = true;
+                        timeEmerging = intervalTime;
                         player.IsLeaving = false;
+                    }
                 }
+            }
+
+            if (showHint)
+            {
+                leftHint.Update(gameTime);
+                rightHint.Update(gameTime);
             }
         }
 
@@ -421,6 +511,51 @@ namespace Demeter
             foreach (Object obj in objects)
             {
                 obj.Draw(gameTime);
+            }
+
+            if (leavingWithoutTurningOff)
+            {
+                Vector2 screenPos = player.ScreenPosition;
+                Vector2 pos;
+                SpriteEffects effect;
+                if (player.X + 600 > width)
+                {
+                    pos = new Vector2(screenPos.X - 190, screenPos.Y - 170);
+                    effect = SpriteEffects.FlipHorizontally;
+                }
+                else
+                {
+                    pos = new Vector2(screenPos.X + 10, screenPos.Y - 170);
+                    effect = SpriteEffects.None;
+                }
+
+                Game.SpriteBatch.Draw(hint, pos,
+                    null, Color.White, 0, Vector2.Zero, 1, effect, 0.8f);
+                Game.SpriteBatch.Draw(hintWords, pos + hintWordsOffset,
+                    null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.81f);
+            }
+
+            if (showHint && timeEmerging2 > 0)
+            {
+                timeEmerging2 -= gameTime.ElapsedGameTime.Milliseconds;
+                if (timeEmerging2 <= 0)
+                {
+                    showHint = false;
+                }
+                Vector2 screenPos = player.ScreenPosition;
+                Vector2 pos = new Vector2(screenPos.X-10,screenPos.Y-40);
+                Vector2 pos2 = new Vector2(screenPos.X+30,screenPos.Y-40);
+                game.SpriteBatch.Draw(leftHint.Texture, pos, leftHint.CurrentSourceRectangle, Color.White, 0, Vector2.Zero, 1.0f, SpriteEffects.None, 0.8f);
+                game.SpriteBatch.Draw(rightHint.Texture, pos2, leftHint.CurrentSourceRectangle, Color.White, 0, Vector2.Zero, 1.0f, SpriteEffects.None, 0.8f);
+            }
+
+            if (isTotalLevel)
+            {
+                Game.SpriteBatch.Draw(plant1, new Vector2(600, 240), null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.5f);
+            }
+            else
+            {
+                Game.SpriteBatch.Draw(plant1, new Vector2(1200, 0), null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.9f);
             }
         }
 

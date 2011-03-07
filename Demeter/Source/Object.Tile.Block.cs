@@ -113,7 +113,7 @@ namespace Demeter
                     movableBlock = new Animation(texture, new Point(64, 48), 100, true);
                     break;
                 default:
-                    texture = Game.Content.Load<Texture2D>("texture/Object.Tile.Block.Floor");
+                    texture = Game.Content.Load<Texture2D>("texture/Object.Tile.Block.Wall");
                     break;
             }
         }

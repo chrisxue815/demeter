@@ -23,7 +23,8 @@ namespace Demeter
 
         List<IControlledObject> controlled = new List<IControlledObject>();
 
-        Texture2D switchOnTexture;
+        Texture2D positiveTexture;
+        Texture2D negativeTexture;
         Texture2D switchOffTexture;
 
         KeyUpHint keyUpHint;
@@ -52,8 +53,9 @@ namespace Demeter
 
         public override void LoadContent()
         {
-            switchOnTexture = Game.Content.Load<Texture2D>("texture/Object.StaticObject.Switch.SwitchOn");
-            switchOffTexture = Game.Content.Load<Texture2D>("texture/Object.StaticObject.Switch.SwitchOff");
+            positiveTexture = Game.Content.Load<Texture2D>("texture/Object.StaticObject.ShiftStick.Positive");
+            negativeTexture = Game.Content.Load<Texture2D>("texture/Object.StaticObject.ShiftStick.Negative");
+            switchOffTexture = Game.Content.Load<Texture2D>("texture/Object.StaticObject.ShiftStick.SwitchOff");
             texture = switchOffTexture;
         }
 
@@ -72,13 +74,21 @@ namespace Demeter
             {
                 KeyboardState keyboardState = Keyboard.GetState();
 
-                if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.Down))
+                if (keyboardState.IsKeyDown(Keys.Up))
                 {
                     foreach (IControlledObject controlledObj in controlled)
                     {
                         controlledObj.Control(this);
                     }
-                    texture = switchOnTexture;
+                    texture = positiveTexture;
+                }
+                else if (keyboardState.IsKeyDown(Keys.Down))
+                {
+                    foreach (IControlledObject controlledObj in controlled)
+                    {
+                        controlledObj.Control(this);
+                    }
+                    texture = negativeTexture;
                 }
                 else
                 {
