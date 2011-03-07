@@ -46,6 +46,8 @@ namespace Demeter
         }
         protected static readonly Point DEFAULT_FRAME = Point.Zero;
 
+        float time = 0;
+
         /// <summary>
         /// Gets the width of a frame in the animation.
         /// </summary>
@@ -118,23 +120,29 @@ namespace Demeter
             loopFlag = true;
         }
 
-        public void Update()
+        public void Update(GameTime gameTime)
         {
-            // Advance the frame index; looping or clamping as appropriate.
-            if (isLooping || loopFlag)
+            time += (float)gameTime.ElapsedGameTime.Milliseconds;
+            while (time > FrameTime)
             {
-                ++currentFrame.X;
-                if (currentFrame.X >= frameCount.X)
+                time -= FrameTime;
+
+                // Advance the frame index; looping or clamping as appropriate.
+                if (isLooping || loopFlag)
                 {
-                    if (currentFrame.X == frameCount.X && currentFrame.Y == frameCount.Y)
+                    ++currentFrame.X;
+                    if (currentFrame.X >= frameCount.X)
                     {
-                        loopFlag = false;
-                    }
-                    currentFrame.X = 0;
-                    ++currentFrame.Y;
-                    if (currentFrame.Y >= frameCount.Y)
-                    {
-                        currentFrame.Y = 0;
+                        if (currentFrame.X == frameCount.X && currentFrame.Y == frameCount.Y)
+                        {
+                            loopFlag = false;
+                        }
+                        currentFrame.X = 0;
+                        ++currentFrame.Y;
+                        if (currentFrame.Y >= frameCount.Y)
+                        {
+                            currentFrame.Y = 0;
+                        }
                     }
                 }
             }

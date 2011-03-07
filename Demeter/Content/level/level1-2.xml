@@ -47,9 +47,9 @@
   <launcher id="launcher2" px="2380" py="650" speed_x="-8" speed_y="-13"
             generate_time="3500" generate_type="enemy"></launcher>
 
-  <treasure id="treasure4" px="1000" py="200"></treasure>
-  <treasure id="treasure5" px="2550" py="280"></treasure>
+  <treasure id="treasure2" px="1000" py="200"></treasure>
+  <treasure id="treasure3" px="2550" py="280"></treasure>
 
-  <door id="door1" px="40" py="271" levelFileName="null"></door>
-  <door id="door2" px="3140" py="561" levelFileName="null"></door>
+  <door id="door1" px="40" py="271" levelFileName="level1-1.xml" levelName="Level 1"></door>
+  <door id="door2" px="3140" py="561" levelFileName="level1-3.xml" levelName="Level 3"></door>
 </level>

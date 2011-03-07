@@ -66,12 +66,7 @@ namespace Demeter
         public override void Update(GameTime gameTime)
         {
             // Process passing time.
-            time += (float)gameTime.ElapsedGameTime.Milliseconds;
-            while (time > currentAnimation.FrameTime)
-            {
-                time -= currentAnimation.FrameTime;
-                currentAnimation.Update();
-            }
+            currentAnimation.Update(gameTime);
         }
     }
 }
