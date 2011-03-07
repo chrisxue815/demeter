@@ -84,7 +84,7 @@ namespace Demeter
             set { movable = value; }
         }
 
-        protected float layerDepth = 0.5f;
+        protected float layerDepth = 0.6f;
 
         protected float scale = 1.0f;
 

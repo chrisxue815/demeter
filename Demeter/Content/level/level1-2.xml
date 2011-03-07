@@ -12,15 +12,15 @@
     <p  id="p3" px="1900" py="350"></p>
   </bindingPoint>
 
-  <block id="ground1" px="0" py="360" width="256" height="48" type="ground"></block>
+  <block id="ground1" px="0" py="360" width="256" height="48" type="floor"></block>
   <block id="ground2" px="0" py="650" width="1536" height="48" type="ground"></block>
   <block id="ground3" px="1617" py="649" width="128" height="48" type="ground"></block>
   <block id="ground4" px="2800" py="650" width="400" height="48" type="ground"></block>
   
-  <block id="block1" px="845" py="402" width="48" height="48"></block>
-  <block id="block2" px="845" py="450" width="448" height="48"></block>
-  <block id="block3" px="1229" py="402" width="48" height="48"></block>
-  <block id="block4" px="2437" py="420" width="192" height="48" movable="true">
+  <block id="block1" px="845" py="402" width="48" height="48" type="wall"></block>
+  <block id="block2" px="845" py="450" width="448" height="48" type="floor"></block>
+  <block id="block3" px="1229" py="402" width="48" height="48" type="wall"></block>
+  <block id="block4" px="2437" py="420" width="192" height="48" type="movableBlock" movable="true">
     <bound left="2437" right="2641" top="420" bottom="602" positive="false"></bound>
   </block>
 

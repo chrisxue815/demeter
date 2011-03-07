@@ -134,7 +134,7 @@ namespace Demeter
             level = new Level(this);
             if (true)
             {
-                level.Load("novice.xml");
+                level.Load("level1-4.xml");
             }
         }
 

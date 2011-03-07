@@ -115,5 +115,5 @@ namespace Demeter
             }
         }
     }
-    public enum BlockType { None, Ground, Wall, Floor }
+    public enum BlockType { None, Ground, Wall, Floor, MovableBlock }
 }

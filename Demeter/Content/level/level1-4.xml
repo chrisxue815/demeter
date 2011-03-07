@@ -4,7 +4,7 @@
   <background texture="texture/Background.Background"></background>
   <foreground bottom="650" texture="texture/Foreground.Foreground"></foreground>
   <bound id="bound1" left="0" right="3200" top="0" bottom="698"></bound>
-  <player id="player1" px="100" py="580" movable="true"></player>
+  <player id="player1" px="1100" py="580" movable="true"></player>
   <bindingPoint id="binding1">
     <p id="p1" px="100" py="580"></p>
     <p id="p2" px="1200" py="580"></p>
@@ -24,21 +24,21 @@
   <block id="ground2" px="684" py="650" width="872" height="48" type="ground"></block>
   <block id="ground3" px="2180" py="650" width="1208" height="48" type="ground"></block>
   
-  <block id="block1" px="265" py="182" width="128" height="48"></block>
-  <block id="block2" px="329" py="552" width="64" height="48" movable="true">
+  <block id="block1" px="265" py="182" width="128" height="48" type="wall"></block>
+  <block id="block2" px="329" py="552" width="64" height="48" movable="true" type="movableBlock">
     <bound left="329" right="600" top="552" bottom="552" positive="false"></bound>
   </block>
-  <block id="block3" px="1445" py="380" width="64" height="240"></block>
-  <block id="block4" px="1509" py="379" width="192" height="48"></block>
-  <block id="block5" px="1324" py="199" width="256" height="48"></block>
-  <block id="block6" px="1509" py="602" width="64" height="48"></block>
-  <block id="block7" px="1800" py="379" width="192" height="48"></block>
-  <block id="block8" px="1864" py="572" width="256" height="48" movable="true">
+  <block id="block3" px="1445" py="380" width="64" height="240" type="wall"></block>
+  <block id="block4" px="1509" py="379" width="192" height="48" type="wall"></block>
+  <block id="block5" px="1324" py="199" width="256" height="48" type="wall"></block>
+  <block id="block6" px="1509" py="602" width="64" height="48" type="wall"></block>
+  <block id="block7" px="1800" py="379" width="192" height="48" type="wall"></block>
+  <block id="block8" px="1864" py="572" width="256" height="48" movable="true" type="movableBlock">
     <bound left="1573" right="1864" top="572" bottom="572" positive="true"></bound>
   </block>
-  <block id="block9" px="2120" py="602" width="64" height="48"></block>
-  <block id="block10" px="1992" py="309" width="192" height="48"></block>
-  <block id="block11" px="2800" py="602" width="192" height="48"></block>
+  <block id="block9" px="2120" py="602" width="64" height="48" type="wall"></block>
+  <block id="block10" px="1992" py="309" width="192" height="48" type="wall"></block>
+  <block id="block11" px="2800" py="602" width="192" height="48" type="wall"></block>
 
   <gate id="gate1" px="1992" py="429" width="64" height="128" movable="true">
     <bound left="1992" right="1992" top="358" bottom="429"></bound>
@@ -71,7 +71,7 @@
   
   <lightsource id="lightsource1" px="1900" py="82" angle="2.355" switchOn="false"></lightsource>
   
-  <mirror id="mirror1" px="1600" py="382"></mirror>
+  <mirror id="mirror1" px="1600" py="450"></mirror>
   
   <launcher id="launcher1" px="1100" py="452" speed_x="-5" speed_y="5"
             generate_time="4000" generate_type="enemy"></launcher>

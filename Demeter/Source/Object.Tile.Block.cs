@@ -62,6 +62,10 @@ namespace Demeter
             {
                 type = BlockType.Wall;
             }
+            else if (typeStr == "movableBlock")
+            {
+                type = BlockType.MovableBlock;
+            }
 
 
             XmlReader subtree = reader.ReadSubtree();
@@ -96,13 +100,16 @@ namespace Demeter
             switch (type)
             {
                 case BlockType.Floor:
-                    texture = Game.Content.Load<Texture2D>("texture/Object.Tile.Block.Floor");
+                    texture = Game.Content.Load<Texture2D>("texture/Object.Tile.Block.Wall");
                     break;
                 case BlockType.Ground:
                     texture = Game.Content.Load<Texture2D>("texture/Object.Tile.Block.Ground");
                     break;
                 case BlockType.Wall:
                     texture = Game.Content.Load<Texture2D>("texture/Object.Tile.Block.Wall");
+                    break;
+                case BlockType.MovableBlock:
+                    texture = Game.Content.Load<Texture2D>("texture/Object.Tile.Block.MovableBlock");
                     break;
                 default:
                     texture = Game.Content.Load<Texture2D>("texture/Object.Tile.Block.Floor");

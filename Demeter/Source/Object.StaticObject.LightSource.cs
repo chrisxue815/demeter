@@ -13,11 +13,11 @@ namespace Demeter
     {
         public override int CollisionWidth
         {
-            get { return 46; }
+            get { return 65; }
         }
         public override int CollisionHeight
         {
-            get { return 23; }
+            get { return 43; }
         }
         /// <summary>
         /// The angle between the normal and the x-axis
