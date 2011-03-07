@@ -72,7 +72,7 @@ namespace Demeter
 
         public override void LoadContent()
         {
-            texture = Game.Content.Load<Texture2D>("texture/Object.Tile.Block.Floor");
+            texture = Game.Content.Load<Texture2D>("texture/Object.Tile.Block.Wall");
         }
 
         public override void Update(GameTime gameTime)

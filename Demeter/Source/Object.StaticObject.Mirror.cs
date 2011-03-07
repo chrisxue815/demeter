@@ -20,6 +20,9 @@ namespace Demeter
         {
             get { return 90; }
         }
+
+        KeyUpHint keyUpHint;
+
         /// <summary>
         /// The angle between the normal and the x-axis
         /// </summary>
@@ -52,6 +55,7 @@ namespace Demeter
 
             this.game = game;
             this.position = new Vector2(px2, py2);
+            keyUpHint = new KeyUpHint(game, new Vector2(px2 + 5, py2 - 15), this.id + "hint");
         }
 
         public override void LoadContent()
@@ -61,12 +65,13 @@ namespace Demeter
 
         public override void Update(GameTime gameTime)
         {
+            keyUpHint.Position = new Vector2(position.X + 5, position.Y - 15);
         }
 
         public override void Draw(GameTime gameTime)
         {
             Game.SpriteBatch.Draw(texture,
-                new Vector2((int)ScreenPosition.X + 90, (int)ScreenPosition.Y + HalfHeight),
+                new Vector2((int)ScreenPosition.X + HalfWidth, (int)ScreenPosition.Y + HalfHeight),
                 null, Color.White, normalAngle,
                 new Vector2(HalfWidth, HalfHeight),
                 scale, SpriteEffects.None, layerDepth);
@@ -77,6 +82,7 @@ namespace Demeter
             if (obj is Player)
             {
                 ((IControlledObject)this).Control(this);
+                this.keyUpHint.IsDisplay = true;
             }
         }
 

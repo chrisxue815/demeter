@@ -290,6 +290,76 @@
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="texture\Object.StaticObject.Door.Door2.png">
+      <Name>Object.StaticObject.Door.Door2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="texture\Object.Tile.Block.MovableBlock2.png">
+      <Name>Object.Tile.Block.MovableBlock2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="texture\Object.StaticObject.Treasure.Treasure2-On.png">
+      <Name>Object.StaticObject.Treasure.Treasure2-On</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="texture\Object.StaticObject.Treasure.Orange.png">
+      <Name>Object.StaticObject.Treasure.Orange</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="texture\Object.StaticObject.Treasure.Blue.png">
+      <Name>Object.StaticObject.Treasure.Blue</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="texture\Object.StaticObject.Treasure.Cyan.png">
+      <Name>Object.StaticObject.Treasure.Cyan</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="texture\Object.StaticObject.Treasure.Green.png">
+      <Name>Object.StaticObject.Treasure.Green</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="texture\Object.StaticObject.Treasure.LightOff.png">
+      <Name>Object.StaticObject.Treasure.LightOff</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="texture\Object.StaticObject.Treasure.Purple.png">
+      <Name>Object.StaticObject.Treasure.Purple</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="texture\Object.StaticObject.Treasure.Red.png">
+      <Name>Object.StaticObject.Treasure.Red</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="texture\Object.StaticObject.Treasure.Yellow.png">
+      <Name>Object.StaticObject.Treasure.Yellow</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="texture\Background.MenuBackground.png">
+      <Name>Background.MenuBackground</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

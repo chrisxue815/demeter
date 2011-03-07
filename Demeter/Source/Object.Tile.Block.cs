@@ -109,7 +109,8 @@ namespace Demeter
                     texture = Game.Content.Load<Texture2D>("texture/Object.Tile.Block.Wall");
                     break;
                 case BlockType.MovableBlock:
-                    texture = Game.Content.Load<Texture2D>("texture/Object.Tile.Block.MovableBlock");
+                    texture = Game.Content.Load<Texture2D>("texture/Object.Tile.Block.MovableBlock2");
+                    movableBlock = new Animation(texture, new Point(64, 48), 100, true);
                     break;
                 default:
                     texture = Game.Content.Load<Texture2D>("texture/Object.Tile.Block.Floor");
@@ -119,6 +120,10 @@ namespace Demeter
 
         public override void Update(GameTime gameTime)
         {
+            if (type == BlockType.MovableBlock)
+            {
+                movableBlock.Update(gameTime);
+            }
             if (blockInfo != null && blockInfo.Moving == true)
             {
                 List<Object> collided = Level.CollidedWith(this);

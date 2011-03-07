@@ -493,12 +493,6 @@ namespace Demeter
             Game.SpriteBatch.Draw(currentAnimation.Texture, ScreenPosition,
                 currentAnimation.CurrentSourceRectangle, Color.White,
                 0.0f, currentAnimation.Origin, 1.0f, spriteEffects, 0.9f);
-            /*
-            Game.SpriteBatch.DrawString(Game.font, collidedWithLadder.ToString(),
-                Vector2.Zero, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 1);
-            Game.SpriteBatch.DrawString(Game.font, isLadderUsed.ToString(),
-                new Vector2(0,50), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 1);
-             */
         }
 
         public override void CollisionResponse(Object obj)

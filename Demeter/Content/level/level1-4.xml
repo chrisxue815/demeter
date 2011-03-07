@@ -4,15 +4,15 @@
   <background texture="texture/Background.Background"></background>
   <foreground bottom="650" texture="texture/Foreground.Foreground"></foreground>
   <bound id="bound1" left="0" right="3200" top="0" bottom="698"></bound>
-  <player id="player1" px="1100" py="580" movable="true"></player>
+  <player id="player1" px="100" py="580" movable="true"></player>
   <bindingPoint id="binding1">
     <p id="p1" px="100" py="580"></p>
     <p id="p2" px="1200" py="580"></p>
     <p id="p3" px="2200" py="580"></p>
   </bindingPoint>
 
-  <door id="door1" px="40" py="561" levelFileName="level1.xml"></door>
-  <door id="door2" px="3140" py="453" levelFileName="totalLevel.xml"></door>
+  <door id="door1" px="40" py="561" levelFileName="level1.xml" levelName="Level 3"></door>
+  <door id="door2" px="3140" py="453" levelFileName="totalLevel.xml" levelName="Mission Sun"></door>
   
   <ladder id="ladder1" px="220" py="72" height="540"></ladder>
   <ladder id="ladder2" px="1400" py="290" height="360"></ladder>
@@ -78,7 +78,7 @@
   <launcher id="launcher2" px="1150" py="52" speed_x="7" speed_y="0"
             generate_time="4000" generate_type="enemy"></launcher>
 
-  <treasure id="treasure1" px="980" py="390"></treasure>
-  <treasure id="treasure2" px="1510" py="454"></treasure>
-  <treasure id="treasure3" px="2500" py="382"></treasure>
+  <treasure id="treasure5" px="980" py="390"></treasure>
+  <treasure id="treasure6" px="1510" py="454"></treasure>
+  <treasure id="treasure7" px="2500" py="382"></treasure>
 </level>

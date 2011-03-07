@@ -5,14 +5,19 @@
   <foreground texture="null"></foreground>
   <cameraOffset px="0" py="0"></cameraOffset>
   <bound id="bound1" left="0" right="1366" top="0" bottom="698"></bound>
-  <door id="door4" px="40" py="617" levelFileName="novice.xml"></door>
   <player id="player1" px="100" py="628" movable="true"></player>
+
+  <door id="door4" px="40" py="617" levelFileName="novice.xml" levelName="Underground"></door>
+  
   <ladder id="ladder1" px="510" py="338" height="360"></ladder>
   <ladder id="ladder2" px="811" py="338" height="360"></ladder>
-  <block id="block1" px="555" py="420" width="256" height="48"></block>
-  <door id="door1" px="300" py="617" levelFileName="level1.xml"></door>
-  <door id="door2" px="657" py="617" levelFileName="null"></door>
-  <door id="door3" px="1015" py="617" levelFileName="null"></door>
+  <block id="block1" px="555" py="420" width="256" height="48" type="floor"></block>
+  <block id="ground1" px="0" py="698" width="1366" height="48" type="ground"></block>
+  
+  <door id="door1" px="300" py="617" levelFileName="level1.xml" levelName="Mission Sun"></door>
+  <door id="door2" px="657" py="617" levelFileName="null" levelName="Locked..."></door>
+  <door id="door3" px="1015" py="617" levelFileName="null" levelName="Locked..."></door>
+  
   <topic id="topic1" px="400" py="100">
     Your mission:
     Collect three basic elements in different levels!
