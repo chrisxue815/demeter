@@ -100,10 +100,7 @@ namespace Demeter
 
         #region music_relative
 
-        AudioEngine audioEngine;
-        WaveBank waveBank;
-        SoundBank soundBank;
-        Cue bgMusicCue;
+        Song soundEffect;
         bool musicOn;
 
         Texture2D menuBackground;
@@ -147,15 +144,13 @@ namespace Demeter
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            audioEngine = new AudioEngine(@"Content\audio\backGroundMusic.xgs");
-            waveBank = new WaveBank(audioEngine, @"Content\audio\Wave Bank.xwb");
-            soundBank = new SoundBank(audioEngine, @"Content\audio\Sound Bank.xsb");
+            soundEffect = Content.Load<Song>(@"audio\backgroundMusic");
 
             // Start the soundtrack audio
-            bgMusicCue = soundBank.GetCue("backGroundMusic");
             if (!musicOn)
             {
-                bgMusicCue.Play();
+                MediaPlayer.IsRepeating = true;
+                MediaPlayer.Play(soundEffect);
                 musicOn = true;
             }
 
@@ -357,12 +352,13 @@ namespace Demeter
             {
                 if (musicOn)
                 {
-                    bgMusicCue.Pause();
+                    MediaPlayer.Pause();
                     musicOn = false;
                 }
                 else
                 {
-                    bgMusicCue.Resume();
+                    MediaPlayer.IsRepeating = true;
+                    MediaPlayer.Play(soundEffect);
                     musicOn = true;
                 }
                 gotoMenu = false;
