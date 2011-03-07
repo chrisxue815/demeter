@@ -22,5 +22,13 @@ namespace Demeter
         {
             return new Point((int)v.X, (int)v.Y);
         }
+
+        public static float Normalize(float angle)
+        {
+            angle %= (float)Math.PI * 2;
+            if (angle < 0)
+                angle += (float)Math.PI * 2;
+            return angle;
+        }
     }
 }

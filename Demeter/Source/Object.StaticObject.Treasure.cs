@@ -117,8 +117,10 @@ namespace Demeter
                 if (obj is Player && ((Player)obj).IsAlive)
                 {
                     isGotten = true;
-                    Level.TreasureMgr.GetTreasure(this.id);
+                    Level.TreasureMgr.GetTreasure(Level.LevelFileName.Substring(0, 6),
+                        Level.LevelFileName, this.id);
                     this.Texture = textureOff;
+                    Level.GottenTreasure++;
                 }
             }
         }

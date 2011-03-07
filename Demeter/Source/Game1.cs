@@ -116,8 +116,8 @@ namespace Demeter
             graphics.PreferredBackBufferWidth = width;
             graphics.PreferredBackBufferHeight = height;
 
-            /*if (!graphics.IsFullScreen)
-                graphics.ToggleFullScreen();*/
+            if (!graphics.IsFullScreen)
+                graphics.ToggleFullScreen();
 
             Content.RootDirectory = "Content";
         }
@@ -153,8 +153,11 @@ namespace Demeter
 
             // Start the soundtrack audio
             bgMusicCue = soundBank.GetCue("backGroundMusic");
-            bgMusicCue.Play();
-            musicOn = true;
+            if (!musicOn)
+            {
+                bgMusicCue.Play();
+                musicOn = true;
+            }
 
             font = Content.Load<SpriteFont>("font/Hud");
 
@@ -164,7 +167,7 @@ namespace Demeter
             {
                 startLevel = "novice.xml";
             }
-            level.Load("level1-3.xml");
+            level.Load(startLevel);
 
             menuBackground = Content.Load<Texture2D>("texture/Background.MenuBackground");
         }
@@ -374,6 +377,8 @@ namespace Demeter
         {
             spriteBatch.Draw(menuBackground, new Vector2(300, 0), null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.1f);
 
+            spriteBatch.DrawString(font, "DEMETER", new Vector2(550,100), Color.Black, 0, Vector2.Zero, 2, SpriteEffects.None, 0.9f);
+
             if (currentSelection != 1)
                 spriteBatch.DrawString(font, "Resume Game", menuPos[0], Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0.9f);
             if (currentSelection != 2)
@@ -401,7 +406,7 @@ namespace Demeter
                 }
             }
             if (currentSelection != 5)
-                spriteBatch.DrawString(font, "Quit Game", menuPos[4], Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0.9f);
+                spriteBatch.DrawString(font, "Leave Demeter", menuPos[4], Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0.9f);
 
             switch (currentSelection)
             {
@@ -425,7 +430,7 @@ namespace Demeter
                     }
                     break;
                 case 5:
-                    spriteBatch.DrawString(font, "Quit Game", menuPos[4], Color.Red, 0, Vector2.Zero, 1, SpriteEffects.None, 0.9f);
+                    spriteBatch.DrawString(font, "Leave Demeter", menuPos[4], Color.Red, 0, Vector2.Zero, 1, SpriteEffects.None, 0.9f);
                     break;
             }
         }

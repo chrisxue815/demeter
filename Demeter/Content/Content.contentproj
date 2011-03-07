@@ -62,13 +62,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="texture\Object.StaticObject.Door.Door1.png">
-      <Name>Object.StaticObject.Door.Door1</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="texture\Object.StaticObject.Switch.SwitchOff.png">
       <Name>Object.StaticObject.Switch.SwitchOff</Name>
       <Importer>TextureImporter</Importer>
@@ -123,20 +116,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="texture\Object.Tile.Block.Floor.png">
-      <Name>Object.Tile.Block.Floor</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
     <Compile Include="texture\Object.Tile.Platform.Platform1.png">
       <Name>Object.Tile.Platform.Platform1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="texture\Object.StaticObject.Mirror.Mirror2.png">
-      <Name>Object.StaticObject.Mirror.Mirror2</Name>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -156,18 +139,6 @@
   <ItemGroup>
     <Compile Include="texture\Object.StaticObject.Launcher.png">
       <Name>Object.StaticObject.Launcher</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="texture\Object.StaticObject.Treasure.Treasure1-Off.png">
-      <Name>Object.StaticObject.Treasure.Treasure1-Off</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="texture\Object.StaticObject.Treasure.Treasure1-On.png">
-      <Name>Object.StaticObject.Treasure.Treasure1-On</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -308,13 +279,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="texture\Object.StaticObject.Treasure.Treasure2-On.png">
-      <Name>Object.StaticObject.Treasure.Treasure2-On</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="texture\Object.StaticObject.Treasure.Orange.png">
       <Name>Object.StaticObject.Treasure.Orange</Name>
       <Importer>TextureImporter</Importer>
@@ -368,6 +332,93 @@
   <ItemGroup>
     <Compile Include="texture\Object.StaticObject.LadderRay.LadderRay1.png">
       <Name>Object.StaticObject.LadderRay.LadderRay1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="texture\Hint.TurnOff.png">
+      <Name>Hint.TurnOff</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="texture\Hint.TurnOffWords.png">
+      <Name>Hint.TurnOffWords</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="texture\Object.StaticObject.ShiftStick.Negative.png">
+      <Name>Object.StaticObject.ShiftStick.Negative</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="texture\Object.StaticObject.ShiftStick.Positive.png">
+      <Name>Object.StaticObject.ShiftStick.Positive</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="texture\Object.StaticObject.ShiftStick.SwitchOff.png">
+      <Name>Object.StaticObject.ShiftStick.SwitchOff</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="texture\Object.Sprite.Hint.Left.png">
+      <Name>Object.Sprite.Hint.Left</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="texture\Object.Sprite.Hint.Right.png">
+      <Name>Object.Sprite.Hint.Right</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="texture\Plant1-1.png">
+      <Name>Plant1-1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="texture\Plant1-2.png">
+      <Name>Plant1-2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="texture\Plant1-3.png">
+      <Name>Plant1-3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="texture\Plant1-4.png">
+      <Name>Plant1-4</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="texture\Plant1-5.png">
+      <Name>Plant1-5</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="texture\Plant1-6.png">
+      <Name>Plant1-6</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="texture\Plant1-7.png">
+      <Name>Plant1-7</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="texture\Plant1-0.png">
+      <Name>Plant1-0</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

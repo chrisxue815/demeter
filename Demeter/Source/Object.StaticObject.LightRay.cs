@@ -57,7 +57,7 @@ namespace Demeter
 
         public override void Update(GameTime gameTime)
         {
-            angle = lightSource.Angle;
+            angle = Helper.Normalize(lightSource.Angle);
 
             reflectionPosition.Clear();
             reflectionPosition.Add(position);
@@ -68,15 +68,18 @@ namespace Demeter
             Object obj = Level.FindObject(position, angle, out collidingPosition, lightSource);
             while (obj != null)
             {
-                if (obj is Mirror)
+                if (obj is Mirror
+                    && Math.Abs(Helper.Normalize(((Mirror)obj).NormalAngle) - incidenceAngle) > Math.PI / 2)
                 {
                     Mirror mirror = (Mirror)obj;
+
                     reflectionPosition.Add(collidingPosition.Value);
+
                     float reflectAngle = 2 * mirror.NormalAngle - incidenceAngle - (float)Math.PI;
                     obj = Level.FindObject(collidingPosition.Value, reflectAngle,
                         out collidingPosition, mirror);
 
-                    incidenceAngle = reflectAngle;
+                    incidenceAngle = Helper.Normalize(reflectAngle);
                 }
                 else
                 {

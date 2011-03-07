@@ -13,7 +13,7 @@
   </bindingPoint>
 
   <door id="door1" px="40" py="561" levelFileName="level1-3.xml" levelName="Level 3"></door>
-  <door id="door2" px="3140" py="453" levelFileName="TotalLevel.xml" levelName="Mission Sun"></door>
+  <door id="door2" px="3080" py="453" levelFileName="TotalLevel.xml" levelName="Mission Sun"></door>
   
   <ladder id="ladder1" px="220" py="72" height="540"></ladder>
   <ladder id="ladder2" px="1400" py="290" height="360"></ladder>
