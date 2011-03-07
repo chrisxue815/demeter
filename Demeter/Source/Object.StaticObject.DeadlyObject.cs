@@ -63,7 +63,7 @@ namespace Demeter
 
             for (int i = 0; i < frameX; i++)
             {
-                Game.SpriteBatch.Draw(texture, new Rectangle((int)(p.X + i * 150), (int)p.Y, texture.Width, texture.Height),
+                Game.SpriteBatch.Draw(texture, new Rectangle((int)(p.X + i * 150), (int)p.Y, texture.Width,(int)(Level.Height - this.Position.Y)),
                     null, Color.White, 0, Vector2.Zero, SpriteEffects.None, layerDepth);
             }
         }

@@ -86,9 +86,19 @@ namespace Demeter
         bool wasDownKeydown = false;
 
         int currentSelection = 1;
-        const int maxItemsCount = 4;
+        const int maxItemsCount = 5;
 
         Vector2[] menuPos = new Vector2[maxItemsCount];
+        #endregion
+
+        #region music_relative
+
+        AudioEngine audioEngine;
+        WaveBank waveBank;
+        SoundBank soundBank;
+        Cue bgMusicCue;
+        bool musicOn;
+
         #endregion
 
         public Game1()
@@ -128,6 +138,15 @@ namespace Demeter
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            audioEngine = new AudioEngine(@"Content\audio\backGroundMusic.xgs");
+            waveBank = new WaveBank(audioEngine, @"Content\audio\Wave Bank.xwb");
+            soundBank = new SoundBank(audioEngine, @"Content\audio\Sound Bank.xsb");
+
+            // Start the soundtrack audio
+            bgMusicCue = soundBank.GetCue("backGroundMusic");
+            bgMusicCue.Play();
+            musicOn = true;
 
             font = Content.Load<SpriteFont>("font/Hud");
 
@@ -294,6 +313,20 @@ namespace Demeter
             }
             else if (currentSelection == 4 && keystate.IsKeyDown(Keys.Enter))
             {
+                if (musicOn)
+                {
+                    bgMusicCue.Pause();
+                    musicOn = false;
+                }
+                else
+                {
+                    bgMusicCue.Resume();
+                    musicOn = true;
+                }
+                gotoMenu = false;
+            }
+            else if (currentSelection == 5 && keystate.IsKeyDown(Keys.Enter))
+            {
                 this.Exit();
             }
         }
@@ -307,7 +340,18 @@ namespace Demeter
             if (currentSelection != 3)
                 spriteBatch.DrawString(font, "Restart Game", menuPos[2], Color.White);
             if (currentSelection != 4)
-                spriteBatch.DrawString(font, "Quit Game", menuPos[3], Color.White);
+            {
+                if (musicOn)
+                {
+                    spriteBatch.DrawString(font, "Stop Background Music", menuPos[3], Color.White);
+                }
+                else
+                {
+                    spriteBatch.DrawString(font, "Start Background Music", menuPos[3], Color.White);
+                }
+            }
+            if (currentSelection != 5)
+                spriteBatch.DrawString(font, "Quit Game", menuPos[4], Color.White);
 
             switch (currentSelection)
             {
@@ -321,7 +365,17 @@ namespace Demeter
                     spriteBatch.DrawString(font, "Restart Game", menuPos[2], Color.Red);
                     break;
                 case 4:
-                    spriteBatch.DrawString(font, "Quit Game", menuPos[3], Color.Red);
+                    if (musicOn)
+                    {
+                        spriteBatch.DrawString(font, "Stop Background Music", menuPos[3], Color.Red);
+                    }
+                    else
+                    {
+                        spriteBatch.DrawString(font, "Start Background Music", menuPos[3], Color.Red);
+                    }
+                    break;
+                case 5:
+                    spriteBatch.DrawString(font, "Quit Game", menuPos[4], Color.Red);
                     break;
             }
         }

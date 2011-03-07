@@ -6,11 +6,11 @@
   <cameraOffset px="0" py="0"></cameraOffset>
   <player id="player1" px="200" py="628" movable="true"></player>
   <bound id="bound1" left="0" right="1330" top="0" bottom="698"></bound>
-  <door id="door" px="130" py="617" levelFileName="totalLevel.xml"></door>
-  <door id="door1" px="600" py="617" levelFileName="level1-1.xml"></door>
-  <door id="door2" px="800" py="617" levelFileName="level1-2.xml"></door>
-  <door id="door3" px="1000" py="617" levelFileName="level1-3.xml"></door>
-  <door id="door4" px="1200" py="617" levelFileName="level1-4.xml"></door>
+  <door id="door" px="130" py="609" levelFileName="totalLevel.xml"></door>
+  <door id="door1" px="600" py="609" levelFileName="level1-1.xml"></door>
+  <door id="door2" px="800" py="609" levelFileName="level1-2.xml"></door>
+  <door id="door3" px="1000" py="609" levelFileName="level1-3.xml"></door>
+  <door id="door4" px="1200" py="609" levelFileName="level1-4.xml"></door>
   <topic id="topic1" px="400" py="100">
                 In this world
     you need to achieve 7 light color through difficulties.

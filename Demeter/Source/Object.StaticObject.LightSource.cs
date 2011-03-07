@@ -31,7 +31,7 @@ namespace Demeter
 
         bool switchOn = true;
         public bool SwitchOn
-        {
+        { 
             get { return switchOn; }
         }
 

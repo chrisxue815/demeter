@@ -248,6 +248,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="audio\backGroundMusic.xap">
+      <Name>backGroundMusic</Name>
+      <Importer>XactImporter</Importer>
+      <Processor>XactProcessor</Processor>
+    </Compile>
     <None Include="level\level1-3.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <Name>level1-3</Name>
