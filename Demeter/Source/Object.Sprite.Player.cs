@@ -118,6 +118,14 @@ namespace Demeter
             set { lastPosition = value; }
         }
 
+        string bornPointId;
+        public string BornPointId
+        {
+            get { return bornPointId; }
+            set { bornPointId = value; }
+        }
+
+
         #region two_step jumping
         bool killFirstEnemy;
         public bool KillFirstEnemy
@@ -211,6 +219,15 @@ namespace Demeter
             float px = float.Parse(pxStr);
             float py = float.Parse(pyStr);
             this.game = game;
+
+            // born
+            /*
+            if (Game.PlayerBornPointId != null)
+            {
+                this.position = Game.BindingPoint.GetPosById(Game.Current_levelFileName, Game.PlayerBornPointId);
+            }
+                // reborn*/
+  
             if (Game.BindingPoint != null)
             {
                 this.position = Game.BindingPoint.JudgeBindingPoint(Game.Current_levelFileName, Game.DiePosition);

@@ -44,6 +44,8 @@ namespace Demeter
             node.AppendChild(xe);
 
             xmlDoc.Save(@"Profile\profile.xml");
+
+            stillToGet--;
         }
 
         public List<String> AreGotten()

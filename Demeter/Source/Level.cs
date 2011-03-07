@@ -282,10 +282,12 @@ namespace Demeter
                                 if (subtree.NodeType == XmlNodeType.Element &&
                                 subtree.Name == "p")
                                 {
-                                    String pxStr = subtree.GetAttribute("px");
-                                    String pyStr = subtree.GetAttribute("py");
+                                    string pxStr = subtree.GetAttribute("px");
+                                    string pyStr = subtree.GetAttribute("py");
+                                    string id = subtree.GetAttribute("id");
+
                                     Vector2 pos = new Vector2(int.Parse(pxStr), int.Parse(pyStr));
-                                    Game.BindingPoint.Add(pos, levelFileName);
+                                    Game.BindingPoint.Add(pos, levelFileName, id);
                                 }
                             }
                         }
