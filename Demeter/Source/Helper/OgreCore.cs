@@ -129,7 +129,7 @@ namespace Demeter
             // Draw the current frame.
             Game.SpriteBatch.Draw(currentAnimation.Texture, ScreenPosition,
                 currentAnimation.CurrentSourceRectangle, Color.White,
-                0.0f, currentAnimation.Origin, 1.0f, SpriteEffects.None, 0.9f);
+                0.0f, currentAnimation.Origin, 1.0f, SpriteEffects.None, 0.3f);
         }
     }
 }

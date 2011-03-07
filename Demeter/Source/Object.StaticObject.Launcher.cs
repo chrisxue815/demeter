@@ -29,6 +29,7 @@ namespace Demeter
         int generateAmount;
 
         Vector2 powerSpeed;
+        SpriteEffects spriteEffects;
 
         public Launcher(Game1 game, Vector2 position)
             : base(game, position)
@@ -44,11 +45,20 @@ namespace Demeter
             string generateAmountStr = reader.GetAttribute("generateAmount");
             string speedXStr = reader.GetAttribute("speed_x");
             string speedYStr = reader.GetAttribute("speed_y");
+            string direction = reader.GetAttribute("direction");
 
             this.generateType = reader.GetAttribute("generate_type");
             this.generateTime = int.Parse(generateTimeStr);
             this.game = game;
 
+            if (direction == "right")
+            {
+                spriteEffects = SpriteEffects.FlipHorizontally;
+            }
+            else
+            {
+                spriteEffects = SpriteEffects.None;
+            }
             if (generateAmountStr == null)
             {
                 this.generateAmount = -1;
@@ -137,6 +147,12 @@ namespace Demeter
                 Enemy enemy = new Enemy(game, this.position, powerSpeed ,this.Id);
                 Level.MovableObjects.Add(enemy);
             }
+        }
+
+        public override void Draw(GameTime gameTime)
+        {
+            Game.SpriteBatch.Draw(texture, ScreenRectangle, null,
+                Color.White, 0, Vector2.Zero, spriteEffects, layerDepth);
         }
     }
 }
