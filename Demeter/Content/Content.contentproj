@@ -219,11 +219,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="audio\backGroundMusic.xap">
-      <Name>backGroundMusic</Name>
-      <Importer>XactImporter</Importer>
-      <Processor>XactProcessor</Processor>
-    </Compile>
     <None Include="level\level1-3.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <Name>level1-3</Name>
@@ -421,6 +416,14 @@
       <Name>Plant1-0</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="audio\backgroundMusic.mp3">
+      <Name>backgroundMusic</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SongProcessor</Processor>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
