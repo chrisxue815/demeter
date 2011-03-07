@@ -5,13 +5,15 @@
   <foreground texture="texture/Foreground.Foreground"></foreground>
   <cameraOffset px="0" py="0"></cameraOffset>
   <bound id="bound1" left="0" right="3200" top="0" bottom="698"></bound>
+
   <player id="player1" px="100" py="290" movable="true"></player>
+  
   <bindingPoint id="binding1">
     <p  id="p1" px="100" py="290"></p>
     <p  id="p2" px="800" py="590"></p>
     <p  id="p3" px="1900" py="350"></p>
   </bindingPoint>
-
+  
   <block id="ground1" px="0" py="360" width="256" height="48" type="floor"></block>
   <block id="ground2" px="0" py="650" width="1536" height="48" type="ground"></block>
   <block id="ground3" px="1617" py="649" width="128" height="48" type="ground"></block>

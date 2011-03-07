@@ -80,6 +80,12 @@ namespace Demeter
             get { return diePosition; }
         }
 
+        string playerBornPointId;
+        public string PlayerBornPointId
+        {
+            get { return playerBornPointId; }
+        }
+
         #region menu relative
         bool gotoMenu = false;
         bool wasUpKeydown = false;
@@ -196,10 +202,15 @@ namespace Demeter
             if (!gotoMenu)
             {
                 level.Update(gameTime);
+                current_levelFileName = level.LevelFileName;
 
                 if (level.Player.IsLeaving)
                 {
                     ChangeLevel();
+
+                        playerBornPointId = null;
+                        playerBornPointId = Level.Player.BornPointId;
+
                 }
 
                 if (!level.Player.IsAlive)
@@ -207,7 +218,6 @@ namespace Demeter
                     dieTime += gameTime.ElapsedGameTime.Milliseconds;
                     if (dieTime > level.Player.DieTime)
                     {
-                        current_levelFileName = level.LevelFileName;
                         diePosition = new Vector2(level.Player.Position.X,
                             level.Player.Position.Y);
                         level = new Level(this);
@@ -367,7 +377,16 @@ namespace Demeter
             if (currentSelection != 1)
                 spriteBatch.DrawString(font, "Resume Game", menuPos[0], Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0.9f);
             if (currentSelection != 2)
-                spriteBatch.DrawString(font, "Leave Current Level", menuPos[1], Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0.9f);
+            {
+                if (Level.LevelFileName.IndexOf("-") < 0)
+                {
+                    spriteBatch.DrawString(font, "Leave Current Level", menuPos[1], Color.Gray, 0, Vector2.Zero, 1, SpriteEffects.None, 0.9f);
+                }
+                else
+                {
+                    spriteBatch.DrawString(font, "Leave Current Level", menuPos[1], Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0.9f);
+                }
+            }
             if (currentSelection != 3)
                 spriteBatch.DrawString(font, "Restart Game", menuPos[2], Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0.9f);
             if (currentSelection != 4)

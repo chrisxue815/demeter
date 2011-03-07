@@ -28,6 +28,9 @@ namespace Demeter
 
         KeyUpHint keyUpHint;
 
+        string bindingId;
+
+
         public Door(Game1 game, Vector2 position, string levelFileName)
             : base(game, position)
         {
@@ -43,6 +46,7 @@ namespace Demeter
             string pyStr = reader.GetAttribute("py");
             this.levelFileName = reader.GetAttribute("levelFileName");
             this.levelName = reader.GetAttribute("levelName");
+            this.bindingId = reader.GetAttribute("bindingId");
 
             float px = float.Parse(pxStr);
             float py = float.Parse(pyStr);
@@ -69,6 +73,7 @@ namespace Demeter
                 Level.Player.CollidedWithDoor = true;
                 Level.Player.ComingLevel = levelFileName;
                 this.keyUpHint.IsDisplay = true;
+                Level.Player.BornPointId = this.bindingId;
             }
         }
 
