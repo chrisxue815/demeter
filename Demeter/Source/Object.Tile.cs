@@ -11,6 +11,7 @@ namespace Demeter
     public abstract class Tile : Object
     {
         public BlockType type = BlockType.None;
+        protected Animation movableBlock;
 
         private int width;
         protected int Width
@@ -93,23 +94,40 @@ namespace Demeter
 
         public override void Draw(GameTime gameTime)
         {
-            for (int i = 0; i < tileFrame.X; i++)
+            if (type == BlockType.MovableBlock)
             {
-                for (int j = 0; j < tileFrame.Y; j++)
+                for (int i = 0; i < tileFrame.X; i++)
                 {
-                    Vector2 pos = new Vector2(position.X + texture.Width * i, position.Y + texture.Height * j);
-                    Vector2 screenPos = Level.ScreenPosition(pos);
-                    if (type == BlockType.Ground)
+                    for (int j = 0; j < tileFrame.Y; j++)
                     {
-                        Game.SpriteBatch.Draw(texture,
-                            new Rectangle((int)screenPos.X, (int)screenPos.Y, texture.Width, (int)(Level.Height - position.Y)),
-                            null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.2f);
+                        Vector2 pos = new Vector2(position.X + movableBlock.FrameSize.X * i, position.Y + movableBlock.FrameSize.Y * j);
+                        Vector2 screenPos = Level.ScreenPosition(pos);
+                        Game.SpriteBatch.Draw(movableBlock.Texture, screenPos,
+                            movableBlock.CurrentSourceRectangle, Color.White,
+                            0, movableBlock.Origin, 1.0f, SpriteEffects.None, 0.9f);
                     }
-                    else
+                }
+            }
+            else
+            {
+                for (int i = 0; i < tileFrame.X; i++)
+                {
+                    for (int j = 0; j < tileFrame.Y; j++)
                     {
-                        Game.SpriteBatch.Draw(texture,
-                            new Rectangle((int)screenPos.X, (int)screenPos.Y, texture.Width, texture.Height),
-                            null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.2f);
+                        Vector2 pos = new Vector2(position.X + texture.Width * i, position.Y + texture.Height * j);
+                        Vector2 screenPos = Level.ScreenPosition(pos);
+                        if (type == BlockType.Ground)
+                        {
+                            Game.SpriteBatch.Draw(texture,
+                                new Rectangle((int)screenPos.X, (int)screenPos.Y, texture.Width, (int)(Level.Height - position.Y)),
+                                null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.2f);
+                        }
+                        else
+                        {
+                            Game.SpriteBatch.Draw(texture,
+                                new Rectangle((int)screenPos.X, (int)screenPos.Y, texture.Width, texture.Height),
+                                null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.2f);
+                        }
                     }
                 }
             }

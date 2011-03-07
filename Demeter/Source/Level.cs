@@ -404,7 +404,7 @@ namespace Demeter
 
             if (topic != null)
             {
-                Game.SpriteBatch.DrawString(Game.font, topic, topicPos, Color.Red, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.9f);
+                Game.SpriteBatch.DrawString(Game.font, topic, topicPos, Color.Black, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.9f);
             }
 
             foreach (Object obj in movableObjects)
