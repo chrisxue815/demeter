@@ -361,18 +361,17 @@ namespace Demeter
                 spriteBatch.DrawString(font, "Restart Game", menuPos[2], Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0.9f);
             if (currentSelection != 4)
             {
-                spriteBatch.DrawString(font, "Quit Game", menuPos[3], Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0.9f);
                 if (musicOn)
                 {
-                    spriteBatch.DrawString(font, "Stop Background Music", menuPos[3], Color.White);
+                    spriteBatch.DrawString(font, "Stop Background Music", menuPos[3], Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0.9f);
                 }
                 else
                 {
-                    spriteBatch.DrawString(font, "Start Background Music", menuPos[3], Color.White);
+                    spriteBatch.DrawString(font, "Start Background Music", menuPos[3], Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0.9f);
                 }
             }
             if (currentSelection != 5)
-                spriteBatch.DrawString(font, "Quit Game", menuPos[4], Color.White);
+                spriteBatch.DrawString(font, "Quit Game", menuPos[4], Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0.9f);
 
             switch (currentSelection)
             {
@@ -386,18 +385,17 @@ namespace Demeter
                     spriteBatch.DrawString(font, "Restart Game", menuPos[2], Color.Red, 0, Vector2.Zero, 1, SpriteEffects.None, 0.9f);
                     break;
                 case 4:
-                    spriteBatch.DrawString(font, "Quit Game", menuPos[3], Color.Red, 0, Vector2.Zero, 1, SpriteEffects.None, 0.9f);
                     if (musicOn)
                     {
-                        spriteBatch.DrawString(font, "Stop Background Music", menuPos[3], Color.Red);
+                        spriteBatch.DrawString(font, "Stop Background Music", menuPos[3], Color.Red, 0, Vector2.Zero, 1, SpriteEffects.None, 0.9f);
                     }
                     else
                     {
-                        spriteBatch.DrawString(font, "Start Background Music", menuPos[3], Color.Red);
+                        spriteBatch.DrawString(font, "Start Background Music", menuPos[3], Color.Red, 0, Vector2.Zero, 1, SpriteEffects.None, 0.9f);
                     }
                     break;
                 case 5:
-                    spriteBatch.DrawString(font, "Quit Game", menuPos[4], Color.Red);
+                    spriteBatch.DrawString(font, "Quit Game", menuPos[4], Color.Red, 0, Vector2.Zero, 1, SpriteEffects.None, 0.9f);
                     break;
             }
         }
