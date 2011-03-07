@@ -10,23 +10,28 @@ namespace Demeter
     {
         List<Vector2> totalPoints;
         List<String> totalLevels;
+        List<String> totalId;
 
         List<Vector2> points;
         List<String> levels;
-        Vector2 binding;
+        List<String> ids;
+        Vector2 bindingPoint;
 
         public BindingPoint()
         {
             points = new List<Vector2>();
             levels = new List<string>();
+            ids = new List<string>();
             totalPoints = new List<Vector2>();
             totalLevels = new List<string>();
+            totalId = new List<string>();
         }
 
-        public void Add(Vector2 bindingPoint,String level)
+        public void Add(Vector2 bindingPoint,string level, string id)
         {
             totalPoints.Add(bindingPoint);
             totalLevels.Add(level);
+            totalId.Add(id);
         }
 
         public void PassBindingPoint(string currentLevel, Vector2 playerPos)
@@ -39,6 +44,7 @@ namespace Demeter
                     {
                         points.Add(totalPoints[i]);
                         levels.Add(totalLevels[i]);
+                        ids.Add(totalId[i]);
                     }
                 }
             }
@@ -55,11 +61,23 @@ namespace Demeter
                     if (Math.Abs(points[i].X - playerPos.X) < minDistance)
                     {
                         minDistance = (int)Math.Abs(points[i].X - playerPos.X);
-                        binding = points[i];
+                        bindingPoint = points[i];
                     }
                 }
             }
-            return binding;
+            return bindingPoint;
+        }
+
+        public Vector2 GetPosById(string currentLevel, string id)
+        {
+            for (int i = 0; i < levels.Count; i++)
+            {
+                if (levels[i] == currentLevel && ids[i] == id)
+                {
+                    bindingPoint = points[i];
+                }
+            }
+            return bindingPoint;
         }
     }
 }

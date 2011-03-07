@@ -35,7 +35,7 @@
 
   <block type="floor" px="1428" py="240" width="64" height="48"></block>
   <ogre px="1492" py="240" offset="-70"></ogre>
-  <block type="floor" px="1573" py="240" width="64" height="48"></block>
+  <block type="floor" px="1573" py="239" width="64" height="48"></block>
   
   <ladder px="1637" py="150" height="450"></ladder>
   <block type="ground" px="1537" py="600" width="448" height="48"></block>
