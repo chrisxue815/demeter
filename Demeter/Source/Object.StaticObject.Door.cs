@@ -24,6 +24,8 @@ namespace Demeter
         }
         string levelFileName;
 
+        string levelName;
+
         KeyUpHint keyUpHint;
 
         public Door(Game1 game, Vector2 position, string levelFileName)
@@ -39,21 +41,21 @@ namespace Demeter
         {
             string pxStr = reader.GetAttribute("px");
             string pyStr = reader.GetAttribute("py");
-            string levelFileNameStr = reader.GetAttribute("levelFileName");
+            this.levelFileName = reader.GetAttribute("levelFileName");
+            this.levelName = reader.GetAttribute("levelName");
 
             float px = float.Parse(pxStr);
             float py = float.Parse(pyStr);
 
             this.game = game;
             this.position = new Vector2(px, py);
-            this.levelFileName = levelFileNameStr;
             this.keyUpHint = new KeyUpHint(game, new Vector2(px + 7, py - 35),
                 this.id + "hint");
         }
 
         public override void LoadContent()
         {
-            this.texture = Game.Content.Load<Texture2D>("texture/Object.StaticObject.Door.Door1");
+            this.texture = Game.Content.Load<Texture2D>("texture/Object.StaticObject.Door.Door2");
         }
 
         public override void Update(GameTime gameTime)
@@ -68,6 +70,14 @@ namespace Demeter
                 Level.Player.ComingLevel = levelFileName;
                 this.keyUpHint.IsDisplay = true;
             }
+        }
+
+        public override void Draw(GameTime gameTime)
+        {
+            base.Draw(gameTime);
+            Vector2 screenPos = ScreenPosition;
+            Game.SpriteBatch.DrawString(Game.font, levelName,
+                new Vector2(screenPos.X - 10, screenPos.Y - 35), Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0.8f);
         }
     }
 }

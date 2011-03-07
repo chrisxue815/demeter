@@ -84,11 +84,14 @@ namespace Demeter
         bool gotoMenu = false;
         bool wasUpKeydown = false;
         bool wasDownKeydown = false;
+        bool wasEscKeydown = false;
 
         int currentSelection = 1;
         const int maxItemsCount = 4;
 
         Vector2[] menuPos = new Vector2[maxItemsCount];
+
+        Texture2D menuBackground;
         #endregion
 
         public Game1()
@@ -114,7 +117,7 @@ namespace Demeter
         {
             for (int i = 0; i < maxItemsCount; i++)
             {
-                menuPos[i] = new Vector2(200 , i*50 + 200);
+                menuPos[i] = new Vector2(550 , i*50 + 250);
             }
                 // TODO: Add your initialization logic here
             base.Initialize();
@@ -138,6 +141,8 @@ namespace Demeter
                 startLevel = "novice.xml";
             }
             level.Load(startLevel);
+
+            menuBackground = Content.Load<Texture2D>("texture/Background.MenuBackground");
         }
 
         /// <summary>
@@ -159,7 +164,15 @@ namespace Demeter
             // Allows the game to exit
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
-                gotoMenu = true;
+                if (!wasEscKeydown)
+                {
+                    wasEscKeydown = true;
+                    gotoMenu = !gotoMenu;
+                }
+            }
+            else
+            {
+                wasEscKeydown = false;
             }
 
             if (!gotoMenu)
@@ -306,28 +319,30 @@ namespace Demeter
 
         public void MenuDraw()
         {
+            spriteBatch.Draw(menuBackground, new Vector2(300, 0), null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.1f);
+
             if (currentSelection != 1)
-                spriteBatch.DrawString(font, "Resume Game", menuPos[0], Color.White);
+                spriteBatch.DrawString(font, "Resume Game", menuPos[0], Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0.9f);
             if (currentSelection != 2)
-                spriteBatch.DrawString(font, "Leave Current Level", menuPos[1], Color.White);
+                spriteBatch.DrawString(font, "Leave Current Level", menuPos[1], Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0.9f);
             if (currentSelection != 3)
-                spriteBatch.DrawString(font, "Restart Game", menuPos[2], Color.White);
+                spriteBatch.DrawString(font, "Restart Game", menuPos[2], Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0.9f);
             if (currentSelection != 4)
-                spriteBatch.DrawString(font, "Quit Game", menuPos[3], Color.White);
+                spriteBatch.DrawString(font, "Quit Game", menuPos[3], Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0.9f);
 
             switch (currentSelection)
             {
                 case 1:
-                    spriteBatch.DrawString(font, "Resume Game", menuPos[0], Color.Red);
+                    spriteBatch.DrawString(font, "Resume Game", menuPos[0], Color.Red, 0, Vector2.Zero, 1, SpriteEffects.None, 0.9f);
                     break;
                 case 2:
-                    spriteBatch.DrawString(font, "Leave Current Level", menuPos[1], Color.Red);
+                    spriteBatch.DrawString(font, "Leave Current Level", menuPos[1], Color.Red, 0, Vector2.Zero, 1, SpriteEffects.None, 0.9f);
                     break;
                 case 3:
-                    spriteBatch.DrawString(font, "Restart Game", menuPos[2], Color.Red);
+                    spriteBatch.DrawString(font, "Restart Game", menuPos[2], Color.Red, 0, Vector2.Zero, 1, SpriteEffects.None, 0.9f);
                     break;
                 case 4:
-                    spriteBatch.DrawString(font, "Quit Game", menuPos[3], Color.Red);
+                    spriteBatch.DrawString(font, "Quit Game", menuPos[3], Color.Red, 0, Vector2.Zero, 1, SpriteEffects.None, 0.9f);
                     break;
             }
         }
