@@ -263,7 +263,7 @@ namespace Demeter
             GraphicsDevice.Clear(Color.Gray);
 
             // TODO: Add your drawing code here
-            SpriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.FrontToBack, SaveStateMode.SaveState);
+            SpriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend);
             if (!gotoMenu)
             {
                 currentSelection = 1;
